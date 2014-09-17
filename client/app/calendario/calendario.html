@@ -14,13 +14,13 @@
 <section ng-if="!dia" class="asistencias ayuda">Selecciona un día del mes…</section>
 <section ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
   <header><button class="minimizar" ng-click="toggleMinimizado()">_</button><span class="horario">{{ turno.entrada }} - {{ turno.salida }}</span></header>
-  <table class="lista" ng-hide="minimizado">
+  <table class="lista" ng-hide="isMinimizado()">
     <tr ng-repeat="asistencia in asistencias" ng-controller="AsistenciaCtrl">
       <td class="columna nombre">{{ asistencia.persona | nombre }}</td>
       <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0">{{ asistencia.estado | iconoasiste }}</td>
     </tr>
   </table>
-  <button class="nuevo" ng-hide="minimizado">+ Añadir voluntari@</button>
+  <button class="nuevo" ng-hide="isMinimizado()">+ Añadir voluntari@</button>
 </section>
 
 <script type="text/ng-template" id="/notificar.html">
