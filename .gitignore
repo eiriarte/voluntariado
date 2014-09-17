@@ -8,3 +8,4 @@ dist
 /server/config/local.env.js
 *.swp
 __db
+/client/vendor
