@@ -1,0 +1,49 @@
+.modal-notificar {
+  padding: 0;
+  .cabecera {
+    padding: .8em 0;
+    font-size: .9em;
+    text-align: center;
+    .nombre {
+      font-size: 1.1em;
+      margin-bottom: .4em;
+    }
+  }
+  & > button, & > .desplegable {
+    @include boton;
+    display: block;
+    width: 96%;
+    margin: .5em 2%;
+  }
+  & > .si {
+    background-color: $color-btn-verde;
+    color: white;
+  }
+  & > .no {
+    background-color: $color-btn-rojo;
+    color: white;
+  }
+  & > .desplegable {
+    background-color: $color-btn-negro;
+    color: white;
+    position: relative;
+    .lista {
+      position: absolute;
+      width: 100%;
+      background-color: $color-btn-negro;
+      border-radius: 0 0 5px 5px;
+      .boton {
+        margin: .8em;
+        padding: .8em;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+  & > .cancelar {
+    margin-top: 1.5em;
+    color: #808080;
+    background-color: transparent;
+    font-weight: normal;
+  }
+}

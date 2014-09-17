@@ -1,0 +1,90 @@
+[
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 1,
+        "turno": "c1132a38efbb4d5da7261f0d0f855f8c",
+        "persona": "18d497214f3c4f4e8e1f905e1eaf9207",
+        "estado": "si"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 1,
+        "turno": "c1132a38efbb4d5da7261f0d0f855f8c",
+        "persona": "f5c354fd211d4af6bf46b7a1c6d70a3e",
+        "estado": "si"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 1,
+        "turno": "c1132a38efbb4d5da7261f0d0f855f8c",
+        "persona": "c689cbf7a93c4480956c2e38850513bd",
+        "estado": "no"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 1,
+        "turno": "c1132a38efbb4d5da7261f0d0f855f8c",
+        "persona": "96452ba42a4943f9bb01036aacb95128",
+        "estado": "no"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 2,
+        "turno": "fd2c047a079a4f698bb1af9307bff43d",
+        "persona": "c9d55f9ee23546438c1a146657085ee3",
+        "estado": "no"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 2,
+        "turno": "fd2c047a079a4f698bb1af9307bff43d",
+        "persona": "bf08f20cb08c4757b444fc14b55733ae",
+        "estado": "no"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 2,
+        "turno": "fd2c047a079a4f698bb1af9307bff43d",
+        "persona": "ccf8d20b8eb44c02b5e04d4952fd0bfe",
+        "estado": "no"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 2,
+        "turno": "fd2c047a079a4f698bb1af9307bff43d",
+        "persona": "d3170f14b3b0480e9939cb3326ddc146",
+        "estado": "si"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 14,
+        "turno": "8ef5d7bdd85f4ad99cb41a186e598e94",
+        "persona": "90f27467baa7485384ed7bf2ee7c7e19",
+        "estado": "no"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 14,
+        "turno": "8ef5d7bdd85f4ad99cb41a186e598e94",
+        "persona": "40544311256c4adf8287507170b21a3b",
+        "estado": "no"
+    },
+    {
+        "anno": 2014,
+        "mes": 9,
+        "dia": 14,
+        "turno": "c1af0626dcca427bb87c2cad90d189e4",
+        "persona": "2c2c29b3741145a4b2907fb5c504df09",
+        "estado": "si"
+    }
+]

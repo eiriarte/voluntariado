@@ -1,0 +1,76 @@
+$niveles: (nadie: $color-nadie, pocos: $color-pocos, alguno: $color-alguno, muchos: $color-muchos);
+
+@mixin fondo-m($color) {
+  background-image: -moz-linear-gradient(top,  $color 0%, $color 50%, transparent 51%, transparent 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color), color-stop(50%,$color), color-stop(51%,transparent), color-stop(100%,transparent));
+  background-image: -webkit-linear-gradient(top,  $color 0%,$color 50%,transparent 51%,transparent 100%);
+  background-image: -o-linear-gradient(top,  $color 0%,$color 50%,transparent 51%,transparent 100%);
+  background-image: -ms-linear-gradient(top,  $color 0%,$color 50%,transparent 51%,transparent 100%);
+  background-image: linear-gradient(to bottom,  $color 0%,$color 50%,transparent 51%,transparent 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$color}', endColorstr='#00000000',GradientType=0 );
+}
+
+.mes-anyo {
+  text-align: center;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.15);
+  h1 {
+    display: block;
+    margin: 0;
+    padding: .5em;
+    font-size: 1rem;
+  }
+  button {
+    @include boton;
+    padding: 0.3rem 0.8rem;
+    margin: .18rem;
+    background-color: $color-btn-negro;
+    color: white;
+  }
+  #anterior {
+    float: left;
+  }
+  #siguiente {
+    float: right;
+  }
+}
+
+.mes {
+  text-align: center;
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 4px $color-sombra;
+  tr:first-child {
+    background: $color-fondo;
+  }
+  td {
+    padding: 4px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    &.seleccionado {
+      font-weight: bold;
+      border: rgba(0, 0, 0, 0.25) solid 1px;
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+  @each $nivel, $color in $niveles {
+    .t-#{$nivel} {
+      background-color: $color;
+    }
+
+    .m-#{$nivel} {
+      @include fondo-m($color)
+    }
+  }
+  .otro-mes {
+    background-color: $color-grisclaro;
+    color: transparentize($color-letra, 0.7);
+  }
+}

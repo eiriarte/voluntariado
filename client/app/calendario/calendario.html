@@ -1,0 +1,43 @@
+<nav class="mes-anyo"><a ng-href="#/{{annoAnterior}}/{{mesAnterior}}" title="Mes anterior" id="anterior">&lt;</a><a ng-href="#/{{annoSiguiente}}/{{mesSiguiente}}" title="Mes siguiente" id="siguiente">&gt;</a><h1 id="fecha">{{ mesAnno }}</h1></nav>
+<table class="mes">
+  <tr> <th>L</th> <th>M</th> <th>X</th> <th>J</th> <th>V</th> <th>S</th> <th>D</th> </tr>
+  <tr ng-repeat="semana in calendario">
+    <td ng-class="semana[0].asistencias"><a ng-href="#{{ getURL(semana[0]) }}" ng-class="{ seleccionado: isSeleccionado(semana[0]) }">{{ semana[0].delMes }}</a></td>
+    <td ng-class="semana[1].asistencias"><a ng-href="#{{ getURL(semana[1]) }}" ng-class="{ seleccionado: isSeleccionado(semana[1]) }">{{ semana[1].delMes }}</a></td>
+    <td ng-class="semana[2].asistencias"><a ng-href="#{{ getURL(semana[2]) }}" ng-class="{ seleccionado: isSeleccionado(semana[2]) }">{{ semana[2].delMes }}</a></td>
+    <td ng-class="semana[3].asistencias"><a ng-href="#{{ getURL(semana[3]) }}" ng-class="{ seleccionado: isSeleccionado(semana[3]) }">{{ semana[3].delMes }}</a></td>
+    <td ng-class="semana[4].asistencias"><a ng-href="#{{ getURL(semana[4]) }}" ng-class="{ seleccionado: isSeleccionado(semana[4]) }">{{ semana[4].delMes }}</a></td>
+    <td ng-class="semana[5].asistencias"><a ng-href="#{{ getURL(semana[5]) }}" ng-class="{ seleccionado: isSeleccionado(semana[5]) }">{{ semana[5].delMes }}</a></td>
+    <td ng-class="semana[6].asistencias"><a ng-href="#{{ getURL(semana[6]) }}" ng-class="{ seleccionado: isSeleccionado(semana[6]) }">{{ semana[6].delMes }}</a></td>
+  </tr>
+</table>
+<section ng-if="!dia" class="asistencias ayuda">Selecciona un día del mes…</section>
+<section ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
+  <header><button class="minimizar" ng-click="toggleMinimizado()">_</button><span class="horario">{{ turno.entrada }} - {{ turno.salida }}</span></header>
+  <table class="lista" ng-hide="minimizado">
+    <tr ng-repeat="asistencia in asistencias" ng-controller="AsistenciaCtrl">
+      <td class="columna nombre">{{ asistencia.persona | nombre }}</td>
+      <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0">{{ asistencia.estado | iconoasiste }}</td>
+    </tr>
+  </table>
+  <button class="nuevo" ng-hide="minimizado">+ Añadir voluntari@</button>
+</section>
+
+<script type="text/ng-template" id="/notificar.html">
+  <menu class="modal-notificar">
+    <header class="cabecera">
+      <h1 class="nombre">{{ asistencia.persona | nombre }}</h1>
+      {{ turno.diaSemana }} {{ turno.diaMesAnno }}, <span id="turno">{{ turno.entrada }} - {{ turno.salida }}</span>
+    </header>
+    <button ng-click="seleccionarOpcion('si')" class="si">Asiste</button>
+    <button ng-click="seleccionarOpcion('no')" class="no">No asiste</button>
+    <div class="desplegable" ng-click="toggleDesplegado()">Otras opciones…
+      <div ng-show="desplegado" class="lista">
+        <div ng-click="seleccionarOpcion('na')" class="boton no-avisa">Falta sin avisar</div>
+        <div ng-click="seleccionarOpcion('Inactivo')" class="boton inactivo">No asiste hasta nuevo aviso</div>
+        <div ng-click="seleccionarOpcion('Baja')" class="boton baja">Baja definitiva</div>
+      </div>
+    </div>
+    <button ng-click="cancelar()" class="cancelar">Cancelar</button>
+  </menu>
+</script>
