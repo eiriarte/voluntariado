@@ -44,7 +44,16 @@ calendarioCtrl = ($scope, $params, $timeout, fechas, asistenciasSrv, turnos) ->
     # Asistencias sincronizadas con el servidor: se pintan los colores en el calendario
     for semana in $scope.calendario
       for dia in semana when dia.asistencias isnt 'otro-mes'
-        dia.asistencias = asistenciasSrv.getNiveles($scope.anno, $scope.mes, dia.delMes)
+        dia.asistencias = asistenciasSrv.getNiveles $scope.anno, $scope.mes, dia.delMes
+    return true
+
+  $scope.$on 'asistencia', (event, delMes) ->
+    # Modificada una asistencia
+    for semana in $scope.calendario
+      for dia in semana when dia.asistencias isnt 'otro-mes'
+        if $scope.mes is dia.fecha.getMonth() + 1 and delMes is dia.delMes
+          dia.asistencias = asistenciasSrv.getNiveles $scope.anno, $scope.mes, delMes
+    return true
 
   # Sincronizar las asistencias con el servidor
   $timeout -> asistenciasSrv.syncAsistencias $scope.anno, $scope.mes

@@ -11,7 +11,7 @@
 factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
     # TODO: nueva incorporación aparece "no confirmada" en fechas anteriores???
     # Service logic
-    asistenciasAPI = $resource('/api/asistencias/:anno/:mes.json/:dia')
+    asistenciasAPI = $resource('/api/asistencias/:_id')
     asistencias = []
     nivelesAsistencia = [ 'nadie', 'pocos', 'alguno', 'alguno', 'muchos']
 
@@ -57,27 +57,44 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
       getAsistencias: (anno, mes, dia, turno) ->
         # Personas con asistencia/ausencia confirmada ese día y turno
         confirmadas = _.where asistencias[anno][mes], { dia: dia, turno: turno }
-        # Sólo necesitamos las propiedades persona y estado
-        confirmadas = _.map confirmadas, (asistencia) ->
-          _.pick asistencia, 'persona', 'estado'
 
         # Todas las personas asignadas a ese turno
         noconfirmadas = personas.getPersonas turno
         # Excluimos a las que tienen alguna confirmación de asistencia/ausencia
         noconfirmadas = _.reject noconfirmadas, (noconfirmada) ->
           return _.some confirmadas, { persona: noconfirmada._id }
-        # Sólo necesitamos las propiedades persona y estado (por defecto, según si está activa o no)
         noconfirmadas = _.map noconfirmadas, (persona) ->
-          return { persona: persona._id, estado: getEstadoPorDefecto(persona.estados) }
+          return new asistenciasAPI {
+            anno: anno
+            mes: mes
+            dia: dia
+            turno: turno
+            persona: persona._id
+            estado: getEstadoPorDefecto(persona.estados)
+          }
 
         # Concatenamos los dos arrays y devolvemos
         return confirmadas.concat noconfirmadas
 
-      setAsistencia: (id, asistencia) ->
-        'ok'
+      # Elimina una notificación de asistencia (falta sin avisar)
+      eliminar: (asistencia) ->
+        asistencia.$delete { _id: asistencia._id }, ->
+          delete asistencia._id
+          asistencia.estado = 'na'
+          # La eliminamos del array
+          _.remove asistencias[asistencia.anno][asistencia.mes], _id: asistencia._id
+          # Notificamos el cambio al calendario
+          $rootScope.$broadcast 'asistencia', asistencia.dia
 
-      nuevaAsistencia: (fecha, voluntario, turno, asistencia) ->
-        'ok'
+      # Inserta o modifica una notificación de asistencia / ausencia
+      guardar: (asistencia, opcion) ->
+        asistencia.estado = opcion
+        nueva = not asistencia.id
+        asistencia.$save (data) ->
+          # Añadir al calendario si es nueva
+          asistencias[data.anno][data.mes].push data if nueva
+          # Notificamos el cambio al calendario
+          $rootScope.$broadcast 'asistencia', data.dia
     }
 
 angular.module('andexApp').

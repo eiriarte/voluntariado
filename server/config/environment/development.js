@@ -5,8 +5,7 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/andex-dev'
+    uri: 'mongodb://localhost/andex-dev',
+    debug: true
   },
-
-  seedDB: true
 };
