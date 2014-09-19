@@ -89,7 +89,7 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
       # Inserta o modifica una notificación de asistencia / ausencia
       guardar: (asistencia, opcion) ->
         asistencia.estado = opcion
-        nueva = not asistencia.id
+        nueva = not asistencia._id
         asistencia.$save (data) ->
           # Añadir al calendario si es nueva
           asistencias[data.anno][data.mes].push data if nueva
