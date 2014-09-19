@@ -62,7 +62,7 @@ angular.module 'andexApp'
         nombre: 'Sábado Mañana',
         dia: 5,
         activo: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        franja: 't',
+        franja: 'm',
         entrada: '11:00',
         salida: '13:00'
       },
@@ -80,7 +80,7 @@ angular.module 'andexApp'
         nombre: 'Domingo Mañana',
         dia: 6,
         activo: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        franja: 't',
+        franja: 'm',
         entrada: '11:00',
         salida: '13:00'
       },
