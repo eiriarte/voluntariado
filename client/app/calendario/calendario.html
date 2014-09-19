@@ -1,3 +1,4 @@
+<!-- CALENDARIO -->
 <nav class="mes-anyo"><a ng-href="#/{{annoAnterior}}/{{mesAnterior}}" title="Mes anterior" id="anterior">&lt;</a><a ng-href="#/{{annoSiguiente}}/{{mesSiguiente}}" title="Mes siguiente" id="siguiente">&gt;</a><h1 id="fecha">{{ mesAnno }}</h1></nav>
 <table class="mes">
   <tr> <th>L</th> <th>M</th> <th>X</th> <th>J</th> <th>V</th> <th>S</th> <th>D</th> </tr>
@@ -11,6 +12,8 @@
     <td ng-class="semana[6].asistencias"><a ng-href="#{{ getURL(semana[6]) }}" ng-class="{ seleccionado: isSeleccionado(semana[6]) }">{{ semana[6].delMes }}</a></td>
   </tr>
 </table>
+
+<!-- LISTA DE ASISTENCIAS -->
 <section ng-if="!dia" class="asistencias ayuda">Selecciona un día del mes…</section>
 <section ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
   <header><button class="minimizar" ng-click="toggleMinimizado()">_</button><span class="horario">{{ turno.entrada }} - {{ turno.salida }}</span></header>
@@ -20,9 +23,10 @@
       <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0">{{ asistencia.estado | iconoasiste }}</td>
     </tr>
   </table>
-  <button class="nuevo" ng-hide="isMinimizado()">+ Añadir voluntari@</button>
+  <button class="nuevo" ng-hide="isMinimizado()" ng-click="nuevoVoluntario()">+ Añadir voluntari@</button>
 </section>
 
+<!-- DIÁLOGO DE NOTIFICACIÓN DE ASISTENCIA/AUSENCIA -->
 <script type="text/ng-template" id="/notificar.html">
   <menu class="modal-notificar">
     <header class="cabecera">
@@ -40,4 +44,24 @@
     </div>
     <button ng-click="cancelar()" class="cancelar">Cancelar</button>
   </menu>
+</script>
+
+<!-- DIÁLOGO DE ALTA DE VOLUNTARIO -->
+<script type="text/ng-template" id="/nuevovoluntario.html">
+  <form class="modal-alta" name="altaForm" novalidate ng-submit="altaForm.$valid && altaVoluntario()">
+    <header class="cabecera">
+      <h1>Alta de voluntari@</h1>
+      <h2>{{ turno.nombre }}</h2>
+    </header>
+    <section class="datos">
+      <!--[if lt IE 10]><label for="alta-nombre">Nombre: </label><![endif]-->
+      <input ng-model="persona.nombre" id="alta-nombre" type="text" placeholder="Nombre" autofocus required>
+      <!--[if lt IE 10]><label for="alta-apellidos">Apellidos: </label><![endif]-->
+      <input ng-model="persona.apellidos" id="alta-apellidos" type="text" placeholder="Apellidos" required>
+    </section>
+    <footer class="pie">
+      <input type="submit" class="aceptar" value="Dar de alta">
+      <input type="button" ng-click="cancelar()" class="cancelar" value="Cancelar">
+    </footer>
+  </form>
 </script>
