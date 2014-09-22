@@ -68,5 +68,10 @@
           <script src="app/turnos/turnos.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
+        <script>
+          var andex_data = {};
+          andex_data.personas = <%- JSON.stringify(personas) %>;
+          //andex_data.turnos = <%= JSON.stringify([]) %>;
+        </script>
 </body>
 </html>

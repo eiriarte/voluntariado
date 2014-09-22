@@ -8,7 +8,7 @@ var AsistenciaSchema = new Schema({
   mes: Number,
   dia: Number,
   turno: String,
-  persona: String,
+  persona: { type: Schema.Types.ObjectId, ref: 'Persona' },
   estado: String
 });
 

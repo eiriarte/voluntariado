@@ -8,7 +8,7 @@
  # Controller of the turnosApp
 ###
 
-asistenciasCtrl = ($scope, $modal, $log, localStorageService, asistenciasSrv) ->
+asistenciasCtrl = ($scope, $modal, $log, localStorageService, asistenciasSrv, personas) ->
   turno = $scope.turno._id
 
   # Listas minimizables
@@ -21,18 +21,18 @@ asistenciasCtrl = ($scope, $modal, $log, localStorageService, asistenciasSrv) ->
     minimizados[turno] = not minimizados[turno]
     localStorageService.set 'minimizados', minimizados
 
-  # Diálogo para notificar ausencias / asistencias
+  # Diálogo para dar de alta a un voluntario nuevo
   $scope.nuevoVoluntario = ->
-    menu = $modal.open {
+    menu = $modal.open
       templateUrl: '/nuevovoluntario.html'
       controller: 'NuevovoluntarioCtrl'
-      size: 'sm',
-      scope: $scope,
-    }
+      size: 'sm'
+      scope: $scope
 
     # Al cerrarse el diálogo…
-    menu.result.then (opcion) ->
-      $log.debug 'Opción elegida: ', opcion
+    menu.result.then (persona) ->
+      $log.debug 'Opción elegida: ', persona.nombre, persona.apellidos, turno
+      personas.altaPersona persona.nombre, persona.apellidos, turno
 
   # Obtener la(s) lista(s) de asistencias cuando estén los datos
   $scope.anno = $scope.$parent.anno
@@ -47,5 +47,6 @@ angular.module('andexApp').controller 'AsistenciasCtrl', [
   '$log',
   'localStorageService',
   'asistenciasSrv',
+  'personas',
   asistenciasCtrl
 ]
