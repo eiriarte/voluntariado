@@ -6,6 +6,7 @@ public
 client/bower_components
 dist
 /server/config/local.env.js
+/server/views/index.html
 *.swp
 __db
 /client/vendor
