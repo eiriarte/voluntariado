@@ -13,7 +13,7 @@ altaCtrl = ($scope, $modalInstance) ->
     $modalInstance.dismiss 'Cancelar'
 
 angular.module('andexApp').controller 'NuevovoluntarioCtrl', [
-  '$scope',
-  '$modalInstance',
+  '$scope'
+  '$modalInstance'
   altaCtrl
 ]

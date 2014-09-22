@@ -11,7 +11,7 @@
 factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
     # TODO: nueva incorporación aparece "no confirmada" en fechas anteriores???
     # Service logic
-    asistenciasAPI = $resource('/api/asistencias/:_id')
+    asistenciasAPI = $resource '/api/asistencias/:_id'
     asistencias = []
     nivelesAsistencia = [ 'nadie', 'pocos', 'alguno', 'alguno', 'muchos']
 
