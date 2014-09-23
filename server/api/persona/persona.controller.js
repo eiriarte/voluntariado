@@ -37,6 +37,23 @@ exports.create = function(req, res) {
   });
 };
 
+// Guarda un nuevo estado de la persona
+exports.nuevoEstado = function(req, res) {
+  var estado = req.body.estado;
+  if (estado !== 'A' && estado !== 'B' && estado !== 'I') {
+    return res.json(400, { codigo: 210, mensaje: 'Estado no válido.' });
+  }
+  Persona.findByIdAndUpdate(req.params.id, { $push: { estados: { estado: estado }}}, function(err, data) {
+    if(err) { return handleError(res, err); }
+    if (data && _.isArray(data.estados) && _.last(data.estados).estado === estado) {
+      res.json(201, _.last(data.estados));
+    } else {
+      if(!data) { return res.send(404); }
+      return res.json(500, { codigo: 211, mensaje: 'Imposible almacenar el estado.' });
+    }
+  });
+};
+
 // Updates an existing persona in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }

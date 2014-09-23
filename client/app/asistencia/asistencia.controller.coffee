@@ -8,7 +8,7 @@
  # Controller of the turnosApp
 ###
 
-asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv) ->
+asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
   # Insertar, modificar o eliminar la asistencia
   guardarNotificacion = (opcion) ->
     asistenciasSrv.guardar($scope.asistencia, opcion) if opcion in ['si', 'no']
@@ -16,29 +16,28 @@ asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv) ->
 
   # Diálogo para notificar ausencias / asistencias
   $scope.modalNotificar = ->
-    menu = $modal.open {
+    menu = $modal.open
       templateUrl: '/notificar.html'
       controller: 'NotificarCtrl'
-      size: 'sm',
-      scope: $scope,
+      size: 'sm'
+      scope: $scope
       resolve: {
         asistencia: -> $scope.asistencia
       }
-    }
 
     # Al cerrarse el diálogo…
     menu.result.then (opcion) ->
-      # Baja, Inactivo
-      # persona = personas.getPersona(id)
-      # persona.nuevoEstado(estado) -> (create)
       $log.debug 'Opción elegida: ' + opcion
       if opcion in ['si', 'no', 'na']
         guardarNotificacion opcion
+      else if opcion in ['A', 'B', 'I']
+        personas.nuevoEstado($scope.asistencia.persona, opcion)
 
 angular.module('andexApp').controller 'AsistenciaCtrl', [
-  '$scope',
-  '$modal',
-  '$log',
-  'asistenciasSrv',
+  '$scope'
+  '$modal'
+  '$log'
+  'asistenciasSrv'
+  'personas'
   asistenciaCtrl
 ]

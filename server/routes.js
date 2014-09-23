@@ -20,7 +20,6 @@ module.exports = function(app) {
   // All other routes should redirect to the index.html
   app.route('/*')
     .get(function(req, res) {
-      //res.sendfile(app.get('appPath') + '/index.html');
       personas.getPersonas(function (err, personas) {
         if(err) { return res.send(500, err); }
         app.locals.personas = personas;

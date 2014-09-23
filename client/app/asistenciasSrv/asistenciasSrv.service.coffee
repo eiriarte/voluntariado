@@ -9,19 +9,20 @@
 ###
 
 factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
-    # TODO: nueva incorporación aparece "no confirmada" en fechas anteriores???
     # Service logic
     asistenciasAPI = $resource '/api/asistencias/:_id'
     asistencias = []
-    nivelesAsistencia = [ 'nadie', 'pocos', 'alguno', 'alguno', 'muchos']
+    nivelesAsistencia = [ 'nadie', 'pocos', 'alguno', 'alguno', 'muchos' ]
 
     getNivel = (asistencias) ->
       nivel = nivelesAsistencia[asistencias]
       nivel ? 'muchos'
 
-    getEstadoPorDefecto = (estados) ->
-      ultimoEstado = _.last(estados.estado)
-      return if ultimoEstado is 'I' then 'no' else 'na'
+    # Devuelve el estado de la asistencia en función del del voluntario ese día
+    getEstadoPorDefecto = (persona, anno, mes, dia) ->
+      estado = personas.getEstado persona, anno, mes, dia
+      # Si esta(ba) inactivo, por defecto es ausencia notificada
+      return if estado is 'I' then 'no' else 'na'
 
     # Public API here
     {
@@ -58,8 +59,8 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
         # Personas con asistencia/ausencia confirmada ese día y turno
         confirmadas = _.where asistencias[anno][mes], { dia: dia, turno: turno }
 
-        # Todas las personas asignadas a ese turno
-        noconfirmadas = personas.getPersonas turno
+        # Todas las personas asignadas a ese turno ese día
+        noconfirmadas = personas.getPersonas turno, anno, mes, dia
         # Excluimos a las que tienen alguna confirmación de asistencia/ausencia
         noconfirmadas = _.reject noconfirmadas, (noconfirmada) ->
           return _.some confirmadas, { persona: noconfirmada._id }
@@ -70,7 +71,7 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
             dia: dia
             turno: turno
             persona: persona._id
-            estado: getEstadoPorDefecto(persona.estados)
+            estado: getEstadoPorDefecto persona, anno, mes, dia
           }
 
         # Concatenamos los dos arrays y devolvemos
