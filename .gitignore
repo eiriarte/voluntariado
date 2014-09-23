@@ -8,7 +8,7 @@ dist
 /server/config/local.env.js
 /server/views/index.html
 *.swp
-__db
-/client/vendor
-
 *.swo
+__db
+__misc
+/client/vendor
