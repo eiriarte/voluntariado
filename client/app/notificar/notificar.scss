@@ -23,6 +23,10 @@
     background-color: $color-btn-rojo;
     color: white;
   }
+  & > .no[disabled], & > .si[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
   & > .desplegable {
     background-color: $color-btn-negro;
     color: white;

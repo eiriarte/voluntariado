@@ -33,8 +33,8 @@
       <h1 class="nombre">{{ asistencia.persona | nombre }}</h1>
       {{ turno.diaSemana }} {{ turno.diaMesAnno }}, <span id="turno">{{ turno.entrada }} - {{ turno.salida }}</span>
     </header>
-    <button ng-click="seleccionarOpcion('si')" class="si">Asiste</button>
-    <button ng-click="seleccionarOpcion('no')" class="no">No asiste</button>
+    <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('si')" class="si">Asiste</button>
+    <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('no')" class="no">No asiste</button>
     <div class="desplegable" ng-click="toggleDesplegado()">Otras opciones…
       <div ng-show="desplegado" class="lista">
         <div ng-click="seleccionarOpcion('na')" class="boton no-avisa">Falta sin avisar</div>

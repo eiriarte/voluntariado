@@ -2,20 +2,7 @@
 
 var _ = require('lodash');
 var Asistencia = require('./asistencia.model');
-
-var esBisiesto = function(yr) {
-  return (yr % 400) ? ((yr % 100) ? ((yr % 4) ? false : true) : false) : true;
-}
-
-// Devuelve el último día del mes (28-31)
-var maxMes = function(mes, anno) {
-  var maxes = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  if (mes !== 2) {
-    return maxes[mes - 1]
-  } else {
-    return esBisiesto(anno) ? 29 : 28;
-  }
-}
+var moment = require('moment');
 
 // Get list of asistencias
 exports.index = function(req, res) {
@@ -48,16 +35,19 @@ exports.save = function(req, res) {
   var anno = +req.body.anno;
   var mes = +req.body.mes;
   var dia = +req.body.dia;
+  var fecha = moment([ anno, mes - 1, dia ]);
   var turno = req.body.turno.trim();
   var persona = req.body.persona.trim();
   var estado = req.body.estado.trim().toLowerCase();
   var query = {}, update = {};
-  if (!anno || anno < 1900 || anno > 2200 || !mes || mes < 1 || mes > 12 || !dia || dia < 1 || dia > maxMes(mes, anno)) {
+  if (!fecha.isValid()) {
     return res.json(400, { codigo: 110, mensaje: 'No se han especificado año, mes y día válidos.'});
   } else if (turno.length === 0 || persona.length === 0) {
     return res.json(400, { codigo: 111, mensaje: 'No se han especificado turno y persona.'});
   } else if (estado !== 'si' && estado !== 'no') {
     return res.json(400, { codigo: 112, mensaje: 'El estado debe ser "si" o "no".'});
+  } else if (fecha.isBefore(moment(), 'day')) {
+    return res.json(400, { codigo: 113, mensaje: 'No se puede cambiar el pasado.'});
   } else {
     query.anno = anno;
     query.mes = mes;

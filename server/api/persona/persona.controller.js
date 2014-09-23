@@ -40,10 +40,14 @@ exports.create = function(req, res) {
 // Guarda un nuevo estado de la persona
 exports.nuevoEstado = function(req, res) {
   var estado = req.body.estado;
+  var datos = { estado: estado };
   if (estado !== 'A' && estado !== 'B' && estado !== 'I') {
     return res.json(400, { codigo: 210, mensaje: 'Estado no válido.' });
   }
-  Persona.findByIdAndUpdate(req.params.id, { $push: { estados: { estado: estado }}}, function(err, data) {
+  if (req.body.fecha) {
+    datos.fecha = new Date(req.body.fecha);
+  }
+  Persona.findByIdAndUpdate(req.params.id, { $push: { estados: datos }}, function(err, data) {
     if(err) { return handleError(res, err); }
     if (data && _.isArray(data.estados) && _.last(data.estados).estado === estado) {
       res.json(201, _.last(data.estados));

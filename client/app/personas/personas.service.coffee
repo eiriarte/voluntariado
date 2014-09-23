@@ -54,11 +54,13 @@ personasSrv = ($rootScope, $resource) ->
           personas.push persona
           $rootScope.$broadcast 'ready'
 
-      # Registra un nuevo estado de la persona (Alta, Baja, Inactivo…)
-      nuevoEstado: (id, estado) ->
+      # Registra un nuevo estado de la persona (Activo, Baja, Inactivo…)
+      nuevoEstado: (id, estado, fecha) ->
         persona = _.find personas, { _id: id }
         if persona?
-          estadosAPI.save { _idPersona: id }, { estado: estado }, (data) ->
+          datos = { estado: estado }
+          datos.fecha = fecha if fecha?
+          estadosAPI.save { _idPersona: id }, datos, (data) ->
             persona.estados.push data
             $rootScope.$broadcast 'ready'
     }

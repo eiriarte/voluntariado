@@ -96,6 +96,13 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
           asistencias[data.anno][data.mes].push data if nueva
           # Notificamos el cambio al calendario
           $rootScope.$broadcast 'asistencia', data.dia
+          # Si se ha notificado asistencia y está Inactivo
+          if opcion is 'si'
+            estado = personas.getEstado asistencia.persona, asistencia.anno, asistencia.mes, asistencia.dia
+            if estado is 'I'
+              # Volver a poner Activo en esa fecha
+              fecha = new Date asistencia.anno, asistencia.mes - 1, asistencia.dia
+              personas.nuevoEstado asistencia.persona, 'A', fecha
     }
 
 angular.module('andexApp').

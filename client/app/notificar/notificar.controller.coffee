@@ -16,6 +16,11 @@ notificarCtrl = ($scope, $modalInstance, fechas, asistencia) ->
     entrada: $scope.$parent.turno.entrada
     salida: $scope.$parent.turno.salida
 
+  # No se podrán comunicar ausencias/asistencias a toro pasado
+  entonces = [ $scope.anno, $scope.mes, $scope.dia ]
+  hoy = new Date()
+  $scope.demasiadoTarde = fechas.esAnterior entonces, hoy
+
   # (des)plegar Otras Opciones
   $scope.desplegado = false
   $scope.toggleDesplegado = -> $scope.desplegado = not $scope.desplegado

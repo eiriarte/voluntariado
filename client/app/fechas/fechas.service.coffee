@@ -76,4 +76,18 @@ angular.module 'andexApp'
       getFechaLegible: (anno, mes, dia) ->
         fecha = moment year: anno, month: mes - 1, day: dia
         fecha.format 'D/MMM/YYYY'
+
+      esAnterior: (fecha1, fecha2) ->
+        if angular.isArray fecha1
+          fecha1[1] = fecha1[1] - 1
+        fecha1 = moment fecha1
+        if fecha2?
+          if angular.isArray fecha2
+            fecha2[1] = fecha2[1] - 1
+          fecha2 = moment fecha2
+        else
+          fecha2 = moment()
+        return fecha1.isBefore fecha2, 'day'
+
+
     }
