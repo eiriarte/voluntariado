@@ -6,10 +6,12 @@
 
 var errors = require('./components/errors');
 var personas = require('./api/persona/persona.controller');
+var turnos = require('./api/turno/turno.controller');
 
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/turnos', require('./api/turno'));
   app.use('/api/personas', require('./api/persona'));
   app.use('/api/asistencias', require('./api/asistencia'));
 
@@ -23,7 +25,11 @@ module.exports = function(app) {
       personas.getPersonas(function (err, personas) {
         if(err) { return res.send(500, err); }
         app.locals.personas = personas;
-        res.render('index');
+        turnos.getTurnos(function (err, turnos) {
+          if(err) { return res.send(500, err); }
+          app.locals.turnos = turnos;
+          res.render('index');
+        });
       });
     });
 };
