@@ -10,3 +10,5 @@ dist
 *.swp
 __db
 /client/vendor
+
+*.swo
