@@ -18,6 +18,8 @@ personasSrv = ($rootScope, $resource) ->
     {
       # Devuelve el estado de la persona ese día
       getEstado: (persona, anno, mes, dia) ->
+        if angular.isString persona
+          persona = _.find personas, { _id: persona }
         ahora = new Date anno, mes - 1, dia
         ultimoEstado = 'B' # Si aún no había entrado, devolvemos "Baja"
         _.forEach persona.estados, (estado) ->

@@ -9,10 +9,14 @@
 ###
 
 asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
+  datos = $scope.asistencia
+  estado = personas.getEstado datos.persona, datos.anno, datos.mes, datos.dia
+  $scope.inactivo = estado is 'I'
+
   # Insertar, modificar o eliminar la asistencia
   guardarNotificacion = (opcion) ->
-    asistenciasSrv.guardar($scope.asistencia, opcion) if opcion in ['si', 'no']
-    asistenciasSrv.eliminar($scope.asistencia) if opcion is 'na' and $scope.asistencia._id
+    asistenciasSrv.guardar(datos, opcion) if opcion in ['si', 'no']
+    asistenciasSrv.eliminar(datos) if opcion is 'na' and datos._id
 
   # Diálogo para notificar ausencias / asistencias
   $scope.modalNotificar = ->
@@ -22,7 +26,7 @@ asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
       size: 'sm'
       scope: $scope
       resolve: {
-        asistencia: -> $scope.asistencia
+        asistencia: -> datos
       }
 
     # Al cerrarse el diálogo…
@@ -31,7 +35,7 @@ asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
       if opcion in ['si', 'no', 'na']
         guardarNotificacion opcion
       else if opcion in ['A', 'B', 'I']
-        personas.nuevoEstado($scope.asistencia.persona, opcion)
+        personas.nuevoEstado(datos.persona, opcion)
 
 angular.module('andexApp').controller 'AsistenciaCtrl', [
   '$scope'
