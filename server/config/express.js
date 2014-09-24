@@ -35,6 +35,8 @@ module.exports = function(app) {
   }
 
   if ('development' === env || 'test' === env) {
+    // Simular latencia de BD de 2000ms en desarrollo
+    app.use('/api', function(req, res, next) { setTimeout(next, 2000); });
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '.tmp'), { index: 'noindex' }));
     app.use(express.static(path.join(config.root, 'client'), { index: 'noindex' }));
