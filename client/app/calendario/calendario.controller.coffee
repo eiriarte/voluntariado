@@ -45,7 +45,7 @@ calendarioCtrl = ($scope, $params, $timeout, fechas, asistenciasSrv, turnos) ->
     for semana in $scope.calendario
       for dia in semana when dia.asistencias isnt 'otro-mes'
         dia.asistencias = asistenciasSrv.getNiveles $scope.anno, $scope.mes, dia.delMes
-    return true
+    $scope.ready = true
 
   $scope.$on 'asistencia', (event, delMes) ->
     # Modificada una asistencia

@@ -55,7 +55,10 @@ personasSrv = ($rootScope, $resource) ->
           $rootScope.$broadcast 'ready'
 
       # Registra un nuevo estado de la persona (Activo, Baja, Inactivo…)
-      nuevoEstado: (id, estado, fecha) ->
+      nuevoEstado: (id, estado, fecha, done) ->
+        if angular.isFunction fecha
+          done = fecha
+          fecha = null
         persona = _.find personas, { _id: id }
         if persona?
           datos = { estado: estado }
@@ -63,6 +66,7 @@ personasSrv = ($rootScope, $resource) ->
           estadosAPI.save { _idPersona: id }, datos, (data) ->
             persona.estados.push data
             $rootScope.$broadcast 'ready'
+            done?()
     }
 
 

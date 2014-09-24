@@ -10,13 +10,22 @@
 
 asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
   datos = $scope.asistencia
-  estado = personas.getEstado datos.persona, datos.anno, datos.mes, datos.dia
-  $scope.inactivo = estado is 'I'
+
+  # ¿Mostrar un indicador de actividad de red?
+  $scope.ajax = false
+
+  # ¿Está la persona inactiva en ANDEX? (no asiste hasta nuevo aviso)
+  $scope.isInactivo = ->
+    'I' is personas.getEstado datos.persona, datos.anno, datos.mes, datos.dia
 
   # Insertar, modificar o eliminar la asistencia
   guardarNotificacion = (opcion) ->
-    asistenciasSrv.guardar(datos, opcion) if opcion in ['si', 'no']
-    asistenciasSrv.eliminar(datos) if opcion is 'na' and datos._id
+    if opcion in ['si', 'no']
+      $scope.ajax = 'ajax'
+      asistenciasSrv.guardar datos, opcion, -> $scope.ajax = false
+    if opcion is 'na' and datos._id
+      $scope.ajax = 'ajax'
+      asistenciasSrv.eliminar datos, -> $scope.ajax = false
 
   # Diálogo para notificar ausencias / asistencias
   $scope.modalNotificar = ->
@@ -35,7 +44,8 @@ asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
       if opcion in ['si', 'no', 'na']
         guardarNotificacion opcion
       else if opcion in ['A', 'B', 'I']
-        personas.nuevoEstado(datos.persona, opcion)
+        $scope.ajax = 'ajax'
+        personas.nuevoEstado datos.persona, opcion, -> $scope.ajax = false
 
 angular.module('andexApp').controller 'AsistenciaCtrl', [
   '$scope'

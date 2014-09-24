@@ -13,17 +13,20 @@
   </tr>
 </table>
 
+<section ng-if="!ready" class="asistencias ayuda">Cargando datos…</section>
+
 <!-- LISTA DE ASISTENCIAS -->
-<section ng-if="!dia" class="asistencias ayuda">Selecciona un día del mes…</section>
+<section ng-if="!dia && ready" class="asistencias ayuda">Selecciona un día del mes…</section>
 <section ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
   <header><button class="minimizar" ng-click="toggleMinimizado()"><i class="fa" ng-class="{ 'fa-minus': !isMinimizado(), 'fa-plus': isMinimizado() }"></i></button><span class="horario">{{turno.nombre}}</span></header>
   <table class="lista" ng-hide="isMinimizado()">
-    <tr ng-repeat="asistencia in asistencias" ng-controller="AsistenciaCtrl" ng-class="{ inactiva: inactivo }" class="fila">
+    <tr ng-repeat="asistencia in asistencias" ng-controller="AsistenciaCtrl" ng-class="{ inactiva: isInactivo() }" class="fila">
       <td class="columna nombre">{{ asistencia.persona | nombre }}</td>
-      <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0" ng-switch="asistencia.estado">
+      <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0" ng-switch="ajax || asistencia.estado">
         <i ng-switch-when="si" class="fa fa-check"></i>
         <i ng-switch-when="no" class="fa fa-close"></i>
         <i ng-switch-when="na" class="fa fa-question"></i>
+        <i ng-switch-when="ajax" class="fa fa-refresh fa-spin"></i>
       </td>
     </tr>
   </table>
@@ -41,7 +44,7 @@
     <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('no')" class="no">No asiste</button>
     <div class="desplegable" ng-click="toggleDesplegado()">Otras opciones…
       <div ng-show="desplegado" class="lista">
-        <div ng-click="seleccionarOpcion('na')" class="boton no-avisa">Falta sin avisar</div>
+        <div ng-click="seleccionarOpcion('na')" class="boton no-avisa">Deshacer notificación</div>
         <div ng-click="seleccionarOpcion('I')" class="boton inactivo">No asiste hasta nuevo aviso</div>
         <div ng-click="seleccionarOpcion('B')" class="boton baja">Baja definitiva</div>
       </div>

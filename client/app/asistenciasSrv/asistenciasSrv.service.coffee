@@ -78,7 +78,7 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
         return confirmadas.concat noconfirmadas
 
       # Elimina una notificación de asistencia (falta sin avisar)
-      eliminar: (asistencia) ->
+      eliminar: (asistencia, done) ->
         asistencia.$delete { _id: asistencia._id }, ->
           delete asistencia._id
           asistencia.estado = 'na'
@@ -86,9 +86,10 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
           _.remove asistencias[asistencia.anno][asistencia.mes], _id: asistencia._id
           # Notificamos el cambio al calendario
           $rootScope.$broadcast 'asistencia', asistencia.dia
+          done()
 
       # Inserta o modifica una notificación de asistencia / ausencia
-      guardar: (asistencia, opcion) ->
+      guardar: (asistencia, opcion, done) ->
         asistencia.estado = opcion
         nueva = not asistencia._id
         asistencia.$save (data) ->
@@ -103,6 +104,7 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
               # Volver a poner Activo en esa fecha
               fecha = new Date asistencia.anno, asistencia.mes - 1, asistencia.dia
               personas.nuevoEstado asistencia.persona, 'A', fecha
+          done()
     }
 
 angular.module('andexApp').
