@@ -1,5 +1,5 @@
 <!-- CALENDARIO -->
-<nav class="mes-anyo clearfix"><a ng-href="#/{{annoAnterior}}/{{mesAnterior}}" class="nav" title="Mes anterior" id="anterior">&lt;</a><a ng-href="#/{{annoSiguiente}}/{{mesSiguiente}}" class="nav" title="Mes siguiente" id="siguiente">&gt;</a><h1 id="fecha">{{ mesAnno }}</h1></nav>
+<nav class="mes-anyo clearfix"><a ng-href="#/{{annoAnterior}}/{{mesAnterior}}" class="nav" title="Mes anterior" id="anterior"><i class="fa fa-chevron-left"></i></a><a ng-href="#/{{annoSiguiente}}/{{mesSiguiente}}" class="nav" title="Mes siguiente" id="siguiente"><i class="fa fa-chevron-right"></i></a><h1 id="fecha">{{ mesAnno }}</h1></nav>
 <table class="mes">
   <tr> <th>L</th> <th>M</th> <th>X</th> <th>J</th> <th>V</th> <th>S</th> <th>D</th> </tr>
   <tr ng-repeat="semana in calendario">
@@ -16,14 +16,18 @@
 <!-- LISTA DE ASISTENCIAS -->
 <section ng-if="!dia" class="asistencias ayuda">Selecciona un día del mes…</section>
 <section ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
-  <header><button class="minimizar" ng-click="toggleMinimizado()">_</button><span class="horario">{{turno.nombre}}</span></header>
+  <header><button class="minimizar" ng-click="toggleMinimizado()"><i class="fa" ng-class="{ 'fa-minus': !isMinimizado(), 'fa-plus': isMinimizado() }"></i></button><span class="horario">{{turno.nombre}}</span></header>
   <table class="lista" ng-hide="isMinimizado()">
     <tr ng-repeat="asistencia in asistencias" ng-controller="AsistenciaCtrl" ng-class="{ inactiva: inactivo }" class="fila">
       <td class="columna nombre">{{ asistencia.persona | nombre }}</td>
-      <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0">{{ asistencia.estado | iconoasiste }}</td>
+      <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0" ng-switch="asistencia.estado">
+        <i ng-switch-when="si" class="fa fa-check"></i>
+        <i ng-switch-when="no" class="fa fa-close"></i>
+        <i ng-switch-when="na" class="fa fa-question"></i>
+      </td>
     </tr>
   </table>
-  <button class="nuevo" ng-hide="isMinimizado()" ng-click="nuevoVoluntario()">+ Añadir voluntari@</button>
+  <button class="nuevo" ng-hide="isMinimizado()" ng-click="nuevoVoluntario()"><i class="fa fa-plus-square-o"></i>&nbsp; Añadir voluntari@</button>
 </section>
 
 <!-- DIÁLOGO DE NOTIFICACIÓN DE ASISTENCIA/AUSENCIA -->
