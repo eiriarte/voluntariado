@@ -18,12 +18,12 @@ $niveles: (nadie: $color-nadie, pocos: $color-pocos, alguno: $color-alguno, much
     display: block;
     margin: 0;
     padding: .5em;
-    font-size: 1rem;
+    font-size: 1.1em;
   }
-  button {
+  .nav {
     @include boton;
-    padding: 0.3rem 0.8rem;
-    margin: .18rem;
+    padding: 0.5em 1em;
+    margin: .35em;
     background-color: $color-btn-negro;
     color: white;
   }
