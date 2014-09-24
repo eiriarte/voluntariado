@@ -183,7 +183,13 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      indexDist: {
+        files: [{
+          dot: true,
+          src: [ '<%= yeoman.dist %>/public/index.html' ]
+        }]
+      }
     },
 
     // Add vendor prefixed styles
@@ -393,6 +399,14 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.client %>',
           dest: '<%= yeoman.client %>/../server/views',
+          src: [ 'index.html' ]
+        }]
+      },
+      indexDist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>/public',
+          dest: '<%= yeoman.dist %>/server/views',
           src: [ 'index.html' ]
         }]
       },
@@ -705,7 +719,9 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'rev',
-    'usemin'
+    'usemin',
+    'copy:indexDist',
+    'clean:indexDist'
   ]);
 
   grunt.registerTask('default', [
