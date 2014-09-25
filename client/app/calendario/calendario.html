@@ -43,7 +43,7 @@
     <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('si')" class="si">Asiste</button>
     <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('no')" class="no">No asiste</button>
     <div class="desplegable" ng-click="toggleDesplegado()">Otras opciones…
-      <div ng-show="desplegado" class="lista">
+      <div ng-show="desplegado" class="lista ng-hide">
         <div ng-click="seleccionarOpcion('na')" class="boton no-avisa">Deshacer notificación</div>
         <div ng-click="seleccionarOpcion('I')" class="boton inactivo">No asiste hasta nuevo aviso</div>
         <div ng-click="seleccionarOpcion('B')" class="boton baja">Baja definitiva</div>

@@ -10,9 +10,8 @@ configFn = ($routeProvider, $locationProvider, localStorageServiceProvider) ->
   localStorageServiceProvider.setPrefix 'andex'
 
 angular.module 'andexApp', [
-  'ngCookies',
   'ngResource',
-  'ngSanitize',
+  'ngAnimate',
   'ngRoute',
   'ui.bootstrap',
   'LocalStorageModule'
