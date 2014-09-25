@@ -34,6 +34,9 @@ asistenciasCtrl = ($scope, $modal, $log, localStorageService, asistenciasSrv, pe
       $log.debug 'Opción elegida: ', persona.nombre, persona.apellidos, turno
       personas.altaPersona persona.nombre, persona.apellidos, turno
 
+  # Orden por Nombre+Apellidos
+  $scope.orden = (asistencia) -> personas.getNombre asistencia.persona
+
   # Obtener la(s) lista(s) de asistencias cuando estén los datos
   $scope.anno = $scope.$parent.anno
   $scope.mes = $scope.$parent.mes
