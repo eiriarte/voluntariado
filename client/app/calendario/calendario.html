@@ -46,10 +46,27 @@
       <div ng-show="desplegado" class="lista ng-hide">
         <div ng-click="seleccionarOpcion('na')" class="boton no-avisa">Deshacer notificación</div>
         <div ng-click="seleccionarOpcion('I')" class="boton inactivo">No asiste hasta nuevo aviso</div>
+        <div ng-click="seleccionarOpcion('T')" class="boton cambio">Cambio de grupo</div>
         <div ng-click="seleccionarOpcion('B')" class="boton baja">Baja definitiva</div>
       </div>
     </div>
     <button ng-click="cancelar()" class="cancelar">Cancelar</button>
+  </menu>
+</script>
+
+<!-- DIÁLOGO DE CAMBIO DE GRUPO -->
+<script type="text/ng-template" id="/cambiargrupo.html">
+  <menu class="modal-cambiogrupo">
+    <header class="cabecera">
+      <h1>Cambio de grupo</h1>
+      <h2>{{ asistencia.persona | nombre }} se cambia al…</h2>
+    </header>
+    <ul class="lista">
+      <li class="turno" role="button" ng-repeat="turno in listaTurnos" ng-class="{ actual: isActual(turno._id) }" ng-click="seleccion(turno._id)">{{ turno.nombre }}</li>
+    </ul>
+    <footer class="pie">
+      <button ng-click="cancelar()" class="cancelar">Cancelar</button>
+    </footer>
   </menu>
 </script>
 

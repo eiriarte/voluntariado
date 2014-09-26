@@ -22,6 +22,9 @@ angular.module 'andexApp'
 
       # Devuelve un array con el/los turno(s) de ese día de la semana [0-6]
       getTurnos: (diaSemana) ->
-        turno for turno in turnos when turno.dia is diaSemana
+        if diaSemana?
+          turno for turno in turnos when turno.dia is diaSemana
+        else
+          turnos
 
     }

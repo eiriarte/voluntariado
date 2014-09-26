@@ -34,6 +34,7 @@ personasSrv = ($rootScope, $resource, fechas) ->
       getTurno: (persona, anno, mes, dia) ->
         if angular.isString persona
           persona = _.find personas, { _id: persona }
+        return _.last(persona.turnos).turno if !anno or !mes or !dia
         eseDia = [ anno, mes, dia ]
         ultimoTurno = false # Si aún no había entrado, devolvemos false
         _.forEach persona.turnos, (turno) ->
