@@ -58,6 +58,27 @@ exports.nuevoEstado = function(req, res) {
   });
 };
 
+// Registra un alta en otro turno
+exports.nuevoTurno = function(req, res) {
+  var turno = req.body.turno;
+  var datos = { turno: turno };
+  if (req.body.alta) {
+    datos.alta = new Date(req.body.alta);
+  }
+  Persona.findByIdAndUpdate(req.params.id, { $push: { turnos: datos }}, function(err, data) {
+    if(err) { return handleError(res, err); }
+    console.log(data);
+    if(!data) { return res.send(404); }
+    res.json(201, _.last(data.turnos));
+    //if (data && _.isArray(data.turnos) && _.last(data.turnos).turno === turno) {
+    //  res.json(201, _.last(data.turnos));
+    //} else {
+    //  if(!data) { return res.send(404); }
+    //  return res.json(500, { codigo: 211, mensaje: 'Imposible almacenar el turno.' });
+    //}
+  });
+};
+
 // Updates an existing persona in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
