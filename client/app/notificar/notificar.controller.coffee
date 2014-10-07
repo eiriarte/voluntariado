@@ -18,7 +18,7 @@ notificarCtrl = ($scope, $modalInstance, fechas, asistencia) ->
 
   # No se podrán comunicar ausencias/asistencias a toro pasado
   entonces = [ $scope.anno, $scope.mes, $scope.dia ]
-  hoy = new Date()
+  hoy = new Date(andex_data.hoy)
   $scope.demasiadoTarde = fechas.esAnterior entonces, hoy
 
   # (des)plegar Otras Opciones

@@ -9,7 +9,7 @@
 ###
 
 calendarioCtrl = ($scope, $params, $timeout, fechas, asistenciasSrv, turnos) ->
-  hoy = new Date()
+  hoy = new Date(andex_data.hoy)
   # Datos para el calendario
   $scope.anno = +($params.anno ? hoy.getFullYear())
   $scope.mes = +($params.mes ? hoy.getMonth() + 1)
