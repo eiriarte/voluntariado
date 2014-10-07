@@ -3,13 +3,13 @@
 <table class="mes">
   <tr> <th>L</th> <th>M</th> <th>X</th> <th>J</th> <th>V</th> <th>S</th> <th>D</th> </tr>
   <tr ng-repeat="semana in calendario">
-    <td ng-class="semana[0].asistencias"><a ng-href="#{{ getURL(semana[0]) }}" ng-class="{ seleccionado: isSeleccionado(semana[0]) }">{{ semana[0].delMes }}</a></td>
-    <td ng-class="semana[1].asistencias"><a ng-href="#{{ getURL(semana[1]) }}" ng-class="{ seleccionado: isSeleccionado(semana[1]) }">{{ semana[1].delMes }}</a></td>
-    <td ng-class="semana[2].asistencias"><a ng-href="#{{ getURL(semana[2]) }}" ng-class="{ seleccionado: isSeleccionado(semana[2]) }">{{ semana[2].delMes }}</a></td>
-    <td ng-class="semana[3].asistencias"><a ng-href="#{{ getURL(semana[3]) }}" ng-class="{ seleccionado: isSeleccionado(semana[3]) }">{{ semana[3].delMes }}</a></td>
-    <td ng-class="semana[4].asistencias"><a ng-href="#{{ getURL(semana[4]) }}" ng-class="{ seleccionado: isSeleccionado(semana[4]) }">{{ semana[4].delMes }}</a></td>
-    <td ng-class="semana[5].asistencias"><a ng-href="#{{ getURL(semana[5]) }}" ng-class="{ seleccionado: isSeleccionado(semana[5]) }">{{ semana[5].delMes }}</a></td>
-    <td ng-class="semana[6].asistencias"><a ng-href="#{{ getURL(semana[6]) }}" ng-class="{ seleccionado: isSeleccionado(semana[6]) }">{{ semana[6].delMes }}</a></td>
+    <td ng-class="semana[0].asistencias"><a ng-href="#{{ getURL(semana[0]) }}" ng-class="{ seleccionado: isSeleccionado(semana[0]), hoy: isHoy(semana[0]) }">{{ semana[0].delMes }}</a></td>
+    <td ng-class="semana[1].asistencias"><a ng-href="#{{ getURL(semana[1]) }}" ng-class="{ seleccionado: isSeleccionado(semana[1]), hoy: isHoy(semana[1]) }">{{ semana[1].delMes }}</a></td>
+    <td ng-class="semana[2].asistencias"><a ng-href="#{{ getURL(semana[2]) }}" ng-class="{ seleccionado: isSeleccionado(semana[2]), hoy: isHoy(semana[2]) }">{{ semana[2].delMes }}</a></td>
+    <td ng-class="semana[3].asistencias"><a ng-href="#{{ getURL(semana[3]) }}" ng-class="{ seleccionado: isSeleccionado(semana[3]), hoy: isHoy(semana[3]) }">{{ semana[3].delMes }}</a></td>
+    <td ng-class="semana[4].asistencias"><a ng-href="#{{ getURL(semana[4]) }}" ng-class="{ seleccionado: isSeleccionado(semana[4]), hoy: isHoy(semana[4]) }">{{ semana[4].delMes }}</a></td>
+    <td ng-class="semana[5].asistencias"><a ng-href="#{{ getURL(semana[5]) }}" ng-class="{ seleccionado: isSeleccionado(semana[5]), hoy: isHoy(semana[5]) }">{{ semana[5].delMes }}</a></td>
+    <td ng-class="semana[6].asistencias"><a ng-href="#{{ getURL(semana[6]) }}" ng-class="{ seleccionado: isSeleccionado(semana[6]), hoy: isHoy(semana[6]) }">{{ semana[6].delMes }}</a></td>
   </tr>
 </table>
 

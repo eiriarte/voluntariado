@@ -51,6 +51,10 @@ $niveles: (nadie: $color-nadie, pocos: $color-pocos, alguno: $color-alguno, much
     display: block;
     text-decoration: none;
     color: inherit;
+    &.hoy {
+      font-weight: bold;
+      color: red;
+    }
     &.seleccionado {
       font-weight: bold;
       border: rgba(0, 0, 0, 0.25) solid 1px;

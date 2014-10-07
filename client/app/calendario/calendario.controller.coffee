@@ -40,6 +40,9 @@ calendarioCtrl = ($scope, $params, $timeout, fechas, asistenciasSrv, turnos) ->
     diaMes = dia.fecha.getDate()
     anno is $scope.anno and mes is $scope.mes and diaMes is $scope.dia
 
+  # Devuelve true si ese día es hoy
+  $scope.isHoy = (dia) -> fechas.esHoy dia.fecha
+
   $scope.$on 'ready', ->
     # Asistencias sincronizadas con el servidor: se pintan los colores en el calendario
     for semana in $scope.calendario
