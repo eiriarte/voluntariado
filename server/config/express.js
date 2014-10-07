@@ -13,6 +13,7 @@ var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
 var path = require('path');
+var express_enforces_ssl = require('express-enforces-ssl');
 var config = require('./environment');
 
 module.exports = function(app) {
@@ -28,6 +29,8 @@ module.exports = function(app) {
   app.use(cookieParser());
 
   if ('production' === env) {
+    app.enable('trust proxy');
+    app.use(express_enforces_ssl()); 
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public'), { index: 'noindex' }));
     app.set('appPath', config.root + '/public');
