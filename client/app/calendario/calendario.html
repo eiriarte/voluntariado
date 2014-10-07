@@ -22,11 +22,8 @@
   <table class="lista" ng-hide="isMinimizado()">
     <tr ng-repeat="asistencia in asistencias | orderBy:orden" ng-controller="AsistenciaCtrl" ng-class="{ inactiva: isInactivo() }" class="fila">
       <td class="columna nombre">{{ asistencia.persona | nombre }}</td>
-      <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0" ng-switch="ajax || asistencia.estado">
-        <i ng-switch-when="si" class="fa fa-check"></i>
-        <i ng-switch-when="no" class="fa fa-close"></i>
-        <i ng-switch-when="na" class="fa fa-question"></i>
-        <i ng-switch-when="ajax" class="fa fa-refresh fa-spin"></i>
+      <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0">
+        <i class="fa" ng-class="indicador()"></i>
       </td>
     </tr>
   </table>

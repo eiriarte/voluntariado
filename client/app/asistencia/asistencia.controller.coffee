@@ -14,6 +14,15 @@ asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
   # ¿Mostrar un indicador de actividad de red?
   $scope.ajax = false
 
+  # Clases font-awesome a usar para cada indicador
+  indicadores =
+    ajax: 'fa-refresh fa-spin'
+    si: 'fa-check'
+    no: 'fa-close'
+    na: 'fa-question'
+
+  $scope.indicador = -> indicadores[$scope.ajax or datos.estado]
+
   # ¿Está la persona inactiva en ANDEX? (no asiste hasta nuevo aviso)
   $scope.isInactivo = ->
     'I' is personas.getEstado datos.persona, datos.anno, datos.mes, datos.dia
