@@ -91,5 +91,5 @@ angular.module 'andexApp'
           fecha2 = moment()
         return fecha1.isBefore fecha2, 'day'
 
-      esHoy: (dia) -> moment(andex_data.hoy).isSame dia, 'day'
+      esHoy: (dia) -> moment(new Date(andex_data.hoy)).isSame dia, 'day'
     }
