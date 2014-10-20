@@ -1,14 +1,7 @@
-$niveles: (nadie: $color-nadie, pocos: $color-pocos, alguno: $color-alguno, muchos: $color-muchos);
+@import "compass/typography/text/replacement";
 
-@mixin fondo-m($color) {
-  background-image: -moz-linear-gradient(top,  $color 0%, $color 50%, transparent 51%, transparent 100%);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color), color-stop(50%,$color), color-stop(51%,transparent), color-stop(100%,transparent));
-  background-image: -webkit-linear-gradient(top,  $color 0%,$color 50%,transparent 51%,transparent 100%);
-  background-image: -o-linear-gradient(top,  $color 0%,$color 50%,transparent 51%,transparent 100%);
-  background-image: -ms-linear-gradient(top,  $color 0%,$color 50%,transparent 51%,transparent 100%);
-  background-image: linear-gradient(to bottom,  $color 0%,$color 50%,transparent 51%,transparent 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$color}', endColorstr='#00000000',GradientType=0 );
-}
+$colores: (nadie: $color-nadie, pocos: $color-pocos, alguno: $color-alguno, muchos: $color-muchos);
+$offsets: (nadie: 0%, pocos: 33.333333%, alguno: 66.666666%, muchos: 100%);
 
 .mes-anyo {
   text-align: center;
@@ -64,13 +57,19 @@ $niveles: (nadie: $color-nadie, pocos: $color-pocos, alguno: $color-alguno, much
       background-color: rgba(0, 0, 0, 0.1);
     }
   }
-  @each $nivel, $color in $niveles {
+  @each $nivel, $color in $colores {
     .t-#{$nivel} {
       background-color: $color;
     }
-
+  }
+  @each $nivel, $offset in $offsets {
     .m-#{$nivel} {
-      @include fondo-m($color)
+      background-image: url(/assets/images/fondos.png);
+      background-image: inline-image('fondos.png');
+      background-size: 400% 100%;
+      background-repeat: no-repeat;
+      background-origin: border-box;
+      background-position-x: $offset;
     }
   }
   .otro-mes {
