@@ -27,7 +27,6 @@
       </td>
     </tr>
   </table>
-  <button class="nuevo" ng-hide="isMinimizado()" ng-click="nuevoVoluntario()"><i class="fa fa-plus-square-o"></i>&nbsp; Añadir voluntari@</button>
 </section>
 
 <!-- DIÁLOGO DE NOTIFICACIÓN DE ASISTENCIA/AUSENCIA -->
@@ -39,50 +38,7 @@
     </header>
     <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('si')" class="si">Asiste</button>
     <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('no')" class="no">No asiste</button>
-    <div class="desplegable" ng-click="toggleDesplegado()">Otras opciones…
-      <div ng-show="desplegado" class="lista ng-hide">
-        <div ng-click="seleccionarOpcion('na')" class="boton no-avisa">Deshacer notificación</div>
-        <div ng-click="seleccionarOpcion('I')" class="boton inactivo">No asiste hasta nuevo aviso</div>
-        <div ng-click="seleccionarOpcion('T')" class="boton cambio">Cambio de grupo</div>
-        <div ng-click="seleccionarOpcion('B')" class="boton baja">Baja definitiva</div>
-      </div>
-    </div>
+    <button ng-click="seleccionarOpcion('na')" class="na">Deshacer notificación</button>
     <button ng-click="cancelar()" class="cancelar">Cancelar</button>
   </menu>
-</script>
-
-<!-- DIÁLOGO DE CAMBIO DE GRUPO -->
-<script type="text/ng-template" id="/cambiargrupo.html">
-  <menu class="modal-cambiogrupo">
-    <header class="cabecera">
-      <h1>Cambio de grupo</h1>
-      <h2>{{ asistencia.persona | nombre }} se cambia al…</h2>
-    </header>
-    <ul class="lista">
-      <li class="turno" role="button" ng-repeat="turno in listaTurnos" ng-class="{ actual: isActual(turno._id) }" ng-click="seleccion(turno._id)">{{ turno.nombre }}</li>
-    </ul>
-    <footer class="pie">
-      <button ng-click="cancelar()" class="cancelar">Cancelar</button>
-    </footer>
-  </menu>
-</script>
-
-<!-- DIÁLOGO DE ALTA DE VOLUNTARIO -->
-<script type="text/ng-template" id="/nuevovoluntario.html">
-  <form class="modal-alta" name="altaForm" novalidate ng-submit="altaForm.$valid && altaVoluntario()">
-    <header class="cabecera">
-      <h1>Alta de voluntari@</h1>
-      <h2>{{ turno.nombre }}</h2>
-    </header>
-    <section class="datos">
-      <!--[if lt IE 10]><label for="alta-nombre">Nombre: </label><![endif]-->
-      <input ng-model="persona.nombre" id="alta-nombre" type="text" placeholder="Nombre" autofocus required>
-      <!--[if lt IE 10]><label for="alta-apellidos">Apellidos: </label><![endif]-->
-      <input ng-model="persona.apellidos" id="alta-apellidos" type="text" placeholder="Apellidos" required>
-    </section>
-    <footer class="pie">
-      <input type="submit" class="aceptar" value="Dar de alta">
-      <input type="button" ng-click="cancelar()" class="cancelar" value="Cancelar">
-    </footer>
-  </form>
 </script>

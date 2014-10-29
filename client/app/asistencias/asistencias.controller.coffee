@@ -21,19 +21,6 @@ asistenciasCtrl = ($scope, $modal, $log, localStorageService, asistenciasSrv, pe
     minimizados[turno] = not minimizados[turno]
     localStorageService.set 'minimizados', minimizados
 
-  # Diálogo para dar de alta a un voluntario nuevo
-  $scope.nuevoVoluntario = ->
-    menu = $modal.open
-      templateUrl: '/nuevovoluntario.html'
-      controller: 'NuevovoluntarioCtrl'
-      size: 'sm'
-      scope: $scope
-
-    # Al cerrarse el diálogo…
-    menu.result.then (persona) ->
-      $log.debug 'Opción elegida: ', persona.nombre, persona.apellidos, turno
-      personas.altaPersona persona.nombre, persona.apellidos, turno
-
   # Orden por Nombre+Apellidos
   $scope.orden = (asistencia) -> personas.getNombre asistencia.persona
 

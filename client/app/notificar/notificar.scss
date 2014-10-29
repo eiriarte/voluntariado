@@ -23,34 +23,13 @@
     background-color: $color-btn-rojo;
     color: white;
   }
-  & > .no[disabled], & > .si[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  & > .desplegable {
+  & > .na {
     background-color: $color-btn-negro;
     color: white;
-    position: relative;
-    .lista {
-      position: absolute;
-      width: 100%;
-      background-color: $color-btn-negro;
-      border-radius: 0 0 5px 5px;
-      -webkit-transition: all linear 0.5s;
-      transition: all linear 0.5s;
-      max-height: 250px;
-      overflow-y: hidden;
-      .boton {
-        margin: .8em;
-        padding: .8em;
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.3);
-      }
-    }
-    .lista.ng-hide {
-      max-height: 0px;
-    }
-
+  }
+  & > .no[disabled], & > .si[disabled], & > .na[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
   & > .cancelar {
     margin-top: 1.5em;

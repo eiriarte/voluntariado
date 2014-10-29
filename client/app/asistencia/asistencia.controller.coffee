@@ -52,24 +52,6 @@ asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
       $log.debug 'Opción elegida: ' + opcion
       if opcion in ['si', 'no', 'na']
         guardarNotificacion opcion
-      else if opcion in ['A', 'B', 'I']
-        $scope.ajax = 'ajax'
-        personas.nuevoEstado datos.persona, opcion, -> $scope.ajax = false
-      else if opcion is 'T'
-        menuCambio = $modal.open
-          templateUrl: '/cambiargrupo.html'
-          controller: 'CambiarGrupoCtrl'
-          size: 'sm'
-          scope: $scope
-          resolve: {
-            asistencia: -> datos
-          }
-
-        menuCambio.result.then (idTurno) ->
-          $log.debug 'Turno elegido en el diálogo: ' + idTurno
-          $scope.ajax = 'ajax'
-          personas.nuevoTurno datos.persona, idTurno, null, -> $scope.ajax = false
-
 
 angular.module('andexApp').controller 'AsistenciaCtrl', [
   '$scope'

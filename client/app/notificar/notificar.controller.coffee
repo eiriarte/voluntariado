@@ -21,10 +21,6 @@ notificarCtrl = ($scope, $modalInstance, fechas, asistencia) ->
   hoy = new Date(andex_data.hoy)
   $scope.demasiadoTarde = fechas.esAnterior entonces, hoy
 
-  # (des)plegar Otras Opciones
-  $scope.desplegado = false
-  $scope.toggleDesplegado = -> $scope.desplegado = not $scope.desplegado
-
   # Click en una de las opciones
   $scope.seleccionarOpcion = (opcion) ->
     $modalInstance.close opcion
