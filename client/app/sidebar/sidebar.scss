@@ -1,0 +1,58 @@
+/* La directiva ngCloak evitará que sea vea el sidebar y el dimmer al cargar la página */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.sidebar {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  position: fixed;
+  height: 100%;
+  z-index: 999;
+  background-color: lightgray; /* TODO: a _params.scss */
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+  /* Atributos a para animación */
+  transition: all ease 0.5s;
+  opacity: 1;
+  a {
+    display: inline-block;
+    padding: 1em 2em 1em 1em;
+    color: $color-letra;
+  }
+  a:hover {
+    color: lighten($color-letra, 40%);
+    text-decoration: none;
+  }
+  .item {
+    list-style-image: none;
+    list-style-type: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    .fa {
+      width: 2em;
+      text-align: center;
+    }
+  }
+  &.ng-hide {
+    left: -180px;
+    opacity: 0.25;
+  }
+}
+
+.dimmer {
+  background: black;
+  opacity: 0.5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  transition: all ease 0.5s;
+  &.ng-hide {
+    opacity: 0;
+  }
+}

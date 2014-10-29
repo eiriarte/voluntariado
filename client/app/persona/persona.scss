@@ -1,0 +1,58 @@
+@import "compass/typography/lists/inline-list";
+@import "compass/typography/text/replacement";
+
+.ficha {
+  background-color: $color-ficha;
+  color: rgba(0, 0, 0, 0.75);
+  padding: 1.5em;
+  .nombre {
+    margin: 0 0 0.5em 0;
+    font-weight: 500;
+    font-size: 1.4em;
+  }
+  p {
+    margin: 0.2em 0;
+    font-size: 0.9em;
+  }
+}
+.detalle {
+  background-color: #fff;
+  padding: 2em 1em;
+  .historial {
+    width: 100%;
+    font-size: 0.9em;
+    .registro {
+      transition: all linear 0.5s;
+      &.ng-enter {
+        opacity: 0;
+      }
+      &.ng-enter.ng-active {
+        opacity: 1;
+      }
+    }
+    .fecha {
+      text-align: right;
+    }
+    .notifs {
+      padding-left: 1em;
+      ul {
+        @include inline-list();
+        .fa.si {
+          color: green;
+          color: rgba(0, 128, 0, 0.75);
+        }
+        .fa.no {
+          color: red;
+          color: rgba(255, 0, 0, 0.75);
+        }
+        .fa.na {
+          color: black;
+          color: rgba(0, 0, 0, 0.75);
+        }
+        .notif {
+          @extend .sr-only;
+        }
+      }
+    }
+  }
+}

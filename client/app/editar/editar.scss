@@ -1,0 +1,34 @@
+.editar {
+  padding: 2em;
+  input, select, label {
+    display: block;
+  }
+  label {
+    font-weight: bold;
+  }
+  input, select {
+    box-sizing: border-box;
+    width: 90%;
+    margin: 0 auto 2em auto;
+    padding: .4em;
+    border: 1px solid rgba(0,0,0,0.25);
+    border-radius: 4px;
+    font-size: 1em;
+    outline: none;
+  }
+  button {
+    @include boton();
+    display: block;
+    padding-left: 2em;
+    padding-right: 2em;
+    margin: 3em auto;
+    font-weight: normal;
+    font-size: 1em;
+    color: inherit;
+    color: rgba(0, 0, 0, 0.7);
+    background-color: $color-toolbar;
+    &[disabled] {
+      opacity: 0.5;
+    }
+  }
+}

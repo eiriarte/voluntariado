@@ -1,0 +1,27 @@
+<nav class="toolbar">
+  <span class="tool izq">
+    <a href="/voluntariado"><i class="fa fa-arrow-left"></i> Grupos</a>
+  </span>
+  <h1 class="titulo">{{turno.nombre}}</h1>
+  <span class="tool dcha">
+    <a href="/voluntariado/{{turno.slug}}/alta"><i class="fa fa-plus"></i> Añadir</a>
+  </span>
+</nav>
+<section class="estadisticas">
+  <h2>Asistencias</h2>
+  <p class="loading" ng-show="cargandoAsistencias"><i class="fa fa-fw fa-refresh fa-spin"></i> Cargando…</p>
+  <ul class="grafica">
+    <li class="turno" ng-repeat="asist in turno.asistencias" ng-style="{ height: (asist.numAsistencias * 6) + 'px'}" ng-class="{ 'primero-del-mes': asist.primeroDelMes }">
+      {{asist.fecha}}: {{asist.numAsistencias}}
+    </li>
+  </ul>
+</section>
+<ul class="personas">
+  <li class="persona" ng-repeat="persona in turno.personas | filter:{estado: verEstados} | orderBy:['nombre', 'apellidos']" ng-class="persona.estado">
+    <a ng-href="/voluntariado/{{turno.slug}}/vol/{{persona._id}}"><i class="fa fa-caret-right pull-right"></i>{{persona.nombre}} {{persona.apellidos}}</a>
+  </li>
+</ul>
+<footer class="filtro">
+  <input id="ver-bajas" type="checkbox" ng-model="verEstados" ng-true-value="" ng-false-value="!B">
+  <label for="ver-bajas">&nbsp; Ver bajas ({{turno.bajas}})</label>
+</footer>

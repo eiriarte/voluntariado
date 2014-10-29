@@ -1,0 +1,19 @@
+<nav class="toolbar">
+  <span class="tool izq">
+    <a ng-href="/voluntariado/{{back}}"><i class="fa fa-arrow-left"></i> Cancelar</a>
+  </span>
+</nav>
+<form name="editar" class="editar" action="" novalidate>
+  <!--[if lt IE 10]><label for="nombre">Nombre: </label><![endif]-->
+  <input id="nombre" name="nombre" type="text" placeholder="Nombre" required ng-model="persona.nombre">
+  <!--[if lt IE 10]><label for="apellidos">Nombre: </label><![endif]-->
+  <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos" required ng-model="persona.apellidos">
+  <!--[if lt IE 10]><label for="grupo">Grupo: </label><![endif]-->
+  <select id="grupo" name="grupo" required ng-model="persona.turno" ng-options="turno._id as turno.nombre for turno in form.turnos">
+    <option value="">Grupo…</option>
+  </select>
+  <!--[if lt IE 10]><label for="estado">Estado: </label><![endif]-->
+  <select id="estado" name="estado" required ng-model="persona.estado" ng-options="estado.id as estado.etiqueta for estado in form.estados">
+  </select>
+  <button class="guardar" ng-disabled="editar.$invalid || editar.$pristine" ng-click="guardar()">{{ form.accion }}</button>
+</form>

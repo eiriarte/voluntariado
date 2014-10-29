@@ -31,7 +31,7 @@ calendarioCtrl = ($scope, $params, $timeout, fechas, asistenciasSrv, turnos) ->
     anno = dia.fecha.getFullYear()
     mes = dia.fecha.getMonth() + 1
     diaMes = dia.fecha.getDate()
-    '/' + anno + '/' + mes + '/' + diaMes
+    '/asistencias/' + anno + '/' + mes + '/' + diaMes
 
   # Devuelve true si ese día es el seleccionado en el calendario
   $scope.isSeleccionado = (dia) ->

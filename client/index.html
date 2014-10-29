@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
-    <title>ANDEX - Voluntariado</title>
+    <title>Voluntariado de ANDEX</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- build:css(client) app/vendor.css -->
@@ -28,7 +28,19 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-  <header class="navbar"><strong>ANDEX</strong> – Asistencias <small>(beta)</small></header>
+    <div ng-cloak ng-controller="SidebarCtrl">
+      <ul ng-show="activa" class="sidebar">
+        <li class="item"><a ng-click="toggleSidebar(false)" href="/"><i class="fa fa-calendar"></i>Asistencias</a></li>
+        <li class="item"><a ng-click="toggleSidebar(false)" href="/voluntariado"><i class="fa fa-users"></i>Voluntariado</a></li>
+        <li class="item"><a ng-click="toggleSidebar(false)" href="/ayuda"><i class="fa fa-info-circle"></i>Ayuda</a></li>
+      </ul>
+      <div ng-show="activa" ng-click="toggleSidebar(false)" class="dimmer"></div>
+      <header class="navbar clearfix">
+        <button ng-click="toggleSidebar(true)" class="sidebar-btn"><i class="fa fa-th-list"></i></button>
+        <h1 class="titulo">Voluntariado de ANDEX</h1>
+      </header>
+    </div>
+
     <div class="mainview" ng-view=""></div>
 
     <!--[if lt IE 9]>
@@ -58,12 +70,17 @@
           <script src="app/asistenciasSrv/asistenciasSrv.js"></script>
           <script src="app/calendario/calendario.js"></script>
           <script src="app/cambiarGrupo/cambiarGrupo.js"></script>
+          <script src="app/editar/editar.js"></script>
           <script src="app/fechas/fechas.js"></script>
           <script src="app/nombre/nombre.js"></script>
           <script src="app/notificar/notificar.js"></script>
           <script src="app/nuevovoluntario/nuevovoluntario.js"></script>
+          <script src="app/persona/persona.js"></script>
           <script src="app/personas/personas.js"></script>
+          <script src="app/sidebar/sidebar.js"></script>
+          <script src="app/turno/turno.js"></script>
           <script src="app/turnos/turnos.js"></script>
+          <script src="app/voluntariado/voluntariado.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
         <script>

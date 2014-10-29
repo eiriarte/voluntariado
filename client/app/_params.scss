@@ -1,6 +1,8 @@
 $ancho-movil: 768px;
 $ancho-tablet: 1024px;
 
+$color-toolbar: #AEC074;
+$color-ficha: #DDE5C3;
 $color-fondo: #f0f0f0;
 $color-sombra: gray;
 $color-gris: gray;
@@ -15,3 +17,31 @@ $color-nadie : #fdd;
 $color-pocos : #dfd;
 $color-alguno : darken($color-pocos, 10%);
 $color-muchos : darken($color-pocos, 20%);
+
+/* Estilo de lista para usar con @extend */
+.lista {
+  background-color: #fff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  list-style: none;
+  margin: 0;
+  padding: 0 2em;
+  .item {
+    list-style-image: none;
+    list-style-type: none;
+    margin: 0;
+    line-height: 1;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Sólo visible para lectores de pantalla (accesibilidad) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0
+}

@@ -3,7 +3,7 @@
 configFn = ($routeProvider, $locationProvider, localStorageServiceProvider) ->
   $routeProvider
   .otherwise
-    redirectTo: '/'
+    redirectTo: '/asistencias'
 
   $locationProvider.html5Mode true
 
@@ -22,3 +22,7 @@ angular.module 'andexApp', [
   'localStorageServiceProvider',
   configFn
 ]
+.value 'estados',
+  'A': 'En activo',
+  'I': 'No asiste hasta nuevo aviso',
+  'B': 'Baja'

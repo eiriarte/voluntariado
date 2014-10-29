@@ -7,9 +7,9 @@
  # # personas
  # Factory in the turnosApp.
 ###
-personasSrv = ($rootScope, $resource, fechas) ->
+personasSrv = ($rootScope, $resource, $log, fechas) ->
     # Service logic
-    personasAPI = $resource '/api/personas/:_id'
+    personasAPI = $resource '/api/personas/:_id', null, update: { method: 'PUT' }
     estadosAPI = $resource '/api/personas/:_idPersona/estados/:_idEstado'
     turnosAPI = $resource '/api/personas/:_idPersona/turnos/:_idAlta'
     personas = _.map andex_data.personas, (persona) -> new personasAPI persona
@@ -21,6 +21,7 @@ personasSrv = ($rootScope, $resource, fechas) ->
       getEstado: (persona, anno, mes, dia) ->
         if angular.isString persona
           persona = _.find personas, { _id: persona }
+        return _.last(persona.estados).estado if !anno or !mes or !dia
         eseDia = [ anno, mes, dia ]
         ultimoEstado = 'B' # Si aún no había entrado, devolvemos "Baja"
         _.forEach persona.estados, (estado) ->
@@ -53,21 +54,63 @@ personasSrv = ($rootScope, $resource, fechas) ->
           suTurno = getTurno persona, anno, mes, dia
           suTurno is turno and suEstado isnt 'B'
 
+      # Devuelve la lista actual de personas del turno, incluyendo bajas
+      getLista: (idTurno) ->
+        # Si no se pasa un idTurno, devolvemos la lista completa
+        return personas if not idTurno?
+        getTurno = @getTurno
+        _.filter personas, (persona) -> getTurno(persona) is idTurno
+
+      getTotalActivos: ->
+        getEstado = @getEstado
+        getTurno = @getTurno
+        totales = {}
+        angular.forEach personas, (persona) ->
+          suTurno = getTurno persona
+          suEstado = getEstado persona
+          totalesTurno = totales[suTurno] ? { total: 0, activos: 0 }
+          totalesTurno.total++ if suEstado isnt 'B'
+          totalesTurno.activos++ if suEstado is 'A'
+          totales[suTurno] = totalesTurno
+        return totales
+
+      # Devuelve la persona con _id = idPersona
+      getPersona: (idPersona) ->
+        _.find personas, { _id: idPersona }
+
       # Devuelve nombre y apellidos de la persona 'id'
       getNombre: (id) ->
         persona = _.find personas, { _id: id }
         return persona.nombre + ' ' + persona.apellidos
 
       # Da de alta una nueva persona en la base de datos
-      altaPersona: (nombre, apellidos, turno) ->
+      altaPersona: (persona, done) ->
         persona = new personasAPI
-          nombre: nombre
-          apellidos: apellidos
-          turnos: [{ turno: turno }]
-          estados: [{ estado: 'A' }]
+          nombre: persona.nombre
+          apellidos: persona.apellidos
+          turnos: [{ turno: persona.turno }]
+          estados: [{ estado: persona.estado }]
         persona.$save ->
           personas.push persona
+          # TODO: innecesario ahora que no se llama desde Asistencias???
           $rootScope.$broadcast 'ready'
+          done null, persona
+        , (httpResponse) ->
+          $log.error 'Error HTTP: ', httpResponse
+          done httpResponse
+
+      # Modifica una persona en la base de datos
+      modificarPersona: (datos, done) ->
+        persona = @getPersona datos._id
+        persona.nombre = datos.nombre
+        persona.apellidos = datos.apellidos
+        persona.turnos.push turno: datos.turno
+        persona.estados.push estado: datos.estado
+        persona.$update { _id: persona._id }, ->
+          done null, persona
+        , (httpResponse) ->
+          $log.error 'Error HTTP: ', httpResponse
+          done httpResponse
 
       # Registra un nuevo estado de la persona (Activo, Baja, Inactivo…)
       nuevoEstado: (id, estado, fecha, done) ->
@@ -100,4 +143,10 @@ personasSrv = ($rootScope, $resource, fechas) ->
 
 
 angular.module 'andexApp'
-  .factory 'personas', ['$rootScope', '$resource', 'fechas', personasSrv]
+  .factory 'personas', [
+    '$rootScope'
+    '$resource'
+    '$log'
+    'fechas'
+    personasSrv
+  ]

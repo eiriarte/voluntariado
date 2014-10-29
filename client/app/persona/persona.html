@@ -1,0 +1,37 @@
+<nav class="toolbar">
+  <span class="tool izq">
+    <a href="/voluntariado/{{persona.turno.slug}}"><i class="fa fa-arrow-left"></i> {{persona.turno.nombre}}</a>
+  </span>
+  <span class="tool dcha">
+    <a href="/voluntariado/{{persona.turno.slug}}/vol/{{persona.ficha.id}}/editar"><i class="fa fa-edit"></i> Editar</a>
+  </span>
+</nav>
+<section class="ficha">
+  <h1 class="nombre">{{ persona.ficha.nombre }}</h1>
+  <p><strong>Grupo: </strong>&nbsp;{{ persona.turno.nombre }}</p>
+  <p><strong>Estado: </strong>&nbsp;{{ persona.ficha.estado }}</p>
+</section>
+<section class="detalle">
+  <p class="loading" ng-show="!persona.historial">
+    <i class="fa fa-fw fa-refresh fa-spin"></i> Cargando asistencias…
+  </p>
+  <table class="historial">
+    <tr class="registro" ng-repeat="mes in persona.historial">
+      <td class="fecha">{{ mes.mesAnno }}</td>
+      <td class="notifs">
+        <ul>
+          <li ng-repeat="notif in mes.notifs">
+            <i class="fa" ng-class="{
+              si: notif.si,
+              no: notif.no,
+              na: notif.na,
+              'fa-check-circle': notif.si,
+              'fa-question-circle': notif.na,
+              'fa-times-circle': notif.no }"></i>
+            <span class="notif">{{ notif.texto }}</span>
+          </li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</section>

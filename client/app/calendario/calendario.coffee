@@ -3,9 +3,9 @@
 angular.module 'andexApp'
 .config ($routeProvider) ->
   $routeProvider
-    .when '/',
+    .when '/asistencias',
       templateUrl: 'app/calendario/calendario.html'
       controller: 'CalendarioCtrl'
-    .when '/:anno/:mes?/:dia?',
+    .when '/asistencias/:anno/:mes?/:dia?',
       templateUrl: 'app/calendario/calendario.html'
       controller: 'CalendarioCtrl'

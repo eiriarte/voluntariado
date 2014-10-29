@@ -8,12 +8,28 @@ var moment = require('moment');
 exports.index = function(req, res) {
   var anno = +req.query.anno;
   var mes = +req.query.mes;
+  var desdeAnno = +req.query.desdeAnno;
+  var desdeMes = +req.query.desdeMes;
   var query = {};
-  if (!anno || anno < 1900 || anno > 2200 || !mes || mes < 1 || mes > 12) {
-    return res.json(400, { codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
+  var or = []
+  if (mes || anno) {
+    if (!anno || anno < 1900 || anno > 2200 || !mes || mes < 1 || mes > 12) {
+      return res.json(400, { codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
+    } else {
+      query.anno = anno;
+      query.mes = mes;
+    }
+  } else if (desdeMes || desdeAnno) {
+    if (!desdeAnno || desdeAnno < 1900 || desdeAnno > 2200 || !desdeMes || desdeMes < 1 || desdeMes > 12) {
+      return res.json(400, { codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
+    } else {
+      // anno > desdeAnno || anno === desdeAnno && mes >= desdeMes
+      or.push({ anno: { $gt: desdeAnno }});
+      or.push({ anno: desdeAnno, mes: { $gte: desdeMes }});
+      query = { $or: or };
+    }
   } else {
-    query.anno = anno;
-    query.mes = mes;
+    return res.json(400, { codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
   }
   Asistencia.find(query, function (err, asistencias) {
     if(err) { return handleError(res, err); }

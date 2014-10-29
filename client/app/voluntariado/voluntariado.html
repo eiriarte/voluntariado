@@ -1,0 +1,16 @@
+<nav class="toolbar">
+  <input class="buscar" type="text" placeholder="Buscar…" ng-model="voluntariado.busqueda" typeahead="persona as persona.nombreCompleto for persona in voluntariado.lista | filter:{ nombreSinTildes: sinTildes($viewValue) } | limitTo: 12" typeahead-editable="false" typeahead-on-select="seleccion($item)">
+  <i class="icono-buscar fa fa-fw fa-search"></i>
+</nav>
+<ul class="grupos">
+  <li class="grupo" ng-repeat="turno in voluntariado.grupos">
+    <a ng-href="/voluntariado/{{turno.slug}}">
+      <div class="nombre">{{turno.nombre}}<i class="fa fa-caret-right pull-right"></i></div>
+      <small class="activos">{{turno.activos}}/{{turno.total}} en activo</small>
+    </a>
+  </li>
+</ul>
+<footer class="total">
+  <span class="label">Total:</span>
+  <span class="dato">{{voluntariado.activos}}/{{voluntariado.total}} en activo</span>
+</footer>
