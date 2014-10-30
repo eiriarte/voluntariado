@@ -38,7 +38,7 @@
     </header>
     <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('si')" class="si">Asiste</button>
     <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('no')" class="no">No asiste</button>
-    <button ng-click="seleccionarOpcion('na')" class="na">Deshacer notificación</button>
+    <button ng-if="asistencia.estado !== 'na'" ng-click="seleccionarOpcion('na')" class="na">Deshacer notificación</button>
     <button ng-click="cancelar()" class="cancelar">Cancelar</button>
   </menu>
 </script>
