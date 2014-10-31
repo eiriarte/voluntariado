@@ -6,7 +6,7 @@ $offsets: (nadie: 0%, pocos: 33.333333%, alguno: 66.666666%, muchos: 100%);
 .mes-anyo {
   text-align: center;
   font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: $color-toolbar;
   h1 {
     display: block;
     margin: 0;
@@ -17,8 +17,10 @@ $offsets: (nadie: 0%, pocos: 33.333333%, alguno: 66.666666%, muchos: 100%);
     @include boton;
     padding: 0.5em 1em;
     margin: .35em;
-    background-color: $color-btn-negro;
-    color: white;
+    color: $color-letra;
+    background: none;
+    border: none;
+    box-shadow: none;
   }
   #anterior {
     float: left;
@@ -34,7 +36,12 @@ $offsets: (nadie: 0%, pocos: 33.333333%, alguno: 66.666666%, muchos: 100%);
   border-collapse: collapse;
   box-shadow: 0 4px 4px $color-sombra;
   tr:first-child {
-    background: $color-fondo;
+    background: $color-toolbar;
+  }
+  th {
+    font-weight: normal;
+    font-size: 0.75em;
+    padding: 0.2em;
   }
   td {
     padding: 4px;

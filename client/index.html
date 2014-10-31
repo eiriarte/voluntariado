@@ -22,22 +22,24 @@
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
-  <body ng-app="andexApp">
+  <body ng-app="andexApp" ng-init="seccion = ''" ng-class="seccion">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
     <div ng-cloak ng-controller="SidebarCtrl">
-      <ul ng-show="activa" class="sidebar">
+      <ul ng-show="activa" class="sidebar" role="dialog" tabindex="0">
         <li class="item"><a ng-click="toggleSidebar(false)" href="/"><i class="fa fa-calendar"></i>Asistencias</a></li>
         <li class="item"><a ng-click="toggleSidebar(false)" href="/voluntariado"><i class="fa fa-users"></i>Voluntariado</a></li>
         <li class="item"><a ng-click="toggleSidebar(false)" href="/ayuda"><i class="fa fa-info-circle"></i>Ayuda</a></li>
       </ul>
       <div ng-show="activa" ng-click="toggleSidebar(false)" class="dimmer"></div>
       <header class="navbar clearfix">
-        <button ng-click="toggleSidebar(true)" class="sidebar-btn"><i class="fa fa-th-list"></i></button>
-        <h1 class="titulo">Voluntariado de ANDEX</h1>
+        <button aria-label="Abrir menú" ng-click="toggleSidebar(true)" class="sidebar-btn">
+          <i class="fa fa-lg fa-bars"></i>
+        </button>
+        <h1 class="titulo">ANDEX</h1>
       </header>
     </div>
 

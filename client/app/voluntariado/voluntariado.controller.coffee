@@ -1,6 +1,7 @@
 'use strict'
 
-voluntariadoCtrl = ($scope, $location, personas, turnos) ->
+voluntariadoCtrl = ($scope, $rootScope, $location, personas, turnos) ->
+  $rootScope.seccion = 'sc-voluntariado'
   totales = personas.getTotalActivos()
   grupos = turnos.getTurnos()
   lista = personas.getLista()
@@ -46,6 +47,7 @@ voluntariadoCtrl = ($scope, $location, personas, turnos) ->
 angular.module 'andexApp'
   .controller 'VoluntariadoCtrl', [
     '$scope'
+    '$rootScope'
     '$location'
     'personas'
     'turnos'

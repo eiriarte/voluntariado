@@ -8,7 +8,8 @@
  # Controller of the turnosApp
 ###
 
-calendarioCtrl = ($scope, $params, $timeout, fechas, asistenciasSrv, turnos) ->
+calendarioCtrl = ($scope, $rootScope, $params, $timeout, fechas, asistenciasSrv, turnos) ->
+  $rootScope.seccion = 'sc-asistencias'
   hoy = new Date(andex_data.hoy)
   # Datos para el calendario
   $scope.anno = +($params.anno ? hoy.getFullYear())
@@ -64,6 +65,7 @@ calendarioCtrl = ($scope, $params, $timeout, fechas, asistenciasSrv, turnos) ->
 angular.module 'andexApp'
   .controller 'CalendarioCtrl', [
     '$scope'
+    '$rootScope'
     '$routeParams'
     '$timeout'
     'fechas'

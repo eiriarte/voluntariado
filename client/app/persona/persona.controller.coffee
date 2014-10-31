@@ -1,6 +1,7 @@
 'use strict'
 
-personaCtrl = ($scope, $params, asistencias, personas, turnos, estados) ->
+personaCtrl = ($scope, $rootScope, $params, asistencias, personas, turnos, estados) ->
+  $rootScope.seccion = 'sc-voluntariado'
   persona = personas.getPersona $params.persona
   turno = _.last(persona.turnos).turno
   turno = turnos.getTurno turno
@@ -26,6 +27,7 @@ personaCtrl = ($scope, $params, asistencias, personas, turnos, estados) ->
 angular.module 'andexApp'
   .controller 'PersonaCtrl', [
     '$scope'
+    '$rootScope'
     '$routeParams'
     'asistenciasSrv'
     'personas'

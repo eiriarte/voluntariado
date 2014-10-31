@@ -1,6 +1,7 @@
 'use strict'
 
-turnoCtrl = ($scope, $params, turnos, personas, fechas, asistencias) ->
+turnoCtrl = ($scope, $rootScope, $params, turnos, personas, fechas, asistencias) ->
+  $rootScope.seccion = 'sc-voluntariado'
   $scope.verEstados = '!B' # Bajas ocultas por defecto
   $scope.cargandoAsistencias = true
 
@@ -26,6 +27,7 @@ turnoCtrl = ($scope, $params, turnos, personas, fechas, asistencias) ->
 angular.module 'andexApp'
   .controller 'TurnoCtrl', [
     '$scope'
+    '$rootScope'
     '$routeParams'
     'turnos'
     'personas'

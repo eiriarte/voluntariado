@@ -1,6 +1,7 @@
 'use strict'
 
-editarCtrl = ($scope, $params, $location, $log, turnos, estados, personas) ->
+editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, personas) ->
+  $rootScope.seccion = 'sc-voluntariado'
   turno = turnos.getTurno $params.turno
   if not turno
     # TODO: mostrar error 404
@@ -71,6 +72,7 @@ editarCtrl = ($scope, $params, $location, $log, turnos, estados, personas) ->
 angular.module 'andexApp'
   .controller 'EditarCtrl', [
     '$scope'
+    '$rootScope'
     '$routeParams'
     '$location'
     '$log'

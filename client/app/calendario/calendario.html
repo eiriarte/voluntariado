@@ -1,5 +1,5 @@
 <!-- CALENDARIO -->
-<nav class="mes-anyo clearfix"><a ng-href="/asistencias/{{annoAnterior}}/{{mesAnterior}}" class="nav" title="Mes anterior" id="anterior"><i class="fa fa-chevron-left"></i></a><a ng-href="/asistencias/{{annoSiguiente}}/{{mesSiguiente}}" class="nav" title="Mes siguiente" id="siguiente"><i class="fa fa-chevron-right"></i></a><h1 id="fecha">{{ mesAnno }}</h1></nav>
+<nav class="mes-anyo clearfix"><a ng-href="/asistencias/{{annoAnterior}}/{{mesAnterior}}" class="nav" title="Mes anterior" id="anterior" role="button"><i class="fa fa-chevron-left"></i></a><a ng-href="/asistencias/{{annoSiguiente}}/{{mesSiguiente}}" class="nav" title="Mes siguiente" id="siguiente" role="button"><i class="fa fa-chevron-right"></i></a><h1 id="fecha">{{ mesAnno }}</h1></nav>
 <table class="mes">
   <tr> <th>L</th> <th>M</th> <th>X</th> <th>J</th> <th>V</th> <th>S</th> <th>D</th> </tr>
   <tr ng-repeat="semana in calendario">
@@ -19,7 +19,7 @@
 <section ng-if="!dia && ready" class="asistencias ayuda">Selecciona un día del mes…</section>
 <section ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
   <header><button class="minimizar" ng-click="toggleMinimizado()"><i class="fa" ng-class="{ 'fa-minus': !isMinimizado(), 'fa-plus': isMinimizado() }"></i></button><span class="horario">{{turno.nombre}}</span></header>
-  <table class="lista" ng-hide="isMinimizado()">
+  <table class="tabla" ng-hide="isMinimizado()">
     <tr ng-repeat="asistencia in asistencias | orderBy:orden" ng-controller="AsistenciaCtrl" ng-class="{ inactiva: isInactivo() }" class="fila">
       <td class="columna nombre">{{ asistencia.persona | nombre }}</td>
       <td class="columna asistencia" ng-class="asistencia.estado" ng-click="modalNotificar()" role="button" tabindex="0">
@@ -31,7 +31,7 @@
 
 <!-- DIÁLOGO DE NOTIFICACIÓN DE ASISTENCIA/AUSENCIA -->
 <script type="text/ng-template" id="/notificar.html">
-  <menu class="modal-notificar">
+  <menu class="modal-notificar" role="dialog" tabindex="0">
     <header class="cabecera">
       <h1 class="nombre">{{ asistencia.persona | nombre }}</h1>
       {{ turno.diaSemana }} {{ turno.diaMesAnno }}, <span id="turno">{{ turno.entrada }} - {{ turno.salida }}</span>
