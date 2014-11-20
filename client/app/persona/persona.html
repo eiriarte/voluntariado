@@ -3,13 +3,29 @@
     <a href="/voluntariado/{{persona.turno.slug}}"><i class="fa fa-arrow-left"></i> {{persona.turno.nombre}}</a>
   </span>
   <span class="tool dcha">
-    <a href="/voluntariado/{{persona.turno.slug}}/vol/{{persona.ficha.id}}/editar"><i class="fa fa-edit"></i> Editar</a>
+    <a href="/voluntariado/{{persona.turno.slug}}/vol/{{persona.ficha.id}}/editar" ng-class="{ invisible: !puedeEditar() }"><i class="fa fa-edit"></i> Editar</a>
   </span>
 </nav>
 <section class="ficha">
   <h1 class="nombre">{{ persona.ficha.nombre }}</h1>
-  <p><strong>Grupo: </strong>&nbsp;{{ persona.turno.nombre }}</p>
-  <p><strong>Estado: </strong>&nbsp;{{ persona.ficha.estado }}</p>
+  <dl>
+    <dt>Grupo:</dt>
+    <dd>{{ persona.turno.nombre }}<span class="coord" ng-if="persona.ficha.coord">(coord.)</span></dd>
+    <dt>Estado:</dt>
+    <dd>{{ persona.ficha.estado }}</dd>
+  </dl>
+  <section class="ident" ng-if="persona.ficha.identificacion && puedeEditar()">
+    <button ng-if="!persona.ficha.identVisible" ng-click="persona.ficha.identVisible = true">
+      Mostrar enlace de registro <i class="fa fa-caret-down"></i>
+    </button>
+    <button ng-if="persona.ficha.identVisible" ng-click="persona.ficha.identVisible = false">
+      Ocultar enlace de registro <i class="fa fa-caret-up"></i>
+    </button>
+    <div ng-if="persona.ficha.identVisible" class="enlace">
+      <p>Copia este enlace único y envíaselo a {{ persona.ficha.nombre }} para que pueda registrarse:</p>
+      <textarea select-on-click readonly>{{ persona.ficha.identBase + persona.ficha.identificacion }}</textarea>
+    </div>
+  </section>
 </section>
 <section class="detalle">
   <p class="loading" ng-show="!persona.historial">

@@ -1,0 +1,30 @@
+<div class="toolbar"><h1 class="titulo">Registro</h1></div>
+<p class="ident-p">¡Hola! Te estás identificando como:</p>
+<div class="ident">
+  <div class="nombre">{{ persona.nombre }}</div>
+  <div class="turno">{{ persona.turno }}</div>
+</div>
+<p class="ident-p">Por favor, elige una de las opciones siguientes para completar tu registro:</p>
+<ul class="lista-login">
+  <li>
+    <span class="num">1</span>
+    <span class="desc">Puedes identificarte mediante tu cuenta de Facebook (¡sin contraseñas!).</span>
+    <button class="facebook" ng-click="loginOauth('facebook')">
+      <i class="fa fa-fw fa-facebook"></i> Usar Facebook
+    </button>
+  </li>
+  <li>
+    <span class="num">2</span>
+    <span class="desc">También puedes identificarte a través de tu cuenta de Google.</span>
+    <button class="google" ng-click="loginOauth('google')">
+      <i class="fa fa-fw fa-google"></i> Usar Google
+    </button>
+  </li>
+  <li>
+    <span class="num">3</span>
+    <span class="desc">O simplemente usando tu correo electrónico.</span>
+    <button class="email" ng-click="loginOauth('persona')">
+      <i class="fa fa-fw fa-envelope"></i> Usar email
+    </button>
+  </li>
+</ul>

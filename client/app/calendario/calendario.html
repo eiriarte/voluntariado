@@ -17,7 +17,8 @@
 
 <!-- LISTA DE ASISTENCIAS -->
 <section ng-if="!dia && ready" class="asistencias ayuda">Selecciona un día del mes…</section>
-<section ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
+<section ng-if="dia && ready && !identificado()">FECHA: X asistencias confirmadas; Y asis x conf.; Z ausen conf.</section>
+<section ng-show="dia && ready && identificado()" ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
   <header><button class="minimizar" ng-click="toggleMinimizado()"><i class="fa" ng-class="{ 'fa-minus': !isMinimizado(), 'fa-plus': isMinimizado() }"></i></button><span class="horario">{{turno.nombre}}</span></header>
   <table class="tabla" ng-hide="isMinimizado()">
     <tr ng-repeat="asistencia in asistencias | orderBy:orden" ng-controller="AsistenciaCtrl" ng-class="{ inactiva: isInactivo() }" class="fila">
@@ -36,9 +37,9 @@
       <h1 class="nombre">{{ asistencia.persona | nombre }}</h1>
       {{ turno.diaSemana }} {{ turno.diaMesAnno }}, <span id="turno">{{ turno.entrada }} - {{ turno.salida }}</span>
     </header>
-    <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('si')" class="si">Asiste</button>
-    <button ng-disabled="demasiadoTarde" ng-click="seleccionarOpcion('no')" class="no">No asiste</button>
-    <button ng-if="asistencia.estado !== 'na'" ng-click="seleccionarOpcion('na')" class="na">Deshacer notificación</button>
+    <button ng-disabled="!puedeNotificar()" ng-click="seleccionarOpcion('si')" class="si">Asiste</button>
+    <button ng-disabled="!puedeNotificar()" ng-click="seleccionarOpcion('no')" class="no">No asiste</button>
+    <button ng-if="puedeDeshacer()" ng-click="seleccionarOpcion('na')" class="na">Deshacer notificación</button>
     <button ng-click="cancelar()" class="cancelar">Cancelar</button>
   </menu>
 </script>

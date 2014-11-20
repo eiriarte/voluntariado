@@ -30,9 +30,36 @@
     <!-- Add your site or application content here -->
     <div ng-cloak ng-controller="SidebarCtrl">
       <ul ng-show="activa" class="sidebar" role="dialog" tabindex="0">
-        <li class="item"><a ng-click="toggleSidebar(false)" href="/"><i class="fa fa-calendar"></i>Asistencias</a></li>
-        <li class="item"><a ng-click="toggleSidebar(false)" href="/voluntariado"><i class="fa fa-users"></i>Voluntariado</a></li>
-        <li class="item"><a ng-click="toggleSidebar(false)" href="/ayuda"><i class="fa fa-info-circle"></i>Ayuda</a></li>
+        <li class="item">
+          <a ng-click="toggleSidebar(false)" href="/">
+            <i class="fa fa-calendar"></i>Asistencias
+          </a>
+        </li>
+        <li class="item" ng-show="esVoluntario() || esSede()">
+          <a ng-click="toggleSidebar(false)" href="/voluntariado">
+            <i class="fa fa-users"></i>Voluntariado
+          </a>
+        </li>
+        <li class="item" ng-show="esSede()">
+          <a ng-click="toggleSidebar(false)" href="/sede">
+            <i class="fa fa-building-o"></i>Sede
+          </a>
+        </li>
+        <li class="item" ng-show="!logado()">
+          <a ng-click="toggleSidebar(false); login()" href="/login">
+            <i class="fa fa-sign-out"></i>Iniciar sesión
+          </a>
+        </li>
+        <!-- <li class="item" ng-show="esAnonimo()">
+          <a ng-click="toggleSidebar(false);" href="/identificacion">
+            <i class="fa fa-key"></i>Identificación
+          </a>
+        </li> -->
+        <li class="item" ng-show="logado()">
+          <a ng-click="toggleSidebar(false); logout()" href="/logout">
+            <i class="fa fa-sign-out"></i>Cerrar sesión
+          </a>
+        </li>
       </ul>
       <div ng-show="activa" ng-click="toggleSidebar(false)" class="dimmer"></div>
       <header class="navbar clearfix">
@@ -67,16 +94,22 @@
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
+          <script src="app/Auth/Auth.js"></script>
           <script src="app/asistencia/asistencia.js"></script>
           <script src="app/asistencias/asistencias.js"></script>
           <script src="app/asistenciasSrv/asistenciasSrv.js"></script>
           <script src="app/calendario/calendario.js"></script>
           <script src="app/editar/editar.js"></script>
           <script src="app/fechas/fechas.js"></script>
+          <script src="app/ident/ident.js"></script>
           <script src="app/nombre/nombre.js"></script>
           <script src="app/notificar/notificar.js"></script>
           <script src="app/persona/persona.js"></script>
           <script src="app/personas/personas.js"></script>
+          <script src="app/sede/sede.js"></script>
+          <script src="app/sedeSrv/sedeSrv.js"></script>
+          <script src="app/sede_edit/sede_edit.js"></script>
+          <script src="app/selectOnClick/selectOnClick.js"></script>
           <script src="app/sidebar/sidebar.js"></script>
           <script src="app/turno/turno.js"></script>
           <script src="app/turnos/turnos.js"></script>
@@ -87,7 +120,9 @@
           var andex_data = {};
           andex_data.personas = <%- JSON.stringify(personas) %>;
           andex_data.turnos = <%- JSON.stringify(turnos) %>;
+          andex_data.sede = <%- JSON.stringify(admins) %>;
           andex_data.hoy = '<%= Date() %>';
+          andex_data.identificacion = <%- JSON.stringify(identificacion) %>;
         </script>
 </body>
 </html>

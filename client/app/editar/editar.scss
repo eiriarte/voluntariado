@@ -31,4 +31,19 @@
       opacity: 0.5;
     }
   }
+  .checkbox {
+    width: 90%;
+    margin: 0 auto 2em auto;
+    padding: 0;
+    font-weight: normal;
+    &.seleccionado {
+      font-weight: bold;
+    }
+    input {
+      display: inline-block;
+      width: auto;
+      margin: 0;
+      padding: 0;
+    }
+  }
 }

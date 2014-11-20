@@ -10,6 +10,7 @@
 
 asistenciasCtrl = ($scope, $modal, $log, localStorageService, asistenciasSrv, personas) ->
   turno = $scope.turno._id
+  $scope.ready = false
 
   # Listas minimizables
   $scope.isMinimizado = ->
@@ -29,6 +30,7 @@ asistenciasCtrl = ($scope, $modal, $log, localStorageService, asistenciasSrv, pe
   $scope.mes = $scope.$parent.mes
   $scope.dia = $scope.$parent.dia
   $scope.$on 'ready', ->
+    $scope.ready = true
     $scope.asistencias = asistenciasSrv.getAsistencias $scope.anno, $scope.mes, $scope.dia, turno
 
 angular.module('andexApp').controller 'AsistenciasCtrl', [

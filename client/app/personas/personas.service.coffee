@@ -88,6 +88,7 @@ personasSrv = ($rootScope, $resource, $log, fechas) ->
         persona = new personasAPI
           nombre: persona.nombre
           apellidos: persona.apellidos
+          coord: persona.coord
           turnos: [{ turno: persona.turno }]
           estados: [{ estado: persona.estado }]
         persona.$save ->
@@ -104,6 +105,7 @@ personasSrv = ($rootScope, $resource, $log, fechas) ->
         persona = @getPersona datos._id
         persona.nombre = datos.nombre
         persona.apellidos = datos.apellidos
+        persona.coord = datos.coord
         persona.turnos.push turno: datos.turno
         persona.estados.push estado: datos.estado
         persona.$update { _id: persona._id }, ->

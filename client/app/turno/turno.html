@@ -4,7 +4,9 @@
   </span>
   <h1 class="titulo">{{turno.nombre}}</h1>
   <span class="tool dcha">
-    <a href="/voluntariado/{{turno.slug}}/alta"><i class="fa fa-plus"></i> Añadir</a>
+    <a href="/voluntariado/{{turno.slug}}/alta" ng-class="{ invisible: !puedeDarAlta() }">
+      <i class="fa fa-plus"></i> Añadir
+    </a>
   </span>
 </nav>
 <section class="estadisticas">

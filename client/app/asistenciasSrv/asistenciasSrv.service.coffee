@@ -125,6 +125,7 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
         susAsistencias = []
         # TODO: ¿y si ha tenido un cambio de grupo?: martes, martes, martes-jueves, jueves, jueves…
         # TODO: ¿y si ese año/mes/día el voluntario aún no estaba de alta???
+        # TODO: Las no-notificaciones ESTANDO INACTIVO deben contar como Faltas Avisadas
         # Primer año/mes/día del turno correspondiente a la persona
         [ anno, mes ] = fechas.getHaceEneMeses num
         dia = fechas.getPrimer turno.dia, anno, mes

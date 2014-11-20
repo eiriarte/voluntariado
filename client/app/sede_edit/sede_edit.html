@@ -1,0 +1,13 @@
+<nav class="toolbar">
+  <span class="tool izq">
+    <a ng-href="/sede"><i class="fa fa-arrow-left"></i> Cancelar</a>
+  </span>
+</nav>
+<form name="editar" class="editar" action="" novalidate>
+  <!--[if lt IE 10]><label for="nombre">Nombre: </label><![endif]-->
+  <input id="nombre" name="nombre" type="text" placeholder="Nombre" required ng-model="persona.nombre">
+  <!--[if lt IE 10]><label for="apellidos">Nombre: </label><![endif]-->
+  <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos" required ng-model="persona.apellidos">
+  <button class="guardar" ng-disabled="editar.$invalid || editar.$pristine" ng-click="guardar()">{{ form.accion }}</button>
+  <!-- TODO: acción para dar de baja -->
+</form>

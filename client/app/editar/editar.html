@@ -15,5 +15,9 @@
   <!--[if lt IE 10]><label for="estado">Estado: </label><![endif]-->
   <select id="estado" name="estado" required ng-model="persona.estado" ng-options="estado.id as estado.etiqueta for estado in form.estados">
   </select>
+  <label class="checkbox" for="coord" ng-class="{ seleccionado: persona.coord }">
+    <input id="coord" name="coord" type="checkbox" ng-model="persona.coord">
+    &nbsp;Coordinador/a
+  </label>
   <button class="guardar" ng-disabled="editar.$invalid || editar.$pristine" ng-click="guardar()">{{ form.accion }}</button>
 </form>

@@ -1,0 +1,53 @@
+.ident, .ident-p, .lista-login {
+  margin: 2em;
+}
+.ident {
+  padding: 2em;
+  border-radius: 8px;
+  text-align: center;
+  background-color: $color-ficha;
+  box-shadow: 2px 2px 5px gray;
+  .nombre {
+    font-size: 1.375em;
+    font-weight: bold;
+  }
+  .turno {
+    margin-top: 1em;
+    font-size: 0.88em;
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+}
+.lista-login {
+  padding: 0;
+  list-style: none;
+  & > li {
+    margin: 0 0 2em 0;
+    padding: 0;
+    .num {
+      font-size: 1.375em;
+      &:after {
+        content: '. ';
+      }
+    }
+    .desc {
+      font-size: 0.9em;
+    }
+    button {
+      @include boton();
+      display: block;
+      margin: 1em auto;
+      padding: 1em;
+      color: white;
+      &.facebook {
+        background-color: $color-facebook;
+      }
+      &.google {
+        background-color: $color-google;
+      }
+      &.email {
+        background-color: $color-email;
+      }
+    }
+  }
+}

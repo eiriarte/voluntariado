@@ -5,12 +5,26 @@ var Persona = require('./persona.model');
 
 // Devuelve todas las personas de la colección 'personas'
 var getPersonas = function(cb) {
-  Persona.find(function(err, personas) {
+  var campos = '';
+  if (true) { // TODO: Si el usuario es coordinador de un grupo o de la sede
+    campos = '+identificacion';
+  }
+  Persona.find({}, campos, function(err, personas) {
     cb(err, personas);
   });
 }
 
 exports.getPersonas = getPersonas;
+
+exports.getIdentificacion = function(codigo, done) {
+  Persona.findOne({ identificacion: codigo }, function (err, persona) {
+    if(err) { return done(err); }
+    if(!persona) { return done({ codigo: 212, mensaje: 'Codigo no válido.' }); }
+    var nombre = persona.nombre + ' ' + persona.apellidos;
+    var turno = _.last(persona.turnos).turno
+    done(null, { nombre: nombre, turno: turno });
+  });
+};
 
 // Get list of personas
 exports.index = function(req, res) {
@@ -29,9 +43,24 @@ exports.show = function(req, res) {
   });
 };
 
+var nuevaIdentificacion = function() {
+  var i, id = "";
+  var chars = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
+
+  for (i = 0; i < 5; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+
+  return id;
+};
+
 // Creates a new persona in the DB.
 exports.create = function(req, res) {
-  Persona.create(req.body, function(err, persona) {
+  var defaults = { estados: [{ estado: 'A' }] };
+  var datos = _.pick(req.body, ['nombre', 'apellidos', 'coord', 'estados', 'turnos']);
+  datos = _.extend(defaults, datos);
+  datos.identificacion = nuevaIdentificacion();
+  Persona.create(datos, function(err, persona) {
     if(err) { return handleError(res, err); }
     return res.json(201, persona);
   });
@@ -91,6 +120,10 @@ exports.update = function(req, res) {
     // Apellidos:
     if (req.body.apellidos) {
       persona.apellidos = '' + req.body.apellidos;
+    }
+    // ¿Coordinador/a?:
+    if (req.body.coord !== undefined) {
+      persona.coord = !!req.body.coord;
     }
     // Turno:
     if (req.body.turnos && _.isArray(req.body.turnos)) {

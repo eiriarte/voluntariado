@@ -9,6 +9,7 @@ editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, per
   $scope.persona =
     nombre: ''
     apellidos: ''
+    coord: false
     turno: turno._id
     estado: 'A'
   if $params.persona
@@ -21,6 +22,7 @@ editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, per
       $scope.persona._id = persona._id
       $scope.persona.nombre = persona.nombre
       $scope.persona.apellidos = persona.apellidos
+      $scope.persona.coord = persona.coord
       $scope.persona.turno = _.last(persona.turnos).turno
       $scope.persona.estado = _.last(persona.estados).estado
     else

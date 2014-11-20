@@ -32,7 +32,7 @@ body {
   &.sc-asistencias {
     background-color: $color-grisclaro;
   }
-  &.sc-voluntariado {
+  &.sc-voluntariado, &.sc-sede, &.sc-ident {
     background-color: white;
   }
 }
@@ -144,8 +144,11 @@ a:hover, a:focus {
 @import 'asistencias/asistencias.scss';
 @import 'calendario/calendario.scss';
 @import 'editar/editar.scss';
+@import 'ident/ident.scss';
 @import 'notificar/notificar.scss';
 @import 'persona/persona.scss';
+@import 'sede/sede.scss';
+@import 'sede_edit/sede_edit.scss';
 @import 'sidebar/sidebar.scss';
 @import 'turno/turno.scss';
 @import 'voluntariado/voluntariado.scss';

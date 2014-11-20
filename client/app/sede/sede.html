@@ -1,0 +1,16 @@
+<nav class="toolbar">
+  <span class="tool izq">
+    <a class="invisible" href=""><i class="fa fa-plus"></i> Añadir</a>
+  </span>
+  <h1 class="titulo">Sede</h1>
+  <span class="tool dcha">
+    <a href="/sede/alta">
+      <i class="fa fa-plus"></i> Añadir
+    </a>
+  </span>
+</nav>
+<ul class="personas">
+  <li class="persona" ng-repeat="persona in sede.personas | orderBy:['nombre', 'apellidos']">
+    <a ng-href="/sede/usr/{{persona._id}}/editar"><i class="fa fa-caret-right pull-right"></i>{{persona.nombre}} {{persona.apellidos}}</a>
+  </li>
+</ul>
