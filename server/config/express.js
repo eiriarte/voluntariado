@@ -15,6 +15,7 @@ var errorHandler = require('errorhandler');
 var path = require('path');
 var express_enforces_ssl = require('express-enforces-ssl');
 var config = require('./environment');
+var passport = require('passport');
 
 module.exports = function(app) {
   var env = app.get('env');
@@ -28,9 +29,10 @@ module.exports = function(app) {
   app.use(methodOverride());
   app.use(cookieParser());
 
+  app.use(passport.initialize());
   if ('production' === env) {
     app.enable('trust proxy');
-    app.use(express_enforces_ssl()); 
+    app.use(express_enforces_ssl());
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public'), { index: 'noindex' }));
     app.set('appPath', config.root + '/public');

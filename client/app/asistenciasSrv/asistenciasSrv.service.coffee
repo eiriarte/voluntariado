@@ -109,7 +109,7 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
         syncAsistenciasDesde fechas[0].anno, fechas[0].mes, ->
           # Tenemos los datos: completar el array
           angular.forEach fechas, (fecha) ->
-            asisten = _.where asistencias[fecha.anno][fecha.mes],
+            asisten = _.where asistencias[fecha.anno]?[fecha.mes],
               dia: fecha.dia
               turno: idTurno
               estado: 'si'
@@ -135,7 +135,7 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
           # Mientras sea un turno anterior a hoy
           while fechas.esAnterior [anno, mes, dia]
             # Buscamos su notificación para ese día
-            asistencia = _.find asistencias[anno][mes],
+            asistencia = _.find asistencias[anno]?[mes],
               dia: dia
               persona: persona._id
               turno: turno._id
