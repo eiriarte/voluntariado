@@ -11,3 +11,15 @@
   <button class="guardar" ng-disabled="editar.$invalid || editar.$pristine" ng-click="guardar()">{{ form.accion }}</button>
   <!-- TODO: acción para dar de baja -->
 </form>
+<section class="ident" ng-if="persona.identificacion">
+  <button ng-if="!persona.identVisible" ng-click="persona.identVisible = true">
+    Mostrar enlace de registro <i class="fa fa-caret-down"></i>
+  </button>
+  <button ng-if="persona.identVisible" ng-click="persona.identVisible = false">
+    Ocultar enlace de registro <i class="fa fa-caret-up"></i>
+  </button>
+  <div ng-if="persona.identVisible" class="enlace">
+    <p>Copia este enlace único y envíaselo a {{ persona.nombre }} {{ persona.apellidos }} para que pueda registrarse:</p>
+    <textarea select-on-click readonly>{{ persona.identBase + persona.identificacion }}</textarea>
+  </div>
+</section>

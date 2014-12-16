@@ -1,11 +1,13 @@
 'use strict'
 
-sedeEditCtrl = ($scope, $rootScope, $params, $location, sede) ->
+sedeEditCtrl = ($scope, $rootScope, $params, $location, sede, url) ->
   $rootScope.seccion = 'sc-sede'
   if $params.persona
     alta = false
     accion = 'Guardar cambios'
     $scope.persona = angular.copy sede.getPersona($params.persona)
+    $scope.persona.identVisible = false
+    $scope.persona.identBase = url '/sede/id/'
   else
     alta = true
     accion = 'Dar de alta'
@@ -35,5 +37,6 @@ angular.module 'andexApp'
     '$routeParams'
     '$location'
     'sedeSrv'
+    'url'
     sedeEditCtrl
   ]

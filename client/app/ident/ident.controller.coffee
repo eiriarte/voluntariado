@@ -7,11 +7,18 @@ identCtrl = ($scope, $rootScope, $window, turnos, BrowserID) ->
 
   $rootScope.seccion = 'sc-ident'
   $scope.persona = andex_data.identificacion
-  turno = turnos.getTurno $scope.persona.turno
-  $scope.persona.turno = turno.nombre
+  if $scope.persona.turno?
+    turno = turnos.getTurno $scope.persona.turno
+    $scope.persona.turno = turno.nombre
+  else
+    $scope.persona.turno = '(personal de la sede)'
+
   $scope.loginOauth = (provider) ->
-    # TODO: pantalla equivalente para sede (¿reutilizar?)
-    $window.location.href = '/auth/' + provider + '?vid=' + $scope.persona.vid
+    if $scope.persona.vid?
+      $window.location.href = '/auth/' + provider + '?vid=' + $scope.persona.vid
+    else
+      $window.location.href = '/auth/' + provider + '?sid=' + $scope.persona.sid
+
   $scope.loginBrowserID = ->
     BrowserID.request()
 

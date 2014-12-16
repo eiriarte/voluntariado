@@ -23,6 +23,15 @@ var getAdmins = function(user, cb) {
 
 exports.getAdmins = getAdmins;
 
+exports.getIdentificacion = function(codigo, done) {
+  Admin.findOne({ identificacion: codigo }, function (err, admin) {
+    if(err) { return done(err); }
+    if(!admin) { return done({ codigo: 312, mensaje: 'Codigo no válido.' }); }
+    var nombre = admin.nombre + ' ' + admin.apellidos;
+    done(null, { nombre: nombre });
+  });
+};
+
 // Get list of admins
 exports.index = function(req, res) {
   var campos = '';

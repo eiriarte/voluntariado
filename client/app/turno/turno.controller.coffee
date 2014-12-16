@@ -23,7 +23,7 @@ turnoCtrl = ($scope, $rootScope, $params, Auth, turnos, personas, fechas, asiste
     mismoTurno = $scope.turno._id is Auth.getIdTurno()
     coordDelTurno = mismoTurno and Auth.esCoordinador()
     # Puede, si es coordinador de ese turno, o es usuario de la sede
-    Auth.sede? or coordDelTurno
+    Auth.esSede() or coordDelTurno
 
   # Obtenemos el array de fechas, sin asistencias
   $scope.turno.asistencias = fechas.getUltimosMeses 2, $scope.turno.dia

@@ -1,6 +1,6 @@
 'use strict'
 
-personaCtrl = ($scope, $rootScope, $params, $location, Auth, asistencias, personas, turnos, estados) ->
+personaCtrl = ($scope, $rootScope, $params, $location, Auth, asistencias, personas, turnos, estados, url) ->
   $rootScope.seccion = 'sc-voluntariado'
   persona = personas.getPersona $params.persona
   turno = _.last(persona.turnos).turno
@@ -12,13 +12,6 @@ personaCtrl = ($scope, $rootScope, $params, $location, Auth, asistencias, person
   # Estado actual de la persona
   estado = _.last(persona.estados).estado
 
-  # Devuelve la URL base de la URL de registro (sin el código)
-  getIdentBase = ->
-    url = $location.protocol() + '://' + $location.host()
-    port = $location.port()
-    url += ':' + port if port isnt '' and port isnt 80
-    url += '/id/'
-
   $scope.persona =
     turno:
       slug: turno.slug
@@ -29,7 +22,7 @@ personaCtrl = ($scope, $rootScope, $params, $location, Auth, asistencias, person
       estado: estados[estado]
       coord: persona.coord
       identificacion: persona.identificacion
-      identBase: getIdentBase()
+      identBase: url '/id/'
       identVisible: false
 
   # ¿Puede el usuario actual editar la ficha de persona?
@@ -54,5 +47,6 @@ angular.module 'andexApp'
     'personas'
     'turnos'
     'estados'
+    'url'
     personaCtrl
   ]

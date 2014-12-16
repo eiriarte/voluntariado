@@ -43,6 +43,23 @@ module.exports = function(app) {
     });
   });
 
+  // Obtiene los datos de la persona que se está identificando (registro)
+  app.route('/sede/id/:codigo').get(function(req, res, next) {
+    admins.getIdentificacion(req.params.codigo, function(err, data) {
+      if (err) {
+        if (312 === err.codigo) {
+          app.locals.identificacion = 404;
+        } else {
+          return res.send(500, err);
+        }
+      } else {
+        app.locals.identificacion = data;
+        app.locals.identificacion.sid = req.params.codigo;
+      }
+      next('route');
+    });
+  });
+
   // All other routes should redirect to the index.html
   app.route('/*').get(auth.getUser(true), function(req, res) {
     console.log('USER: ', req.user);
