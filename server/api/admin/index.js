@@ -2,14 +2,14 @@
 
 var express = require('express');
 var controller = require('./admin.controller');
+var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-router.get('/', controller.index);
-router.get('/:id', controller.show);
-router.post('/', controller.create);
-router.put('/:id', controller.update);
-router.patch('/:id', controller.update);
-router.delete('/:id', controller.destroy);
+router.get('/', auth.getUser(), controller.index);
+//router.get('/:id', controller.show); // No implementado
+router.post('/', auth.getUser(), controller.create);
+router.put('/:id', auth.getUser(), controller.update);
+//router.delete('/:id', controller.destroy); // No implementado
 
 module.exports = router;

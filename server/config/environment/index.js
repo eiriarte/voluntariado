@@ -23,7 +23,7 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'andex-secret'
+    session: process.env.SESSION_SECRET || 'andex-secret'
   },
 
   // List of user roles
@@ -49,6 +49,10 @@ var all = {
     clientID:     process.env.GOOGLE_ID || 'id',
     clientSecret: process.env.GOOGLE_SECRET || 'secret',
     callbackURL:  (process.env.DOMAIN || '') + '/auth/google/callback'
+  },
+
+  browserid: {
+    audience: process.env.DOMAIN || 'https://andex.herokuapp.com'
   }
 };
 

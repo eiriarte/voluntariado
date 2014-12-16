@@ -1,35 +1,14 @@
 'use strict'
 
-angular.module 'andexApp'
-.factory 'Auth', ($location, $rootScope, $http, User, $cookieStore, $q) ->
-  currentUser = if $cookieStore.get 'token' then User.get() else {}
-
-  ###
-  Authenticate user and save token
-
-  @param  {Object}   user     - login info
-  @param  {Function} callback - optional
-  @return {Promise}
-  ###
-  login: (user, callback) ->
-    deferred = $q.defer()
-    $http.post '/auth/local',
-      email: user.email
-      password: user.password
-
-    .success (data) ->
-      $cookieStore.put 'token', data.token
-      currentUser = User.get()
-      deferred.resolve data
-      callback?()
-
-    .error (err) =>
-      @logout()
-      deferred.reject err
-      callback? err
-
-    deferred.promise
-
+authSrv = (User, $log, $window, $timeout, $cookieStore, personas, turnos, sedeSrv) ->
+  # TODO: usuario sede no puede dar altas de voluntarios!!!
+  #currentUser = _id: '5451f9f4f7d1a38379752313', sede: '545a03c523e5be3b15c7a29b', persona: undefined #'5423e4d2eb6b682ad0996d90'
+  if $cookieStore.get 'token'
+    $log.debug 'Token presente: obteniendo usuario'
+    currentUser = User.get()
+  else
+    $log.debug 'Token no presente: sesión anónima'
+    currentUser = {}
 
   ###
   Delete access token and user info
@@ -37,54 +16,10 @@ angular.module 'andexApp'
   @param  {Function}
   ###
   logout: ->
+    $log.debug 'Eliminando token de autenticación…'
     $cookieStore.remove 'token'
     currentUser = {}
-    return
-
-
-  ###
-  Create a new user
-
-  @param  {Object}   user     - user info
-  @param  {Function} callback - optional
-  @return {Promise}
-  ###
-  createUser: (user, callback) ->
-    User.save user,
-      (data) ->
-        $cookieStore.put 'token', data.token
-        currentUser = User.get()
-        callback? user
-
-      , (err) =>
-        @logout()
-        callback? err
-
-    .$promise
-
-
-  ###
-  Change password
-
-  @param  {String}   oldPassword
-  @param  {String}   newPassword
-  @param  {Function} callback    - optional
-  @return {Promise}
-  ###
-  changePassword: (oldPassword, newPassword, callback) ->
-    User.changePassword
-      id: currentUser._id
-    ,
-      oldPassword: oldPassword
-      newPassword: newPassword
-
-    , (user) ->
-      callback? user
-
-    , (err) ->
-      callback? err
-
-    .$promise
+    $timeout -> $window.location.href = '/'
 
 
   ###
@@ -102,7 +37,7 @@ angular.module 'andexApp'
   @return {Boolean}
   ###
   isLoggedIn: ->
-    currentUser.hasOwnProperty 'role'
+    currentUser.hasOwnProperty '_id'
 
 
   ###
@@ -118,15 +53,94 @@ angular.module 'andexApp'
         return
 
     else
-      callback? currentUser.hasOwnProperty 'role'
+      callback? currentUser.hasOwnProperty '_id'
+
 
   ###
-  Check if a user is an admin
+  Devuelve el ID de voluntario
 
   @return {Boolean}
   ###
-  isAdmin: ->
-    currentUser.role is 'admin'
+  persona: ->
+    currentUser.persona
+
+
+  ###
+  Devuelve el nombre del voluntario o persona de la sede
+  ###
+  nombre: ->
+    if currentUser.persona?
+      personas.getPersona(currentUser.persona).nombre
+    else if currentUser.sede?
+      sedeSrv.getPersona(currentUser.sede).nombre
+    else
+      ''
+
+
+  ###
+  Devuelve el nombre del turno de la persona
+  ###
+  turno: ->
+    if currentUser.persona?
+      turnos.getTurno personas.getTurno(currentUser.persona)
+    else
+      ''
+
+
+  ###
+  Comprueba si es un usuario aún no identificado
+
+  @return {Boolean}
+  ###
+  esVoluntario: ->
+    currentUser._id and currentUser.persona?
+
+
+  ###
+  Comprueba si es un usuario aún no identificado
+
+  @return {Boolean}
+  ###
+  # TODO: no sirve, eliminar
+  esAnonimo: ->
+    currentUser._id and not currentUser.persona? and not currentUser.sede?
+
+
+  ###
+  Comprueba si es un usuario identificado
+
+  @return {Boolean}
+  ###
+  # TODO: no sirve, eliminar
+  identificado: ->
+    not @esAnonimo
+
+
+  ###
+  Comprueba si es un usuario de la sede
+
+  @return {Boolean}
+  ###
+  esSede: ->
+    currentUser._id? and currentUser.sede?
+
+
+  ###
+  Comprueba si es un voluntario coordinador/a
+
+  @return {Boolean}
+  ###
+  esCoordinador: ->
+    currentUser.persona? and personas.getPersona(currentUser.persona).coord
+
+
+  ###
+  Devuelve el ID del turno del usuario
+
+  @return {String}
+  ###
+  getIdTurno: ->
+    currentUser.persona? and _.last(personas.getPersona(currentUser.persona).turnos).turno
 
 
   ###
@@ -134,3 +148,18 @@ angular.module 'andexApp'
   ###
   getToken: ->
     $cookieStore.get 'token'
+
+
+angular
+  .module 'andexApp'
+  .factory 'Auth', [
+    'User'
+    '$log'
+    '$window'
+    '$timeout'
+    '$cookieStore'
+    'personas'
+    'turnos'
+    'sedeSrv'
+    authSrv
+  ]

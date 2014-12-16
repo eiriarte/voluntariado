@@ -8,8 +8,7 @@
  # Controller of the turnosApp
 ###
 
-notificarCtrl = ($scope, $modalInstance, auth, fechas, asistencia) ->
-  usuarioActual = auth.getUsuarioActual()
+notificarCtrl = ($scope, $modalInstance, Auth, fechas, asistencia) ->
   $scope.asistencia = asistencia
   $scope.turno =
     diaMesAnno: fechas.getFechaLegible $scope.$parent.anno, $scope.$parent.mes, $scope.dia
@@ -23,20 +22,21 @@ notificarCtrl = ($scope, $modalInstance, auth, fechas, asistencia) ->
 
   # ¿Puede el usuario actual notificar esta ausencia/asistencia?
   $scope.puedeNotificar = ->
-    mismoTurno = $scope.asistencia.turno is usuarioActual.getIdTurno()
+    mismoTurno = $scope.asistencia.turno is Auth.getIdTurno()
+    # TODO: ¿Permitir cambios retroactivos?
     demasiadoTarde = fechas.esAnterior entonces, hoy
     # Puede, si es del mismo turno, y no es "retroactivamente", o si es de la sede
-    (mismoTurno or usuarioActual.esSede()) and not demasiadoTarde
+    (mismoTurno or Auth.esSede()) and not demasiadoTarde
 
   # ¿Puede el usuario actual eliminar esta notificación?
   $scope.puedeDeshacer = ->
     idPersona = $scope.asistencia.persona
-    mismoTurno = $scope.asistencia.turno is usuarioActual.getIdTurno()
-    tienePermiso = mismoTurno and usuarioActual.esCoordinador()
-    tienePermiso = tienePermiso or usuarioActual.persona is idPersona
+    mismoTurno = $scope.asistencia.turno is Auth.getIdTurno()
+    tienePermiso = mismoTurno and Auth.esCoordinador()
+    tienePermiso = tienePermiso or Auth.persona() is idPersona
     # Puede, si es propia, si es un coordinador del turno,
     # o es de la sede, y hay algo que eliminar
-    (usuarioActual.esSede() or tienePermiso) and $scope.asistencia.estado isnt 'na'
+    (Auth.esSede() or tienePermiso) and $scope.asistencia.estado isnt 'na'
 
   # Click en una de las opciones
   $scope.seleccionarOpcion = (opcion) ->
@@ -49,7 +49,7 @@ notificarCtrl = ($scope, $modalInstance, auth, fechas, asistencia) ->
 angular.module('andexApp').controller 'NotificarCtrl', [
   '$scope'
   '$modalInstance'
-  'auth'
+  'Auth'
   'fechas'
   'asistencia'
   notificarCtrl

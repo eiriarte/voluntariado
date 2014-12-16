@@ -17,8 +17,8 @@
 
 <!-- LISTA DE ASISTENCIAS -->
 <section ng-if="!dia && ready" class="asistencias ayuda">Selecciona un día del mes…</section>
-<section ng-if="dia && ready && !identificado()">FECHA: X asistencias confirmadas; Y asis x conf.; Z ausen conf.</section>
-<section ng-show="dia && ready && identificado()" ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
+<section ng-if="dia && ready && esAnonimo">FECHA: X asistencias confirmadas; Y asis x conf.; Z ausen conf.</section>
+<section ng-show="dia && ready && !esAnonimo" ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
   <header><button class="minimizar" ng-click="toggleMinimizado()"><i class="fa" ng-class="{ 'fa-minus': !isMinimizado(), 'fa-plus': isMinimizado() }"></i></button><span class="horario">{{turno.nombre}}</span></header>
   <table class="tabla" ng-hide="isMinimizado()">
     <tr ng-repeat="asistencia in asistencias | orderBy:orden" ng-controller="AsistenciaCtrl" ng-class="{ inactiva: isInactivo() }" class="fila">

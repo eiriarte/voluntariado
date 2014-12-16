@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Asistencia = require('./asistencia.model');
 var moment = require('moment');
+var auth = require('../../auth/auth.service');
 
 // Get list of asistencias
 exports.index = function(req, res) {
@@ -56,6 +57,11 @@ exports.save = function(req, res) {
   var persona = req.body.persona.trim();
   var estado = req.body.estado.trim().toLowerCase();
   var query = {}, update = {};
+  if (!auth.turno(req.user, turno)) {
+    return res.json(401, { codigo: 114, mensaje: 'No tienes permiso para modificar esta asistencia.'});
+  } else {
+    console.log('Usuario del turno o sede validado correctamente');
+  }
   if (!fecha.isValid()) {
     return res.json(400, { codigo: 110, mensaje: 'No se han especificado año, mes y día válidos.'});
   } else if (turno.length === 0 || persona.length === 0) {
@@ -84,6 +90,12 @@ exports.destroy = function(req, res) {
   Asistencia.findById(req.params.id, function (err, asistencia) {
     if(err) { return handleError(res, err); }
     if(!asistencia) { return res.send(404); }
+
+    if (asistencia.persona.toString() !== req.user.persona &&
+        !auth.coord(asistencia.turno.toString())) {
+      return res.json(401, { codigo: 131, mensaje: 'No tienes permiso para borrar esta asistencia.'});
+    }
+
     asistencia.remove(function(err) {
       if(err) { return handleError(res, err); }
       return res.send(204);

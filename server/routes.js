@@ -4,11 +4,12 @@
 
 'use strict';
 
+var async = require('async');
 var errors = require('./components/errors');
 var personas = require('./api/persona/persona.controller');
 var turnos = require('./api/turno/turno.controller');
 var admins = require('./api/admin/admin.controller');
-var async = require('async');
+var auth = require('./auth/auth.service');
 
 module.exports = function(app) {
 
@@ -20,7 +21,7 @@ module.exports = function(app) {
   app.use('/api/users', require('./api/user'));
 
   app.use('/auth', require('./auth'));
-  
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);
@@ -36,16 +37,17 @@ module.exports = function(app) {
         }
       } else {
         app.locals.identificacion = data;
-        app.locals.identificacion.codigo = req.params.codigo;
+        app.locals.identificacion.vid = req.params.codigo;
       }
       next('route');
     });
   });
 
   // All other routes should redirect to the index.html
-  app.route('/*').get(function(req, res) {
+  app.route('/*').get(auth.getUser(true), function(req, res) {
+    console.log('USER: ', req.user);
     var getPersonas = function(done) {
-      personas.getPersonas(function (err, personas) {
+      personas.getPersonas(req.user, function (err, personas) {
         if(err) { return done(err); }
         app.locals.personas = personas;
         done(null);
@@ -61,7 +63,7 @@ module.exports = function(app) {
     };
 
     var getAdmins = function(done) {
-      admins.getAdmins(function (err, admins) {
+      admins.getAdmins(req.user, function (err, admins) {
         if(err) { return done(err); }
         app.locals.admins = admins;
         done(null);

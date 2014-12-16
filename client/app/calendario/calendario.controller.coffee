@@ -8,7 +8,7 @@
  # Controller of the turnosApp
 ###
 
-calendarioCtrl = ($scope, $rootScope, $params, $timeout, fechas, asistenciasSrv, turnos, auth) ->
+calendarioCtrl = ($scope, $rootScope, $params, $timeout, fechas, asistenciasSrv, turnos, Auth) ->
   $rootScope.seccion = 'sc-asistencias'
   hoy = new Date(andex_data.hoy)
   # Datos para el calendario
@@ -23,7 +23,7 @@ calendarioCtrl = ($scope, $rootScope, $params, $timeout, fechas, asistenciasSrv,
   $scope.calendario = fechas.getCalendario $scope.anno, $scope.mes
 
   # Autenticación
-  $scope.identificado = auth.identificado
+  $scope.esAnonimo = not Auth.isLoggedIn()
 
   # Datos para la lista de turnos
   if $scope.dia
@@ -74,6 +74,6 @@ angular.module 'andexApp'
     'fechas'
     'asistenciasSrv'
     'turnos'
-    'auth'
+    'Auth'
     calendarioCtrl
   ]

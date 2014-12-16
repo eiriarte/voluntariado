@@ -1,11 +1,22 @@
 'use strict';
 
 var _ = require('lodash');
+var utils = require('../../components/utils');
 var Admin = require('./admin.model');
 
 // Devuelve la lista completa de admins
-var getAdmins = function(cb) {
-  Admin.find(function (err, admins) {
+var getAdmins = function(user, cb) {
+  var campos = '';
+  if (_.isFunction(user)) {
+    cb = user;
+    user = undefined;
+  }
+  if (!user) {
+    campos += ' -nombre -apellidos';
+  } else if (user.sede) {
+    campos += ' +identificacion';
+  }
+  Admin.find({}, campos, function (err, admins) {
     cb(err, admins);
   });
 }
@@ -14,7 +25,11 @@ exports.getAdmins = getAdmins;
 
 // Get list of admins
 exports.index = function(req, res) {
-  Admin.find(function (err, admins) {
+  var campos = '';
+  if (!req.user) {
+    campos += ' -nombre -apellidos';
+  }
+  Admin.find({}, campos, function (err, admins) {
     if(err) { return handleError(res, err); }
     return res.json(200, admins);
   });
@@ -31,7 +46,13 @@ exports.show = function(req, res) {
 
 // Creates a new admin in the DB.
 exports.create = function(req, res) {
-  Admin.create(req.body, function(err, admin) {
+  var datos = _.pick(req.body, ['nombre', 'apellidos']);
+
+  if (!req.user || !req.user.sede) {
+    return res.json(401, { codigo: 300, mensaje: 'No tienes permiso para dar altas en la sede.' });
+  }
+  datos.identificacion = utils.nuevaIdentificacion();
+  Admin.create(datos, function(err, admin) {
     if(err) { return handleError(res, err); }
     return res.json(201, admin);
   });
@@ -39,7 +60,10 @@ exports.create = function(req, res) {
 
 // Updates an existing admin in the DB.
 exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
+  if (!req.user || !req.user.sede) {
+    return res.json(401, { codigo: 300, mensaje: 'No tienes permiso para modificar este registro.' });
+  }
+  if (req.body._id) { delete req.body._id; }
   Admin.findById(req.params.id, function (err, admin) {
     if (err) { return handleError(res, err); }
     if(!admin) { return res.send(404); }

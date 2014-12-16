@@ -1,21 +1,32 @@
 'use strict'
 
-sidebarCtrl = ($scope, auth) ->
-  user = auth.getUsuarioActual()
+sidebarCtrl = ($scope, $log, Auth, BrowserID) ->
   $scope.activa = false
   $scope.toggleSidebar = (activar)-> $scope.activa = activar
-  $scope.logado = auth.logado
-  $scope.esSede = -> user.esSede()
-  $scope.esVoluntario = -> user.esVoluntario()
-  $scope.esAnonimo = -> user.esAnonimo()
+  $scope.logado = Auth.isLoggedIn
+  $scope.esSede = -> Auth.esSede()
+  $scope.esVoluntario = -> Auth.esVoluntario()
+  $scope.esAnonimo = -> Auth.esAnonimo()
+  $scope.nombre = -> Auth.nombre()
+  $scope.enlacePerfil = ->
+    if Auth.esSede()
+      '/sede/usr/' + Auth.getCurrentUser().sede + '/editar'
+    else
+      '/voluntariado/' + Auth.turno().slug + '/vol/' + Auth.getCurrentUser().persona
 
-  # TODO: Provisional, seguramente bastará con las rutas /login y /logout
-  $scope.login = auth.login
-  $scope.logout = auth.logout
+  $scope.logout = ->
+    if Auth.getCurrentUser().provider is 'browserid'
+      $log.debug 'Identidad de BrowserID: .logout() de Persona'
+      BrowserID.logout()
+    else
+      $log.debug 'Identidad de Facebook o Google: .logout vía token'
+      Auth.logout()
 
 angular.module 'andexApp'
   .controller 'SidebarCtrl', [
     '$scope'
-    'auth'
+    '$log'
+    'Auth'
+    'BrowserID'
     sidebarCtrl
   ]

@@ -1,13 +1,21 @@
 'use strict';
 
 var _ = require('lodash');
+var utils = require('../../components/utils');
 var Persona = require('./persona.model');
+var auth = require('../../auth/auth.service');
 
 // Devuelve todas las personas de la colección 'personas'
-var getPersonas = function(cb) {
+var getPersonas = function(user, cb) {
   var campos = '';
-  if (true) { // TODO: Si el usuario es coordinador de un grupo o de la sede
-    campos = '+identificacion';
+  if (_.isFunction(user)) {
+    cb = user;
+    user = undefined;
+  }
+  if (!user) {
+    campos += ' -nombre -apellidos';
+  } else if (user.sede || auth.coord(user)) {
+    campos += ' +identificacion';
   }
   Persona.find({}, campos, function(err, personas) {
     cb(err, personas);
@@ -28,7 +36,7 @@ exports.getIdentificacion = function(codigo, done) {
 
 // Get list of personas
 exports.index = function(req, res) {
-  getPersonas(function (err, personas) {
+  getPersonas(req.user, function (err, personas) {
     if(err) { return handleError(res, err); }
     return res.json(200, personas);
   });
@@ -43,23 +51,18 @@ exports.show = function(req, res) {
   });
 };
 
-var nuevaIdentificacion = function() {
-  var i, id = "";
-  var chars = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
-
-  for (i = 0; i < 5; i++) {
-    id += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-
-  return id;
-};
-
 // Creates a new persona in the DB.
 exports.create = function(req, res) {
   var defaults = { estados: [{ estado: 'A' }] };
   var datos = _.pick(req.body, ['nombre', 'apellidos', 'coord', 'estados', 'turnos']);
-  datos = _.extend(defaults, datos);
-  datos.identificacion = nuevaIdentificacion();
+
+  if (_.isArray(datos.turnos) && auth.coord(req.user, _.last(datos.turnos).turno)) {
+    datos = _.extend(defaults, datos);
+    datos.identificacion = utils.nuevaIdentificacion();
+  } else {
+    return res.json(401, { codigo: 213, mensaje: 'No tienes permiso para dar altas en este grupo.' });
+  }
+
   Persona.create(datos, function(err, persona) {
     if(err) { return handleError(res, err); }
     return res.json(201, persona);
@@ -72,6 +75,10 @@ exports.nuevoEstado = function(req, res) {
   var datos = { estado: estado };
   if (estado !== 'A' && estado !== 'B' && estado !== 'I') {
     return res.json(400, { codigo: 210, mensaje: 'Estado no válido.' });
+  }
+  // TODO: probar que se devuelve este error si procede (o al menos que no se devuelve si no procede)
+  if (req.user.persona !== req.params.id) {
+    return res.json(401, { codigo: 213, mensaje: 'No tienes permiso para modificar este estado.' });
   }
   if (req.body.fecha) {
     datos.fecha = new Date(req.body.fecha);
@@ -87,7 +94,7 @@ exports.nuevoEstado = function(req, res) {
   });
 };
 
-// Registra un alta en otro turno
+// Registra un alta en otro turno (OBSOLETO, usar .update())
 exports.nuevoTurno = function(req, res) {
   var turno = req.body.turno;
   var datos = { turno: turno };
@@ -113,6 +120,13 @@ exports.update = function(req, res) {
   Persona.findById(req.params.id, function (err, persona) {
     if (err) { return handleError(res, err); }
     if(!persona) { return res.send(404); }
+
+    turnoAnterior = _.last(persona.turnos).turno.toString();
+
+    if (req.user.persona !== persona._id.toString() &&
+        !auth.coord(req.user, turnoAnterior)) {
+      return res.json(401, { codigo: 213, mensaje: 'No tienes permiso para modificar esta ficha.'});
+    }
     // Nombre:
     if (req.body.nombre) {
       persona.nombre = '' + req.body.nombre;
@@ -121,17 +135,16 @@ exports.update = function(req, res) {
     if (req.body.apellidos) {
       persona.apellidos = '' + req.body.apellidos;
     }
-    // ¿Coordinador/a?:
-    if (req.body.coord !== undefined) {
+    // ¿Coordinador/a?: sólo el coordinador puede cambiar el campo 'coordinador' de otro usuario
+    if (req.body.coord !== undefined && auth.coord(req.user, turnoAnterior)) {
       persona.coord = !!req.body.coord;
     }
     // Turno:
     if (req.body.turnos && _.isArray(req.body.turnos)) {
       turno = _.last(req.body.turnos);
-      turnoAnterior = _.last(persona.turnos);
       // Sólo insertamos el nuevo turno si no coincide con el anterior en BD
 
-      if (turno.turno !== turnoAnterior.turno.toString()) {
+      if (turno.turno !== turnoAnterior) {
         persona.turnos.push(turno);
       }
     }

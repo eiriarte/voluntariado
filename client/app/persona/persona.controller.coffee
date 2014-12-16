@@ -1,7 +1,6 @@
 'use strict'
 
-personaCtrl = ($scope, $rootScope, $params, $location, auth, asistencias, personas, turnos, estados) ->
-  usuarioActual = auth.getUsuarioActual()
+personaCtrl = ($scope, $rootScope, $params, $location, Auth, asistencias, personas, turnos, estados) ->
   $rootScope.seccion = 'sc-voluntariado'
   persona = personas.getPersona $params.persona
   turno = _.last(persona.turnos).turno
@@ -35,10 +34,10 @@ personaCtrl = ($scope, $rootScope, $params, $location, auth, asistencias, person
 
   # ¿Puede el usuario actual editar la ficha de persona?
   $scope.puedeEditar = ->
-    mismoTurno = turno._id is usuarioActual.getIdTurno()
-    coordDelTurno = mismoTurno and usuarioActual.esCoordinador()
+    mismoTurno = turno._id is Auth.getIdTurno()
+    coordDelTurno = mismoTurno and Auth.esCoordinador()
     # Puede, si es la propia persona, su coordinador, o usuario de la sede
-    usuarioActual.persona is persona._id or coordDelTurno or usuarioActual.esSede()
+    Auth.persona() is persona._id or coordDelTurno or Auth.esSede()
 
   asistencias.getAsistenciasPersona 2, persona, turno, (datos) ->
     $scope.persona.historial = datos
@@ -50,7 +49,7 @@ angular.module 'andexApp'
     '$rootScope'
     '$routeParams'
     '$location'
-    'auth'
+    'Auth'
     'asistenciasSrv'
     'personas'
     'turnos'

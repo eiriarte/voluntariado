@@ -2,14 +2,9 @@
 
 angular.module 'andexApp'
 .factory 'User', ($resource) ->
-  $resource '/api/users/:id/:controller',
+  $resource '/api/users/:id',
     id: '@_id'
   ,
-    changePassword:
-      method: 'PUT'
-      params:
-        controller: 'password'
-
     get:
       method: 'GET'
       params:

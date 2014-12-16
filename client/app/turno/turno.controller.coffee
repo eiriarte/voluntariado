@@ -1,7 +1,6 @@
 'use strict'
 
-turnoCtrl = ($scope, $rootScope, $params, auth, turnos, personas, fechas, asistencias) ->
-  usuarioActual = auth.getUsuarioActual()
+turnoCtrl = ($scope, $rootScope, $params, Auth, turnos, personas, fechas, asistencias) ->
   $rootScope.seccion = 'sc-voluntariado'
   $scope.verEstados = '!B' # Bajas ocultas por defecto
   $scope.cargandoAsistencias = true
@@ -21,10 +20,10 @@ turnoCtrl = ($scope, $rootScope, $params, auth, turnos, personas, fechas, asiste
 
   # ¿Puede añadir una persona al grupo?
   $scope.puedeDarAlta = ->
-    mismoTurno = $scope.turno._id is usuarioActual.getIdTurno()
-    coordDelTurno = mismoTurno and usuarioActual.esCoordinador()
+    mismoTurno = $scope.turno._id is Auth.getIdTurno()
+    coordDelTurno = mismoTurno and Auth.esCoordinador()
     # Puede, si es coordinador de ese turno, o es usuario de la sede
-    usuarioActual.sede? or coordDelTurno
+    Auth.sede? or coordDelTurno
 
   # Obtenemos el array de fechas, sin asistencias
   $scope.turno.asistencias = fechas.getUltimosMeses 2, $scope.turno.dia
@@ -37,7 +36,7 @@ angular.module 'andexApp'
     '$scope'
     '$rootScope'
     '$routeParams'
-    'auth'
+    'Auth'
     'turnos'
     'personas'
     'fechas'
