@@ -19,5 +19,5 @@
     <input id="coord" name="coord" type="checkbox" ng-model="persona.coord">
     &nbsp;Coordinador/a
   </label>
-  <button class="guardar" ng-disabled="editar.$invalid || editar.$pristine" ng-click="guardar()">{{ form.accion }}</button>
+  <button class="guardar" ng-disabled="editar.$invalid || editar.$pristine || form.guardando" ng-click="guardar()">{{ form.accion }}</button>
 </form>

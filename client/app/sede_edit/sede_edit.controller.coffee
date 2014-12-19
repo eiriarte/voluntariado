@@ -17,11 +17,16 @@ sedeEditCtrl = ($scope, $rootScope, $params, $location, sede, url, toast) ->
 
   $scope.form =
     accion: accion
+    guardando: false
 
   $scope.guardar = ->
+    $scope.form.guardando = true
+    $scope.form.accion = 'Guardando…'
     if alta
       # TODO: ¡Ya existe una persona con ese mismo nombre!
       sede.altaPersona $scope.persona, (err, persona) ->
+        $scope.form.guardando = false
+        $scope.form.accion = 'Dar de alta'
         if not err
           toast.success 'Alta realizada correctamente.'
           $location.path '/sede'
@@ -29,6 +34,8 @@ sedeEditCtrl = ($scope, $rootScope, $params, $location, sede, url, toast) ->
           toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
     else
       sede.modificarPersona $scope.persona, (err, persona) ->
+        $scope.form.guardando = false
+        $scope.form.accion = 'Guardar cambios'
         if not err
           toast.success 'Registro modificado correctamente.'
           $location.path '/sede'

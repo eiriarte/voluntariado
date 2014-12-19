@@ -8,7 +8,7 @@
   <input id="nombre" name="nombre" type="text" placeholder="Nombre" required ng-model="persona.nombre">
   <!--[if lt IE 10]><label for="apellidos">Nombre: </label><![endif]-->
   <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos" required ng-model="persona.apellidos">
-  <button class="guardar" ng-disabled="editar.$invalid || editar.$pristine" ng-click="guardar()">{{ form.accion }}</button>
+  <button class="guardar" ng-disabled="editar.$invalid || editar.$pristine || form.guardando" ng-click="guardar()">{{ form.accion }}</button>
   <!-- TODO: acción para dar de baja -->
 </form>
 <section class="ident" ng-if="persona.identificacion">

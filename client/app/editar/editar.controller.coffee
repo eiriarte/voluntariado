@@ -51,14 +51,18 @@ editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, per
 
   $scope.form =
     accion: accion
+    guardando: false
     turnos: turnos.getTurnos()
     estados: arrayEstados estados
 
   $scope.guardar = ->
-    # TODO: inhabilitar botón: guardando = true…; => [ fa-refresh Guardando… ]
+    $scope.form.guardando = true
+    $scope.form.accion = 'Guardando…'
     if alta
       $log.debug 'Estamos dando un alta…'
       personas.altaPersona $scope.persona, (error, persona) ->
+        $scope.form.guardando = false
+        $scope.form.accion = 'Dar de alta'
         if not error
           $log.debug 'Alta realizada!!!'
           toast.success 'Alta realizada correctamente.'
@@ -69,6 +73,8 @@ editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, per
     else
       $log.debug 'Estamos modificando…'
       personas.modificarPersona $scope.persona, (error, persona) ->
+        $scope.form.guardando = false
+        $scope.form.accion = 'Guardar cambios'
         if not error
           $log.debug 'Persona modificada!!!'
           toast.success 'Registro modificado correctamente.'

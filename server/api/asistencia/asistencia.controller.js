@@ -92,7 +92,7 @@ exports.destroy = function(req, res) {
     if(!asistencia) { return res.send(404); }
 
     if (asistencia.persona.toString() !== req.user.persona &&
-        !auth.coord(asistencia.turno.toString())) {
+        !auth.coord(req.user, asistencia.turno.toString())) {
       return res.json(401, { codigo: 131, mensaje: 'No tienes permiso para borrar esta asistencia.'});
     }
 
