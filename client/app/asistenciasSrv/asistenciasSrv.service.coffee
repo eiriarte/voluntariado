@@ -8,7 +8,7 @@
  # Factory in the turnosApp.
 ###
 
-factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
+factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas, toast) ->
     # Service logic
     asistenciasAPI = $resource '/api/asistencias/:_id'
     asistencias = []
@@ -63,7 +63,8 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
           $log.debug asistencias
           $rootScope.$broadcast 'ready'
         , (httpResponse) ->
-          $log.debug 'sync error!!!'
+          toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
+          $log.debug 'sync error!!! ' + httpResponse
 
       # Devuelve los niveles de asistencia del día en una cadena: "t-pocos m-muchos", etc.
       getNiveles: (anno, mes, dia) ->
@@ -169,7 +170,9 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
           _.remove asistencias[asistencia.anno][asistencia.mes], _id: asistencia._id
           # Notificamos el cambio al calendario
           $rootScope.$broadcast 'asistencia', asistencia.dia
-          done()
+          done null
+        , (httpResponse) ->
+          done httpResponse
 
       # Inserta o modifica una notificación de asistencia / ausencia
       guardar: (asistencia, opcion, done) ->
@@ -187,7 +190,9 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas) ->
               # Volver a poner Activo en esa fecha
               fecha = new Date asistencia.anno, asistencia.mes - 1, asistencia.dia
               personas.nuevoEstado asistencia.persona, 'A', fecha
-          done()
+          done null
+        , (httpResponse) ->
+          done httpResponse
     }
 
 angular.module('andexApp').
@@ -198,5 +203,6 @@ angular.module('andexApp').
     'fechas'
     'turnos'
     'personas'
+    'toast'
     factoryAsistencias
   ]

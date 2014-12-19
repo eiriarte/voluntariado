@@ -8,7 +8,7 @@
  # Controller of the turnosApp
 ###
 
-asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
+asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas, toast) ->
   datos = $scope.asistencia
 
   # ¿Mostrar un indicador de actividad de red?
@@ -31,10 +31,22 @@ asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas) ->
   guardarNotificacion = (opcion) ->
     if opcion in ['si', 'no']
       $scope.ajax = 'ajax'
-      asistenciasSrv.guardar datos, opcion, -> $scope.ajax = false
+      asistenciasSrv.guardar datos, opcion, (error) ->
+        $scope.ajax = false
+        if not error
+          toast.success 'Asistencia confirmada. ¡Nos vemos en el hospi! :)' if opcion is 'si'
+          toast.success 'Ausencia notificada. ¡Gracias por avisar! :)' if opcion is 'no'
+        else
+          toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
+
     if opcion is 'na' and datos._id
       $scope.ajax = 'ajax'
-      asistenciasSrv.eliminar datos, -> $scope.ajax = false
+      asistenciasSrv.eliminar datos, (error) ->
+        $scope.ajax = false
+        if not error
+          toast.success 'Notificación eliminada.'
+        else
+          toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
 
   # Diálogo para notificar ausencias / asistencias
   $scope.modalNotificar = ->
@@ -59,5 +71,6 @@ angular.module('andexApp').controller 'AsistenciaCtrl', [
   '$log'
   'asistenciasSrv'
   'personas'
+  'toast'
   asistenciaCtrl
 ]

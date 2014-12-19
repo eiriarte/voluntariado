@@ -1,11 +1,13 @@
 'use strict'
 
-editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, personas) ->
+editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, personas, toast) ->
   $rootScope.seccion = 'sc-voluntariado'
   turno = turnos.getTurno $params.turno
   if not turno
-    # TODO: mostrar error 404
-    console.log "Con id. #{$params.turno}, getTurno devuelve ", turnos.getTurno $params.turno
+    $log.debug "Con id. #{$params.turno}, getTurno devuelve ", turnos.getTurno $params.turno
+    accion = ''
+    return toast.error 'Grupo no existente. ¿Seguro que has tecleado la dirección correcta?'
+
   $scope.persona =
     nombre: ''
     apellidos: ''
@@ -26,8 +28,9 @@ editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, per
       $scope.persona.turno = _.last(persona.turnos).turno
       $scope.persona.estado = _.last(persona.estados).estado
     else
-      # TODO: mostrar error 404
       $log.debug "Con id. #{$params.persona}, getPersona devuelve ", persona
+      accion = ''
+      return toast.error 'Esta persona no consta. ¿Seguro que has tecleado la dirección correcta?'
   else
     alta = true
     accion = 'Dar de alta'
@@ -56,20 +59,23 @@ editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, per
     if alta
       $log.debug 'Estamos dando un alta…'
       personas.altaPersona $scope.persona, (error, persona) ->
-        # TODO: if error…
         if not error
           $log.debug 'Alta realizada!!!'
+          toast.success 'Alta realizada correctamente.'
           slugTurno = turnos.getTurno($scope.persona.turno).slug
           $location.path "/voluntariado/#{slugTurno}/vol/#{persona._id}"
-          # TODO: tostada de notificación
+        else
+          toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
     else
       $log.debug 'Estamos modificando…'
       personas.modificarPersona $scope.persona, (error, persona) ->
-        # TODO: if error…
         if not error
           $log.debug 'Persona modificada!!!'
+          toast.success 'Registro modificado correctamente.'
           slugTurno = turnos.getTurno($scope.persona.turno).slug
           $location.path "/voluntariado/#{slugTurno}/vol/#{persona._id}"
+        else
+          toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
 
 angular.module 'andexApp'
   .controller 'EditarCtrl', [
@@ -81,5 +87,6 @@ angular.module 'andexApp'
     'turnos'
     'estados'
     'personas'
+    'toast'
     editarCtrl
   ]

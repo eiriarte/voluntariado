@@ -1,6 +1,6 @@
 'use strict'
 
-browseridSrv = ($window, $http, Auth) ->
+browseridSrv = ($window, $http, $log, Auth, toast) ->
 
   watch: (user) ->
     $window.navigator.id?.watch
@@ -12,7 +12,9 @@ browseridSrv = ($window, $http, Auth) ->
         $http.post '/auth/browserid', datos
           .success ->
             $window.location.href= '/'
-          .error ->
+          .error (data, status) ->
+            $log.debug "Error de autenticación BrowserID. DATA: #{data}, STATUS: #{status}"
+            toast.error 'Parece que ha habido algún problema con la identificación :('
             $window.navigator.id.logout()
       onlogout: ->
         Auth.logout()
@@ -20,9 +22,19 @@ browseridSrv = ($window, $http, Auth) ->
   request: ->
     $window.navigator.id?.request
       siteName: 'Voluntariado de ANDEX' #siteLogo: '/apple-touch-icon.png'
+      oncancel: ->
+        $log.debug 'Login cancelado.'
+        toast.error 'Lo siento, no te hemos podido identificar. ¿Lo intentas otra vez?'
 
   logout: ->
     $window.navigator.id?.logout()
 
 angular.module 'andexApp'
-  .factory 'BrowserID', [ '$window', '$http', 'Auth', browseridSrv ]
+  .factory 'BrowserID', [
+    '$window'
+    '$http'
+    '$log'
+    'Auth'
+    'toast'
+    browseridSrv
+  ]

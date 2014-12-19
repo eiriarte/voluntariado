@@ -1,11 +1,12 @@
 <div class="toolbar"><h1 class="titulo">Registro</h1></div>
-<p class="ident-p">¡Hola! Te estás identificando como:</p>
-<div class="ident">
+<div class="ident-p ident-caducado" ng-if="caducado">Oops! Parece que el enlace que has seguido no es válido, o ha caducado.</div>
+<p class="ident-p" ng-if="!caducado">¡Hola! Te estás identificando como:</p>
+<div class="ident" ng-if="!caducado">
   <div class="nombre">{{ persona.nombre }}</div>
   <div class="turno">{{ persona.turno }}</div>
 </div>
-<p class="ident-p">Por favor, elige una de las opciones siguientes para completar tu registro:</p>
-<ul class="lista-login">
+<p class="ident-p" ng-if="!caducado">Por favor, elige una de las opciones siguientes para completar tu registro:</p>
+<ul class="lista-login" ng-if="!caducado">
   <li>
     <span class="num">1</span>
     <span class="desc">Puedes identificarte mediante tu cuenta de Facebook (¡sin contraseñas!).</span>

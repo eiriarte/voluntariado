@@ -1,6 +1,6 @@
 'use strict'
 
-sedeEditCtrl = ($scope, $rootScope, $params, $location, sede, url) ->
+sedeEditCtrl = ($scope, $rootScope, $params, $location, sede, url, toast) ->
   $rootScope.seccion = 'sc-sede'
   if $params.persona
     alta = false
@@ -23,11 +23,17 @@ sedeEditCtrl = ($scope, $rootScope, $params, $location, sede, url) ->
       # TODO: ¡Ya existe una persona con ese mismo nombre!
       sede.altaPersona $scope.persona, (err, persona) ->
         if not err
+          toast.success 'Alta realizada correctamente.'
           $location.path '/sede'
+        else
+          toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
     else
       sede.modificarPersona $scope.persona, (err, persona) ->
         if not err
+          toast.success 'Registro modificado correctamente.'
           $location.path '/sede'
+        else
+          toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
 
 
 angular.module 'andexApp'
@@ -38,5 +44,6 @@ angular.module 'andexApp'
     '$location'
     'sedeSrv'
     'url'
+    'toast'
     sedeEditCtrl
   ]

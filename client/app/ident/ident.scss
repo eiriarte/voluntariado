@@ -1,6 +1,9 @@
 .ident, .ident-p, .lista-login {
   margin: 2em;
 }
+.ident-caducado {
+  opacity: 0.5;
+}
 .ident {
   padding: 2em;
   border-radius: 8px;

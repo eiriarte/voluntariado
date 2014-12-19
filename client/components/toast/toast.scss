@@ -1,0 +1,41 @@
+.toast-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  .toast-message {
+    margin: .5em;
+    padding: 1em;
+    border-radius: 4px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+    &.success {
+      background: lightgreen;
+    }
+    &.warning {
+      background: gold;
+    }
+    &.error {
+      background: tomato;
+    }
+    &.info {
+      background: skyblue;
+    }
+    &.ng-enter {
+      transition: all linear 0.5s;
+    }
+    &.ng-leave {
+      transition: all linear 1.5s;
+    }
+    &.ng-leave.ng-leave-active,
+    &.ng-enter {
+      opacity:0;
+    }
+    &.ng-leave,
+    &.ng-enter.ng-enter-active {
+      opacity:1;
+    }
+    .fa {
+      text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+    }
+  }
+}
