@@ -57,13 +57,17 @@
     background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
     cursor: pointer;
   }
-  .asistencia.si {
+  .totales {
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+  .totales.si, .asistencia.si {
     color: green;
   }
-  .asistencia.no {
+  .totales.no, .asistencia.no {
     color: red;
   }
-  .asistencia.na {
+  .totales.na, .asistencia.na {
     color: $color-gris;
   }
   input {
