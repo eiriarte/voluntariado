@@ -1,12 +1,19 @@
 'use strict'
 
-turnoCtrl = ($scope, $rootScope, $params, Auth, turnos, personas, fechas, asistencias) ->
+turnoCtrl = ($scope, $rootScope, $params, Auth, turnos, personas, fechas, asistencias, toast) ->
   $rootScope.seccion = 'sc-voluntariado'
   $scope.verEstados = '!B' # Bajas ocultas por defecto
   $scope.cargandoAsistencias = true
 
   turnos = turnos.getTurnos()
   $scope.turno = angular.copy _.find(turnos, { slug: $params.turno })
+
+  # Grupo no encontrado
+  if not $scope.turno?
+    $scope.turno = { nombre: '', bajas: 0 }
+    $scope.cargandoAsistencias = false
+    toast.error 'Oops! ¡Aquí no hay nada! Parece que has seguido una dirección errónea.', 60000
+    return false
 
   totalBajas = 0
 
@@ -41,5 +48,6 @@ angular.module 'andexApp'
     'personas'
     'fechas'
     'asistenciasSrv'
+    'toast'
     turnoCtrl
   ]

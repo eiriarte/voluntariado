@@ -130,4 +130,8 @@ angular.module 'andexApp'
         return fecha1.isBefore fecha2, 'day'
 
       esHoy: (dia) -> moment(new Date(andex_data.hoy)).isSame dia, 'day'
+
+      esFechaValida: (anno, mes, dia) ->
+        fecha = moment year: anno, month: mes - 1, day: dia
+        fecha.isValid() and anno > 1900 and anno < 2200
     }

@@ -1,13 +1,25 @@
 'use strict'
 
-personaCtrl = ($scope, $rootScope, $params, $location, Auth, asistencias, personas, turnos, estados, url) ->
+personaCtrl = ($scope, $rootScope, $params, $location, $log, Auth, asistencias,
+                personas, turnos, estados, url, toast) ->
   $rootScope.seccion = 'sc-voluntariado'
   persona = personas.getPersona $params.persona
+
+  # Persona no encontrada
+  if not persona?
+    toast.error 'Oops! ¡Aquí no hay nada! Parece que has seguido una
+      dirección errónea.', 60000
+    return $location.path "/voluntariado/#{$params.turno}"
+
   turno = _.last(persona.turnos).turno
   turno = turnos.getTurno turno
+
+  # Turno incorrecto
   if turno.slug isnt $params.turno
-    # TODO: redireccionar a /voluntariado/#{turno.slug}/vol/#{persona._id}
     console.log 'No es su turno. Su turno es: ' + turno.slug
+    toast.warning 'La dirección que has seguido ya no es correcta.
+      Te redireccionamos a la dirección en el grupo correcto.'
+    return $location.path "/voluntariado/#{turno.slug}/vol/#{persona._id}"
 
   # Estado actual de la persona
   estado = _.last(persona.estados).estado
@@ -42,11 +54,13 @@ angular.module 'andexApp'
     '$rootScope'
     '$routeParams'
     '$location'
+    '$log'
     'Auth'
     'asistenciasSrv'
     'personas'
     'turnos'
     'estados'
     'url'
+    'toast'
     personaCtrl
   ]

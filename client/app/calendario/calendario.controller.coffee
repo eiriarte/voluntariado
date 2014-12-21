@@ -8,13 +8,18 @@
  # Controller of the turnosApp
 ###
 
-calendarioCtrl = ($scope, $rootScope, $params, $timeout, fechas, asistenciasSrv, turnos) ->
+calendarioCtrl = ($scope, $rootScope, $params, $timeout, $location, fechas, asistenciasSrv, turnos) ->
   $rootScope.seccion = 'sc-asistencias'
   hoy = new Date(andex_data.hoy)
   # Datos para el calendario
   $scope.anno = +($params.anno ? hoy.getFullYear())
   $scope.mes = +($params.mes ? hoy.getMonth() + 1)
   $scope.dia = +($params.dia)
+
+  # ¿Fecha no valida? Mostramos la vista por defecto (mes actual sin día seleccionado)
+  if not fechas.esFechaValida $scope.anno, $scope.mes, $scope.dia
+    return $location.path '/asistencias'
+
   $scope.annoAnterior = if $scope.mes is 1 then $scope.anno - 1 else $scope.anno
   $scope.annoSiguiente = if $scope.mes is 12 then $scope.anno + 1 else $scope.anno
   $scope.mesAnterior = if $scope.mes is 1 then 12 else $scope.mes - 1
@@ -68,6 +73,7 @@ angular.module 'andexApp'
     '$rootScope'
     '$routeParams'
     '$timeout'
+    '$location'
     'fechas'
     'asistenciasSrv'
     'turnos'

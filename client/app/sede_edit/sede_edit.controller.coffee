@@ -6,6 +6,13 @@ sedeEditCtrl = ($scope, $rootScope, $params, $location, sede, url, toast) ->
     alta = false
     accion = 'Guardar cambios'
     $scope.persona = angular.copy sede.getPersona($params.persona)
+
+    # Persona no encontrada
+    if not $scope.persona?
+      $scope.form = { accion: '' }
+      toast.error 'Oops! ¡Aquí no hay nada! Parece que has seguido una dirección errónea.', 60000
+      return false
+
     $scope.persona.identVisible = false
     $scope.persona.identBase = url '/sede/id/'
   else
