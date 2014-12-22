@@ -44,12 +44,42 @@
       color: white;
       &.facebook {
         background-color: $color-facebook;
+        &:hover {
+          background-color: darken($color-facebook, 10%);
+        }
+        &:focus {
+          background-color: darken($color-facebook, 15%);
+          outline: 0;
+        }
+        &:active {
+          background-color: darken($color-facebook, 20%);
+        }
       }
       &.google {
         background-color: $color-google;
+        &:hover {
+          background-color: darken($color-google, 10%);
+        }
+        &:focus {
+          background-color: darken($color-google, 15%);
+          outline: 0;
+        }
+        &:active {
+          background-color: darken($color-google, 20%);
+        }
       }
       &.email {
         background-color: $color-email;
+        &:hover {
+          background-color: darken($color-email, 10%);
+        }
+        &:focus {
+          background-color: darken($color-email, 15%);
+          outline: 0;
+        }
+        &:active {
+          background-color: darken($color-email, 20%);
+        }
       }
     }
   }

@@ -60,12 +60,37 @@ a:hover, a:focus {
     padding: 0;
     background: none;
     border: none;
+    &:hover {
+      text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+    }
+    &:focus {
+      text-shadow: 0 0 4px rgba(255, 255, 255, 0.9);
+      outline: 0;
+    }
+    &:hover {
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+    }
   }
   .titulo {
     margin: 0;
     line-height: 42px;
     font-size: 1em;
     font-weight: normal;
+  }
+}
+
+.toolbar .tool a, .personas .persona a, .grupos .grupo a {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  &:hover {
+    background: rgba(1, 1, 1, 0.1);
+  }
+  &:focus {
+    background: rgba(1, 1, 1, 0.15);
+    outline: 0;
+  }
+  &:active {
+    background: rgba(1, 1, 1, 0.2);
   }
 }
 

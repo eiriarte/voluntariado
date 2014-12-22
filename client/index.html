@@ -137,6 +137,13 @@
           andex_data.sede = <%- JSON.stringify(admins) %>;
           andex_data.hoy = '<%= Date() %>';
           andex_data.identificacion = <%- JSON.stringify(identificacion) %>;
+
+          /* Habilitar soporte de estado :active en iOS */
+          window.onload = function() {
+            if(/iP(hone|ad)/.test(window.navigator.userAgent)) {
+              document.body.addEventListener('touchstart', function() {}, false);
+            }
+          };
         </script>
 </body>
 </html>

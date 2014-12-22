@@ -28,6 +28,19 @@ $offsets: (nadie: 0%, pocos: 33.333333%, alguno: 66.666666%, muchos: 100%);
   #siguiente {
     float: right;
   }
+  #anterior, #siguiente {
+    -webkit-tap-highlight-color: transparent;
+    &:hover {
+      background: rgba(1, 1, 1, 0.2);
+    }
+    &:focus {
+      background: rgba(1, 1, 1, 0.25);
+      outline: 0;
+    }
+    &:active {
+      background: rgba(1, 1, 1, 0.3);
+    }
+  }
 }
 
 .mes {
@@ -51,6 +64,7 @@ $offsets: (nadie: 0%, pocos: 33.333333%, alguno: 66.666666%, muchos: 100%);
     display: block;
     text-decoration: none;
     color: inherit;
+    -webkit-tap-highlight-color: transparent;
     &.hoy {
       font-weight: bold;
       color: $color-hoy;
@@ -62,6 +76,13 @@ $offsets: (nadie: 0%, pocos: 33.333333%, alguno: 66.666666%, muchos: 100%);
     }
     &:hover {
       background-color: rgba(0, 0, 0, 0.1);
+    }
+    &:focus {
+      background-color: rgba(0, 0, 0, 0.15);
+      outline: 0;
+    }
+    &:active {
+      background-color: rgba(0, 0, 0, 0.2);
     }
   }
   @each $nivel, $color in $colores {
