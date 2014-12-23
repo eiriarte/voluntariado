@@ -12,7 +12,7 @@
   position: fixed;
   height: 100%;
   z-index: 999;
-  background-color: lightgray; /* TODO: a _params.scss */
+  background-color: $color-grisclaro;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
   /* Atributos a para animación */
   transition: all ease 0.5s;
@@ -29,16 +29,16 @@
     list-style-image: none;
     list-style-type: none;
     border-top: 1px solid rgba(255, 255, 255, 0.8);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid $color-sombramedia;
     .fa {
       width: 2em;
       text-align: center;
     }
     &:hover {
-      background: rgba(0, 0, 0, 0.1);
+      background: $color-sombraclara;
     }
     &:active {
-      background: rgba(0, 0, 0, 0.2);
+      background: $color-sombraoscura;
     }
   }
   &.ng-hide {

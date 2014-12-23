@@ -3,7 +3,7 @@
 
 .ficha {
   background-color: $color-ficha;
-  color: rgba(0, 0, 0, 0.75);
+  color: $color-oscuro;
   padding: 1.5em;
   .nombre {
     margin: 0 0 0.5em 0;
@@ -38,7 +38,7 @@
   border-radius: 4px;
   text-align: center;
   background-color: $color-toolbar;
-  color: rgba(0, 0, 0, 0.7);
+  color: $color-oscuro;
   button {
     background: none;
     border: none;
@@ -51,7 +51,7 @@
   }
 }
 .detalle {
-  background-color: #fff;
+  background-color: white;
   padding: 2em 1em;
   .historial {
     width: 100%;

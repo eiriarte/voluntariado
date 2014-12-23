@@ -14,7 +14,7 @@
       }
       .activos {
         font-size: .8em;
-        color: #999;
+        color: $color-gris;
       }
     }
   }
@@ -22,8 +22,7 @@
 .total {
   padding: 1.5em 2em;
   background-color: #fff;
-  color: #999;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+  color: $color-gris;
   .label {
     font-weight: bold;
   }

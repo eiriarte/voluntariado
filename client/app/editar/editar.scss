@@ -25,7 +25,7 @@
     font-weight: normal;
     font-size: 1em;
     color: inherit;
-    color: rgba(0, 0, 0, 0.7);
+    color: $color-oscuro;
     background-color: $color-toolbar;
     &[disabled] {
       opacity: 0.5;

@@ -71,18 +71,18 @@ $offsets: (nadie: 0%, pocos: 33.333333%, alguno: 66.666666%, muchos: 100%);
     }
     &.seleccionado {
       font-weight: bold;
-      border: rgba(0, 0, 0, 0.25) solid 1px;
-      background-color: rgba(0, 0, 0, 0.15);
+      border: $color-sombraoscura solid 1px;
+      background-color: $color-sombramedia;
     }
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: $color-sombraclara;
     }
     &:focus {
-      background-color: rgba(0, 0, 0, 0.15);
+      background-color: $color-sombramedia;
       outline: 0;
     }
     &:active {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: $color-sombraoscura;
     }
   }
   @each $nivel, $color in $colores {
