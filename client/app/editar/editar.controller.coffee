@@ -1,6 +1,6 @@
 'use strict'
 
-editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, personas, toast) ->
+editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, personas, toast, Auth) ->
   $rootScope.seccion = 'sc-voluntariado'
   turno = turnos.getTurno $params.turno
   if not turno
@@ -54,6 +54,7 @@ editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, per
     guardando: false
     turnos: turnos.getTurnos()
     estados: arrayEstados estados
+    coordinador: -> Auth.esCoordinador() or Auth.esSede()
 
   $scope.guardar = ->
     $scope.form.guardando = true
@@ -94,5 +95,6 @@ angular.module 'andexApp'
     'estados'
     'personas'
     'toast'
+    'Auth'
     editarCtrl
   ]

@@ -9,13 +9,13 @@
   <!--[if lt IE 10]><label for="apellidos">Nombre: </label><![endif]-->
   <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos" required ng-model="persona.apellidos">
   <!--[if lt IE 10]><label for="grupo">Grupo: </label><![endif]-->
-  <select id="grupo" name="grupo" required ng-model="persona.turno" ng-options="turno._id as turno.nombre for turno in form.turnos">
+  <select id="grupo" name="grupo" required ng-model="persona.turno" ng-options="turno._id as turno.nombre for turno in form.turnos" ng-show="form.coordinador()">
     <option value="">Grupo…</option>
   </select>
   <!--[if lt IE 10]><label for="estado">Estado: </label><![endif]-->
   <select id="estado" name="estado" required ng-model="persona.estado" ng-options="estado.id as estado.etiqueta for estado in form.estados">
   </select>
-  <label class="checkbox" for="coord" ng-class="{ seleccionado: persona.coord }">
+  <label class="checkbox" for="coord" ng-class="{ seleccionado: persona.coord }" ng-show="form.coordinador()">
     <input id="coord" name="coord" type="checkbox" ng-model="persona.coord">
     &nbsp;Coordinador/a
   </label>
