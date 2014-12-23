@@ -23,8 +23,8 @@ notificarCtrl = ($scope, $modalInstance, Auth, fechas, asistencia) ->
   # ¿Puede el usuario actual notificar esta ausencia/asistencia?
   $scope.puedeNotificar = ->
     mismoTurno = $scope.asistencia.turno is Auth.getIdTurno()
-    # TODO: ¿Permitir cambios retroactivos?
     demasiadoTarde = fechas.esAnterior entonces, hoy
+    demasiadoTarde = demasiadoTarde and not Auth.esSede() and not Auth.esCoordinador()
     # Puede, si es del mismo turno, y no es "retroactivamente", o si es de la sede
     (mismoTurno or Auth.esSede()) and not demasiadoTarde
 

@@ -68,7 +68,8 @@ exports.save = function(req, res) {
     return res.json(400, { codigo: 111, mensaje: 'No se han especificado turno y persona.'});
   } else if (estado !== 'si' && estado !== 'no') {
     return res.json(400, { codigo: 112, mensaje: 'El estado debe ser "si" o "no".'});
-  } else if (fecha.isBefore(moment(), 'day')) {
+  // Sólo coordinadores (o sede) pueden cambiar asistencias de días pasados.
+  } else if (fecha.isBefore(moment(), 'day') && !auth.coord(req.user, turno)) {
     return res.json(400, { codigo: 113, mensaje: 'No se puede cambiar el pasado.'});
   } else {
     query.anno = anno;
