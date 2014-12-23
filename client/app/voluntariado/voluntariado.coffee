@@ -5,3 +5,4 @@ angular.module 'andexApp'
   $routeProvider.when '/voluntariado',
     templateUrl: 'app/voluntariado/voluntariado.html'
     controller: 'VoluntariadoCtrl'
+    authenticate: true

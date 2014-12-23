@@ -5,3 +5,4 @@ angular.module 'andexApp'
   $routeProvider.when '/sede',
     templateUrl: 'app/sede/sede.html'
     controller: 'SedeCtrl'
+    authenticate: true

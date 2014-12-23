@@ -5,3 +5,4 @@ angular.module 'andexApp'
   $routeProvider.when '/voluntariado/:turno',
     templateUrl: 'app/turno/turno.html'
     controller: 'TurnoCtrl'
+    authenticate: true
