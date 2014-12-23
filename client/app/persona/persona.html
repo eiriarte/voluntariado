@@ -14,7 +14,7 @@
     <dt>Estado:</dt>
     <dd>{{ persona.ficha.estado }}</dd>
   </dl>
-  <section class="ident" ng-if="persona.ficha.identificacion && puedeEditar()">
+  <section class="ficha-ident" ng-if="persona.ficha.identificacion && puedeEditar()">
     <button ng-if="!persona.ficha.identVisible" ng-click="persona.ficha.identVisible = true">
       Mostrar enlace de registro <i class="fa fa-caret-down"></i>
     </button>

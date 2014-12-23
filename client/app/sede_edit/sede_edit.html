@@ -11,7 +11,7 @@
   <button class="guardar" ng-disabled="editar.$invalid || editar.$pristine || form.guardando" ng-click="guardar()">{{ form.accion }}</button>
   <!-- TODO: acción para dar de baja -->
 </form>
-<section class="ident" ng-if="persona.identificacion">
+<section class="ficha-ident" ng-if="persona.identificacion">
   <button ng-if="!persona.identVisible" ng-click="persona.identVisible = true">
     Mostrar enlace de registro <i class="fa fa-caret-down"></i>
   </button>
