@@ -19,7 +19,7 @@
 <section ng-if="!dia && ready" class="asistencias ayuda">Selecciona un día del mes…</section>
 <section ng-show="dia && ready" ng-repeat="turno in turnos" ng-controller="AsistenciasCtrl" class="asistencias">
   <header><button class="minimizar" ng-click="toggleMinimizado()"><i class="fa" ng-class="{ 'fa-minus': !isMinimizado(), 'fa-plus': isMinimizado() }"></i></button><span class="horario">{{turno.nombre}}</span></header>
-  <table class="tabla" ng-if="!loggedIn()">
+  <table class="tabla" ng-if="!loggedIn()" ng-hide="isMinimizado()">
     <tr class="fila"> <td class="columna">Asistencias confirmadas: </td> <td class="columna totales si">{{ totales.si }}</td> </tr>
     <tr class="fila"> <td class="columna">Ausencias confirmadas: </td> <td class="columna totales no">{{ totales.no }}</td> </tr>
     <tr class="fila"> <td class="columna">Por confirmar: </td> <td class="columna totales na">{{ totales.na }}</td> </tr>
