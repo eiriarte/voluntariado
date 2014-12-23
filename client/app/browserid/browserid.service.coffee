@@ -22,6 +22,8 @@ browseridSrv = ($window, $http, $log, Auth, toast) ->
   request: ->
     $window.navigator.id?.request
       siteName: 'Voluntariado de ANDEX' #siteLogo: '/apple-touch-icon.png'
+      termsOfService: '/ayuda'
+      privacyPolicy: '/ayuda'
       oncancel: ->
         $log.debug 'Login cancelado.'
         toast.error 'Lo siento, no te hemos podido identificar. ¿Lo intentas otra vez?'

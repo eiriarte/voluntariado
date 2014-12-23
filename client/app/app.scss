@@ -32,7 +32,7 @@ body {
   &.sc-asistencias {
     background-color: $color-grisclaro;
   }
-  &.sc-voluntariado, &.sc-sede, &.sc-ident {
+  &.sc-voluntariado, &.sc-sede, &.sc-ident, &.sc-ayuda {
     background-color: white;
   }
 }
@@ -167,6 +167,7 @@ a:hover, a:focus {
 // Component styles are injected through grunt
 // injector
 @import 'asistencias/asistencias.scss';
+@import 'ayuda/ayuda.scss';
 @import 'calendario/calendario.scss';
 @import 'editar/editar.scss';
 @import 'ident/ident.scss';
