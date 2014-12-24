@@ -45,6 +45,12 @@ personasSrv = ($rootScope, $resource, $log, fechas) ->
             return false
         return ultimoTurno
 
+      # Devuelve la fecha de alta de la persona
+      # (Fecha del primer estado distinto de 'B')
+      getAlta: (persona) ->
+        estado = _.find persona.estados, (estado) -> estado.estado isnt 'B'
+        return estado?.fecha
+
       # Devuelve la lista de personas que estaban de alta ese día en ese turno
       getPersonas: (turno, anno, mes, dia) ->
         getEstado = @getEstado
@@ -93,7 +99,6 @@ personasSrv = ($rootScope, $resource, $log, fechas) ->
           estados: [{ estado: persona.estado }]
         persona.$save ->
           personas.push persona
-          # TODO: innecesario ahora que no se llama desde Asistencias???
           $rootScope.$broadcast 'ready'
           done null, persona
         , (httpResponse) ->
@@ -125,20 +130,6 @@ personasSrv = ($rootScope, $resource, $log, fechas) ->
           datos.fecha = fecha if fecha?
           estadosAPI.save { _idPersona: id }, datos, (data) ->
             persona.estados.push data
-            $rootScope.$broadcast 'ready'
-            done?()
-
-      # Registra un alta en otro turno (cambio de grupo)
-      nuevoTurno: (id, turno, fecha, done) ->
-        if angular.isFunction fecha
-          done = fecha
-          fecha = null
-        persona = _.find personas, { _id: id }
-        if persona?
-          datos = { turno: turno }
-          datos.alta = fecha if fecha?
-          turnosAPI.save { _idPersona: id }, datos, (data) ->
-            persona.turnos.push data
             $rootScope.$broadcast 'ready'
             done?()
     }

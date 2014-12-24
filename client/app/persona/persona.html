@@ -13,6 +13,8 @@
     <dd>{{ persona.turno.nombre }}<span class="coord" ng-if="persona.ficha.coord">(coord.)</span></dd>
     <dt>Estado:</dt>
     <dd>{{ persona.ficha.estado }}</dd>
+    <dt>Fecha de alta:</dt>
+    <dd>{{ persona.ficha.alta }}</dd>
   </dl>
   <section class="ficha-ident" ng-if="persona.ficha.identificacion && puedeEditar()">
     <button ng-if="!persona.ficha.identVisible" ng-click="persona.ficha.identVisible = true">

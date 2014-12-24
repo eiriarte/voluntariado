@@ -106,8 +106,13 @@ angular.module 'andexApp'
         @getDiaSemana(anno, mes, dia) in [5, 6]
 
       getFechaLegible: (anno, mes, dia) ->
-        fecha = moment year: anno, month: mes - 1, day: dia
-        fecha.format 'D/MMM/YYYY'
+        if anno and mes and dia
+          fecha = moment year: anno, month: mes - 1, day: dia
+          fecha.format 'D/MMM/YYYY'
+        else if anno
+          fecha = moment anno
+          fecha.format 'LL'
+
 
       esAnterior: (fecha1, fecha2) ->
         if angular.isArray fecha1

@@ -1,7 +1,7 @@
 'use strict'
 
 personaCtrl = ($scope, $rootScope, $params, $location, $log, Auth, asistencias,
-                personas, turnos, estados, url, toast) ->
+                personas, turnos, estados, url, toast, fechas) ->
   $rootScope.seccion = 'sc-voluntariado'
   persona = personas.getPersona $params.persona
 
@@ -24,6 +24,13 @@ personaCtrl = ($scope, $rootScope, $params, $location, $log, Auth, asistencias,
   # Estado actual de la persona
   estado = _.last(persona.estados).estado
 
+  # Fecha de alta
+  alta = personas.getAlta persona
+  if fechas.esAnterior alta, [ 2015, 1, 1 ]
+    alta = 'Anterior a 2015'
+  else
+    alta = fechas.getFechaLegible alta
+
   $scope.persona =
     turno:
       slug: turno.slug
@@ -32,6 +39,7 @@ personaCtrl = ($scope, $rootScope, $params, $location, $log, Auth, asistencias,
       id: persona._id
       nombre: persona.nombre + ' ' + persona.apellidos
       estado: estados[estado]
+      alta: alta
       coord: persona.coord
       identificacion: persona.identificacion
       identBase: url '/id/'
@@ -62,5 +70,6 @@ angular.module 'andexApp'
     'estados'
     'url'
     'toast'
+    'fechas'
     personaCtrl
   ]
