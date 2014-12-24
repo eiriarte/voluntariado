@@ -1,11 +1,12 @@
 'use strict'
 
-configFn = ($routeProvider, $locationProvider, $httpProvider, localStorageServiceProvider) ->
+configFn = ($routeProvider, $locationProvider, $httpProvider, $logProvider, localStorageServiceProvider) ->
   $routeProvider
-  .otherwise
-    redirectTo: '/asistencias'
+    .otherwise
+      redirectTo: '/asistencias'
 
   $locationProvider.html5Mode true
+  $logProvider.debugEnabled(false) unless andex_data.debug
 
   $httpProvider.interceptors.push 'authInterceptor'
   localStorageServiceProvider.setPrefix 'andex'
@@ -23,10 +24,10 @@ angular.module 'andexApp', [
   '$routeProvider',
   '$locationProvider',
   '$httpProvider',
+  '$logProvider',
   'localStorageServiceProvider',
   configFn
 ]
-# TODO: usar la sintaxis [ '$rootScope', '$q', … etc, nombreFunción ]
 .factory 'authInterceptor', ($rootScope, $q, $cookieStore, $location) ->
   # Add authorization token to headers
   request: (config) ->
@@ -50,7 +51,6 @@ angular.module 'andexApp', [
   # Redirect to login if route requires auth and you're not logged in
   $rootScope.$on '$routeChangeStart', (event, next) ->
     Auth.isLoggedInAsync (loggedIn) ->
-      # TODO: Añadir la propiedad authenticate a las rutas no públicas
       $location.path "/login" if next.authenticate and not loggedIn
       if not loggedIn or Auth.getCurrentUser().provider is 'browserid'
         BrowserID.watch Auth.getCurrentUser().email or null

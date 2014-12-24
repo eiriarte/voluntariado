@@ -9,7 +9,7 @@
     <base href="/">
     <title>Voluntariado de ANDEX</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!-- build:css(client) app/vendor.css -->
     <link rel="stylesheet" href="vendor/bootstrap.css">
     <link rel="stylesheet" href="vendor/bootstrap-theme.css">
@@ -23,11 +23,10 @@
     <!-- endbuild -->
   </head>
   <body ng-app="andexApp" ng-init="seccion = ''" ng-class="seccion">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <!--[if lt IE 9]>
+      <p class="browsehappy">Siento ser yo quien te lo diga, pero estás usando un navegador <strong>obsoleto</strong>. Por favor, <a href="http://browsehappy.com/">actualiza tu navegador</a> para disfrutar de esta web en toda su gloria.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
     <div ng-cloak ng-controller="SidebarCtrl">
       <ul ng-show="activa" class="sidebar" role="dialog" tabindex="0">
         <li class="item">
@@ -50,11 +49,6 @@
             <i class="fa fa-sign-out"></i>Iniciar sesión
           </a>
         </li>
-        <!-- <li class="item" ng-show="esAnonimo()">
-          <a ng-click="toggleSidebar(false);" href="/identificacion">
-            <i class="fa fa-key"></i>Identificación
-          </a>
-        </li> -->
         <li class="item" ng-show="logado()">
           <a ng-click="toggleSidebar(false);" ng-href="{{ enlacePerfil() }}">
             <i class="fa fa-user"></i>{{ nombre() }}
@@ -143,8 +137,7 @@
           andex_data.sede = <%- JSON.stringify(admins) %>;
           andex_data.hoy = '<%= Date() %>';
           andex_data.identificacion = <%- JSON.stringify(identificacion) %>;
-
-          /* Habilitar soporte de estado :active en iOS */
+          andex_data.debug = window.location.search.slice(0, 10) === '?debug=on';
           window.onload = function() {
             if(/iP(hone|ad)/.test(window.navigator.userAgent)) {
               document.body.addEventListener('touchstart', function() {}, false);
