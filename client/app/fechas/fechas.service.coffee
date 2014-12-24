@@ -60,20 +60,14 @@ angular.module 'andexApp'
         # Dividir en subarrays de siete elementos (semanas)
         calendario[i..i+6] for i in [0..calendario.length - 1] by 7
 
-      # Devuelve un array con el año y mes de hace num meses
+      # Devuelve un array con el año, mes y día del primero del mes de hace num meses
       getHaceEneMeses: (num) ->
         fecha = haceEneMeses num
-        [ fecha.year(), fecha.month() + 1 ]
+        [ fecha.year(), fecha.month() + 1, 1 ]
 
-      # Devuelve el primer diaSemana contando a partir del 01/mes/anno
-      getPrimer: (diaSemana, anno, mes) ->
-        fecha = moment [ anno, mes - 1, 1 ]
-        fecha.add(1, 'day') until fecha.weekday() is diaSemana
-        return fecha.date()
-
-      # Devuelve la fecha más (numSemanas * 7) días
-      sumarSemanas: (fecha, numSemanas) ->
-        fecha = moment([ fecha[0], fecha[1] - 1, fecha[2] ]).add 1, 'week'
+      # Devuelve la fecha más numDias días
+      sumarDias: (fecha, numDias) ->
+        fecha = moment([ fecha[0], fecha[1] - 1, fecha[2] ]).add numDias, 'day'
         [ fecha.year(), fecha.month() + 1, fecha.date() ]
 
       # Obtiene un array de los turnos de ese día de la semana, desde los num

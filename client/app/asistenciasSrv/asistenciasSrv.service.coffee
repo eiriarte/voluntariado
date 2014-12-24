@@ -49,6 +49,36 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas, toa
       else
         done()
 
+    # Auxiliar de getAsistenciasPersona
+    # Devuelve el estado de asistencia de la persona ese día y turno
+    getAsistenciaDia = (persona, anno, mes, dia, turno) ->
+      notifs =
+        si: { texto: 'Asiste', si: true }
+        no: { texto: 'No asiste', no: true }
+        na: { texto: 'No avisa', na: true }
+        nv: { texto: 'No es voluntario o voluntaria', nv: true }
+      # Buscamos su notificación para ese día
+      asistencia = _.find asistencias[anno]?[mes],
+        dia: dia
+        persona: persona._id
+        turno: turno._id
+
+      if asistencia?
+        # Tiene notificación almacenada, devolvemos eso
+        notif = asistencia.estado
+      else if turno._id isnt personas.getTurno persona, anno, mes, dia
+        # No le correspondía ese turno, devolvemos null
+        return null
+      else
+        estado = personas.getEstado persona, anno, mes, dia
+        notif = switch
+          when estado is 'B' then 'nv' # Estaba de baja: 'no era voluntario'
+          when estado is 'I' then 'no' # Estaba inactivo: se da por avisado
+          when estado is 'A' then 'na' # Estaba activo: no avisa
+
+      result = angular.copy notifs[notif]
+      angular.extend result, { anno: anno, mes: mes, dia: dia }
+
     # Public API here
     {
       # Carga las asistencias del mes en asistencias[anno][mes]
@@ -118,35 +148,24 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas, toa
           # ¡Listo!
           done()
 
-      getAsistenciasPersona: (num, persona, turno, done) ->
-        estados =
-          si: { texto: 'Asiste', si: true }
-          no: { texto: 'No asiste', no: true }
-          na: { texto: 'No avisa', na: true }
+      # Devuelve (done) las asistencias de la persona en los últimos num meses
+      getAsistenciasPersona: (num, persona, done) ->
         susAsistencias = []
-        # TODO: ¿y si ha tenido un cambio de grupo?: martes, martes, martes-jueves, jueves, jueves…
-        # TODO: ¿y si ese año/mes/día el voluntario aún no estaba de alta???
-        # TODO: Las no-notificaciones ESTANDO INACTIVO deben contar como Faltas Avisadas
         # Primer año/mes/día del turno correspondiente a la persona
-        [ anno, mes ] = fechas.getHaceEneMeses num
-        dia = fechas.getPrimer turno.dia, anno, mes
+        [ anno, mes, dia ] = fechas.getHaceEneMeses num
         $log.debug "Estadísticas de persona desde: #{dia}/#{mes}/#{anno}"
         # Nos aseguramos de que tenemos los datos
         syncAsistenciasDesde anno, mes, ->
           # Mientras sea un turno anterior a hoy
           while fechas.esAnterior [anno, mes, dia]
-            # Buscamos su notificación para ese día
-            asistencia = _.find asistencias[anno]?[mes],
-              dia: dia
-              persona: persona._id
-              turno: turno._id
-            # Si no la tiene, es un 'na' (No Avisa)
-            estado = if asistencia then asistencia.estado else 'na'
-            estado = angular.copy estados[estado]
-            angular.extend estado, { anno: anno, mes: mes, dia: dia }
-            susAsistencias.push estado
-            # Turno siguiente
-            [ anno, mes, dia ] = fechas.sumarSemanas [ anno, mes, dia ], 1
+            # Para cada turno de ese día
+            turnosDia = turnos.getTurnos fechas.getDiaSemana anno, mes, dia
+            angular.forEach turnosDia, (turno) ->
+              # Guardamos la asistencia del día y turno (si corresponde)
+              asistencia = getAsistenciaDia persona, anno, mes, dia, turno
+              susAsistencias.push asistencia if asistencia?
+            # Día siguiente
+            [ anno, mes, dia ] = fechas.sumarDias [ anno, mes, dia ], 1
           $log.debug 'Notificaciones sin agrupar: ', susAsistencias
           # Agrupamos sus notificaciones por meses (posiblemente desordenados)
           susAsistencias = _.groupBy susAsistencias, (notif) ->
@@ -159,7 +178,6 @@ factoryAsistencias = ($log, $rootScope, $resource, fechas, turnos, personas, toa
           susAsistencias = _.sortBy susAsistencias, (mes) ->
             '' + mes.notifs[0].anno + ('0' + mes.notifs[0].mes).slice -2
           done susAsistencias.reverse()
-
 
       # Elimina una notificación de asistencia (falta sin avisar)
       eliminar: (asistencia, done) ->

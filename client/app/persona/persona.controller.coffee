@@ -44,9 +44,9 @@ personaCtrl = ($scope, $rootScope, $params, $location, $log, Auth, asistencias,
     # Puede, si es la propia persona, su coordinador, o usuario de la sede
     Auth.persona() is persona._id or coordDelTurno or Auth.esSede()
 
-  asistencias.getAsistenciasPersona 2, persona, turno, (datos) ->
+  asistencias.getAsistenciasPersona 2, persona, (datos) ->
     $scope.persona.historial = datos
-    console.log datos
+    $log.debug 'getAsistenciasPersona::: ', datos
 
 angular.module 'andexApp'
   .controller 'PersonaCtrl', [
