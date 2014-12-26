@@ -15,14 +15,14 @@ exports.index = function(req, res) {
   var or = []
   if (mes || anno) {
     if (!anno || anno < 1900 || anno > 2200 || !mes || mes < 1 || mes > 12) {
-      return res.json(400, { codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
+      return res.status(400).json({ codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
     } else {
       query.anno = anno;
       query.mes = mes;
     }
   } else if (desdeMes || desdeAnno) {
     if (!desdeAnno || desdeAnno < 1900 || desdeAnno > 2200 || !desdeMes || desdeMes < 1 || desdeMes > 12) {
-      return res.json(400, { codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
+      return res.status(400).json({ codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
     } else {
       // anno > desdeAnno || anno === desdeAnno && mes >= desdeMes
       or.push({ anno: { $gt: desdeAnno }});
@@ -30,11 +30,11 @@ exports.index = function(req, res) {
       query = { $or: or };
     }
   } else {
-    return res.json(400, { codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
+    return res.status(400).json({ codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
   }
   Asistencia.find(query, function (err, asistencias) {
     if(err) { return handleError(res, err); }
-    return res.json(200, asistencias);
+    return res.status(200).json(asistencias);
   });
 };
 
@@ -58,19 +58,19 @@ exports.save = function(req, res) {
   var estado = req.body.estado.trim().toLowerCase();
   var query = {}, update = {};
   if (!auth.turno(req.user, turno)) {
-    return res.json(401, { codigo: 114, mensaje: 'No tienes permiso para modificar esta asistencia.'});
+    return res.status(401).json({ codigo: 114, mensaje: 'No tienes permiso para modificar esta asistencia.'});
   } else {
     console.log('Usuario del turno o sede validado correctamente');
   }
   if (!fecha.isValid()) {
-    return res.json(400, { codigo: 110, mensaje: 'No se han especificado año, mes y día válidos.'});
+    return res.status(400).json({ codigo: 110, mensaje: 'No se han especificado año, mes y día válidos.'});
   } else if (turno.length === 0 || persona.length === 0) {
-    return res.json(400, { codigo: 111, mensaje: 'No se han especificado turno y persona.'});
+    return res.status(400).json({ codigo: 111, mensaje: 'No se han especificado turno y persona.'});
   } else if (estado !== 'si' && estado !== 'no') {
-    return res.json(400, { codigo: 112, mensaje: 'El estado debe ser "si" o "no".'});
+    return res.status(400).json({ codigo: 112, mensaje: 'El estado debe ser "si" o "no".'});
   // Sólo coordinadores (o sede) pueden cambiar asistencias de días pasados.
   } else if (fecha.isBefore(moment(), 'day') && !auth.coord(req.user, turno)) {
-    return res.json(400, { codigo: 113, mensaje: 'No se puede cambiar el pasado.'});
+    return res.status(400).json({ codigo: 113, mensaje: 'No se puede cambiar el pasado.'});
   } else {
     query.anno = anno;
     query.mes = mes;
@@ -82,7 +82,7 @@ exports.save = function(req, res) {
   Asistencia.findOneAndUpdate(query, update, { upsert: true }, function(err, asistencia) {
     if(err) { return handleError(res, err); }
     res.location('/api/asistencias/' + asistencia._id);
-    return res.json(201, asistencia);
+    return res.status(201).json(asistencia);
   });
 };
 
@@ -94,7 +94,7 @@ exports.destroy = function(req, res) {
 
     if (asistencia.persona.toString() !== req.user.persona &&
         !auth.coord(req.user, asistencia.turno.toString())) {
-      return res.json(401, { codigo: 131, mensaje: 'No tienes permiso para borrar esta asistencia.'});
+      return res.status(401).json({ codigo: 131, mensaje: 'No tienes permiso para borrar esta asistencia.'});
     }
 
     asistencia.remove(function(err) {

@@ -16,7 +16,7 @@ exports.getTurnos = getTurnos;
 exports.index = function(req, res) {
   Turno.find(function (err, turnos) {
     if(err) { return handleError(res, err); }
-    return res.json(200, turnos);
+    return res.status(200).json(turnos);
   });
 };
 
@@ -33,7 +33,7 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   Turno.create(req.body, function(err, turno) {
     if(err) { return handleError(res, err); }
-    return res.json(201, turno);
+    return res.status(201).json(turno);
   });
 };
 
@@ -46,7 +46,7 @@ exports.update = function(req, res) {
     var updated = _.merge(turno, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, turno);
+      return res.status(200).json(turno);
     });
   });
 };

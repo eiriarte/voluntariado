@@ -38,7 +38,7 @@ exports.getIdentificacion = function(codigo, done) {
 exports.index = function(req, res) {
   getPersonas(req.user, function (err, personas) {
     if(err) { return handleError(res, err); }
-    return res.json(200, personas);
+    return res.status(200).json(personas);
   });
 };
 
@@ -60,12 +60,12 @@ exports.create = function(req, res) {
     datos = _.extend(defaults, datos);
     datos.identificacion = utils.nuevaIdentificacion();
   } else {
-    return res.json(401, { codigo: 213, mensaje: 'No tienes permiso para dar altas en este grupo.' });
+    return res.status(401).json({ codigo: 213, mensaje: 'No tienes permiso para dar altas en este grupo.' });
   }
 
   Persona.create(datos, function(err, persona) {
     if(err) { return handleError(res, err); }
-    return res.json(201, persona);
+    return res.status(201).json(persona);
   });
 };
 
@@ -74,11 +74,10 @@ exports.nuevoEstado = function(req, res) {
   var estado = req.body.estado;
   var datos = { estado: estado };
   if (estado !== 'A' && estado !== 'B' && estado !== 'I') {
-    return res.json(400, { codigo: 210, mensaje: 'Estado no válido.' });
+    return res.status(400).json({ codigo: 210, mensaje: 'Estado no válido.' });
   }
-  // TODO: probar que se devuelve este error si procede (o al menos que no se devuelve si no procede)
   if (req.user.persona !== req.params.id) {
-    return res.json(401, { codigo: 213, mensaje: 'No tienes permiso para modificar este estado.' });
+    return res.status(401).json({ codigo: 213, mensaje: 'No tienes permiso para modificar este estado.' });
   }
   if (req.body.fecha) {
     datos.fecha = new Date(req.body.fecha);
@@ -86,10 +85,10 @@ exports.nuevoEstado = function(req, res) {
   Persona.findByIdAndUpdate(req.params.id, { $push: { estados: datos }}, function(err, data) {
     if(err) { return handleError(res, err); }
     if (data && _.isArray(data.estados) && _.last(data.estados).estado === estado) {
-      res.json(201, _.last(data.estados));
+      res.status(201).json(_.last(data.estados));
     } else {
       if(!data) { return res.send(404); }
-      return res.json(500, { codigo: 211, mensaje: 'Imposible almacenar el estado.' });
+      return res.status(500).json({ codigo: 211, mensaje: 'Imposible almacenar el estado.' });
     }
   });
 };
@@ -105,10 +104,10 @@ exports.nuevoTurno = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!data) { return res.send(404); }
     if (data && _.isArray(data.turnos) && _.last(data.turnos).turno.toString() === turno) {
-      res.json(201, _.last(data.turnos));
+      res.status(201).json(_.last(data.turnos));
     } else {
       if(!data) { return res.send(404); }
-      return res.json(500, { codigo: 211, mensaje: 'Imposible almacenar el turno.' });
+      return res.status(500).json({ codigo: 211, mensaje: 'Imposible almacenar el turno.' });
     }
   });
 };
@@ -125,7 +124,7 @@ exports.update = function(req, res) {
 
     if (req.user.persona !== persona._id.toString() &&
         !auth.coord(req.user, turnoAnterior)) {
-      return res.json(401, { codigo: 213, mensaje: 'No tienes permiso para modificar esta ficha.'});
+      return res.status(401).json({ codigo: 213, mensaje: 'No tienes permiso para modificar esta ficha.'});
     }
     // Nombre:
     if (req.body.nombre) {
@@ -159,7 +158,7 @@ exports.update = function(req, res) {
     }
     persona.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, persona);
+      return res.status(200).json(persona);
     });
   });
 };

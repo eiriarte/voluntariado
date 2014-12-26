@@ -40,7 +40,7 @@ exports.index = function(req, res) {
   }
   Admin.find({}, campos, function (err, admins) {
     if(err) { return handleError(res, err); }
-    return res.json(200, admins);
+    return res.status(200).json(admins);
   });
 };
 
@@ -58,19 +58,19 @@ exports.create = function(req, res) {
   var datos = _.pick(req.body, ['nombre', 'apellidos']);
 
   if (!req.user || !req.user.sede) {
-    return res.json(401, { codigo: 300, mensaje: 'No tienes permiso para dar altas en la sede.' });
+    return res.status(401).json({ codigo: 300, mensaje: 'No tienes permiso para dar altas en la sede.' });
   }
   datos.identificacion = utils.nuevaIdentificacion();
   Admin.create(datos, function(err, admin) {
     if(err) { return handleError(res, err); }
-    return res.json(201, admin);
+    return res.status(201).json(admin);
   });
 };
 
 // Updates an existing admin in the DB.
 exports.update = function(req, res) {
   if (!req.user || !req.user.sede) {
-    return res.json(401, { codigo: 300, mensaje: 'No tienes permiso para modificar este registro.' });
+    return res.status(401).json({ codigo: 300, mensaje: 'No tienes permiso para modificar este registro.' });
   }
   if (req.body._id) { delete req.body._id; }
   Admin.findById(req.params.id, function (err, admin) {
@@ -79,7 +79,7 @@ exports.update = function(req, res) {
     var updated = _.merge(admin, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, admin);
+      return res.status(200).json(admin);
     });
   });
 };
