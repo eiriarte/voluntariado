@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 var AdminSchema = new Schema({
   nombre: { type: String, required: true, trim: true },
   apellidos: { type: String, required: true, trim: true },
-  identificacion: { type: String, select: false }
+  identificacion: { type: String, trim: true, select: false }
 });
 
 module.exports = mongoose.model('Admin', AdminSchema);
