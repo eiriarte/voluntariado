@@ -65,6 +65,7 @@ module.exports = function(app) {
       'https://login.persona.org',
       'https://ajax.googleapis.com'
     ],
+    frameSrc: [ 'https://login.persona.org' ],
     fontSrc: [ "'self'" ],
     styleSrc: [ "'self'", "'unsafe-inline'" ],
     connectSrc: [ "'self'" ],
