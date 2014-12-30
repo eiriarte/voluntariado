@@ -52,9 +52,9 @@ function getUser(pers) {
     // Validate jwt
     .use(function(req, res, next) {
       // allow access_token to be passed through query parameter as well
-      if(req.query && req.query.hasOwnProperty('access_token')) {
+      if(req.query && req.query.access_token) {
         req.headers.authorization = 'Bearer ' + req.query.access_token;
-      } else if (req.cookies && req.cookies.hasOwnProperty('token')) {
+      } else if (req.cookies && req.cookies.token) {
         req.headers.authorization = 'Bearer ' + req.cookies.token.slice(1, req.cookies.token.length - 1);
       }
       validateJwtNoCreds(req, res, next);
