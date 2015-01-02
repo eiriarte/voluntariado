@@ -7,6 +7,7 @@ var config = require('../config/environment');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
+var winston = require('winston');
 var User = require('../api/user/user.model');
 var Persona = require('../api/persona/persona.model');
 var Sede = require('../api/admin/admin.model');
@@ -33,7 +34,10 @@ function isAuthenticated() {
     // Attach user to request
     .use(function(req, res, next) {
       User.findById(req.user._id, function (err, user) {
-        if (err) return next(err);
+        if (err) {
+          winston.error('Error localizando usuario %s', req.user._id);
+          return next(err);
+        }
         if (!user) return res.send(401);
 
         req.user = user;
@@ -62,29 +66,38 @@ function getUser(pers) {
     // Attach user to request, si lo hay
     .use(function(req, res, next) {
       if (!req.user) {
-        console.log('Usuario sin identificación');
+        winston.debug('Usuario sin identificación');
         return next();
       }
       User.findById(req.user._id).lean().exec(function (err, user) {
-        if (err) return next(err);
+        if (err) {
+          winston.error('Error obteniendo los datos del usuario %s', req.user._id);
+          return next(err);
+        }
         if (!user) return res.send(401);
 
         req.user = user;
         if (pers === true && user.persona) {
-          console.log('Obteniendo datos de voluntario…');
+          winston.debug('Obteniendo datos de voluntario…');
           Persona.findById(user.persona).lean().exec(function(err, persona) {
-            if (err) return next(err);
-            if (!persona) return res.send(401);
+            if (err) {
+              winston.error('Error obteniendo los datos del voluntario %s', user.persona);
+              return next(err);
+            }
+            if (!persona) {
+              winston.error('Voluntario no encontrado: %s', user.persona);
+              return res.send(401);
+            }
 
-            console.log('Datos obtenidos: ', persona);
+            winston.debug('Datos obtenidos: %j', persona, {});
             req.user.persona = persona._id.toString();
             req.user.coord = persona.coord;
             req.user.turno = _.last(persona.turnos).turno.toString();
-            console.log('Usuario voluntario: ', req.user);
+            winston.debug('Usuario voluntario: %j', req.user, {});
             next();
           });
         } else {
-          console.log('Usuario: ', req.user);
+          winston.debug('Usuario: %j', req.user, {});
           next();
         }
       });
@@ -102,7 +115,7 @@ function signToken(id) {
  * Set token cookie directly for oAuth strategies
  */
 function setTokenCookie(req, res) {
-  if (!req.user) return res.status(404).json({ message: 'Something went wrong, please try again.'});
+  if (!req.user) return res.status(404).json({ message: 'setTokenCookie: Something went wrong, please try again.'});
   var token = signToken(req.user._id, req.user.role);
   res.cookie('token', JSON.stringify(token));
   res.redirect('/');
@@ -115,8 +128,10 @@ function setTokenCookie(req, res) {
 function guardarIdentificacion(req, res, next) {
   if (req.query.vid) {
     req.session.vid = req.query.vid;
+    winston.info('Guardada en sesión identificación VID: %s', req.query.vid);
   } else if (req.query.sid) {
     req.session.sid = req.query.sid;
+    winston.info('Guardada en sesión identificación SID: %s', req.query.sid);
   }
   next();
 }
@@ -138,6 +153,7 @@ function identificar(req, done) {
     Modelo = Sede;
     campoId = 'sede';
   } else {
+    winston.error('Imposible localizar código de identificación.');
     return done(new Error('No hay código de identificación'));
   }
 
@@ -150,6 +166,9 @@ function identificar(req, done) {
       data.identificacion = null;
       data.save();
     } else {
+      if (err) {
+        winston.error('Error localizando identificación %s', id);
+      }
       done(err, data);
     }
   });
@@ -160,8 +179,6 @@ function turno(user, id) {
   if (user.sede) {
     return true;
   }
-  console.log('user.turno: ', typeof user.turno, user.turno);
-  console.log('id: ', typeof id, id);
   return user.turno === id;
 }
 

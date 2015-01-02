@@ -2,6 +2,8 @@
  * Error responses
  */
 
+winston = require('winston');
+
 'use strict';
 
 module.exports[404] = function pageNotFound(req, res) {
@@ -38,4 +40,6 @@ module.exports[500] = function error500(err, req, res, next) {
 
     res.render(viewFilePath, result);
   });
+
+  winston.error('error500(): %j', err, {});
 };

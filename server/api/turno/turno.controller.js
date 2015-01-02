@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var winston = require('winston');
 var Turno = require('./turno.model');
 
 // Devuelve la lista completa de turnos
@@ -64,5 +65,6 @@ exports.destroy = function(req, res) {
 };
 
 function handleError(res, err) {
+  winston.error('Error en /api/turnos: %j', err, {});
   return res.send(500, err);
 }

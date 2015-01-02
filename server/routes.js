@@ -5,6 +5,7 @@
 'use strict';
 
 var async = require('async');
+var winston = require('winston');
 var errors = require('./components/errors');
 var personas = require('./api/persona/persona.controller');
 var turnos = require('./api/turno/turno.controller');
@@ -30,6 +31,7 @@ module.exports = function(app) {
   app.route('/id/:codigo').get(function(req, res, next) {
     personas.getIdentificacion(req.params.codigo, function(err, data) {
       if (err) {
+        winston.error('Error en la ruta /id/%s: %j', req.params.codigo, err, {});
         if (212 === err.codigo) {
           app.locals.identificacion = 404;
         } else {
@@ -47,6 +49,7 @@ module.exports = function(app) {
   app.route('/sede/id/:codigo').get(function(req, res, next) {
     admins.getIdentificacion(req.params.codigo, function(err, data) {
       if (err) {
+        winston.error('Error en la ruta /id/%s: %j', req.params.codigo, err, {});
         if (312 === err.codigo) {
           app.locals.identificacion = 404;
         } else {
@@ -62,7 +65,7 @@ module.exports = function(app) {
 
   // All other routes should redirect to the index.html
   app.route('/*').get(auth.getUser(true), function(req, res) {
-    console.log('USER: ', req.user);
+    winston.debug('route GET /* - USER: %j', req.user, {});
     var getPersonas = function(done) {
       personas.getPersonas(req.user, function (err, personas) {
         if(err) { return done(err); }
@@ -92,7 +95,10 @@ module.exports = function(app) {
     }
 
     async.series([ getPersonas, getTurnos, getAdmins ], function(err) {
-      if(err) { return res.send(500, err); }
+      if(err) {
+        winston.error('Error en la ruta %s: %j', req.path, err, {});
+        return res.send(500, err);
+      }
       res.header('X-UA-Compatible', 'IE=Edge');
       res.render('index');
     });

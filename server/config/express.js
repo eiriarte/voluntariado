@@ -21,6 +21,7 @@ var mongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
 var csrf = require('csurf');
 var helmet = require('helmet');
+var winston = require('winston');
 var errors = require('../components/errors');
 
 module.exports = function(app) {
@@ -106,6 +107,9 @@ module.exports = function(app) {
   if ('development' === env || 'test' === env) {
     // Simular latencia de BD de 2000ms en desarrollo
     app.use('/api', function(req, res, next) { setTimeout(next, 2000); });
+
+    // Nivel de log: 'debug'
+    winston.default.transports.console.level = 'debug'
 
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '.tmp'), { index: 'noindex' }));

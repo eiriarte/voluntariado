@@ -1,3 +1,4 @@
+var winston = require('winston');
 var passport = require('passport');
 var BrowserIDStrategy = require('passport-browserid').Strategy;
 var auth = require('../auth.service');
@@ -10,6 +11,7 @@ exports.setup = function (User, config) {
     function(req, email, done) {
       User.findOne({ email: email }, function (err, user) {
         if (err) {
+          winston.error('Error localizando usuario %s vía BrowserID', email);
           return done(err);
         }
         if (!user) {
@@ -23,11 +25,16 @@ exports.setup = function (User, config) {
               provider: 'browserid'
             });
             user.save(function(err) {
-              if (err) done(err);
+              if (err) {
+                winston.error('Error insertando el nuevo usuario %j', user.toObject(), {});
+                done(err);
+              }
+              winston.info('Generado correctamente el nuevo usuario vía BrowserID: %j', user.toObject(), {});
               return done(err, user);
             });
           });
         } else {
+          winston.verbose('Usuario autenticado correctamente vía BrowserID: %j', user.toObject(), {});
           return done(err, user);
         }
       });

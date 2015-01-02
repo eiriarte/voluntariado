@@ -1,8 +1,9 @@
 'use strict';
 
 var _ = require('lodash');
-var Asistencia = require('./asistencia.model');
+var winston = require('winston');
 var moment = require('moment');
+var Asistencia = require('./asistencia.model');
 var auth = require('../../auth/auth.service');
 
 // Get list of asistencias
@@ -13,6 +14,7 @@ exports.index = function(req, res) {
   var desdeMes = +req.query.desdeMes;
   var query = {};
   var or = []
+
   if (mes || anno) {
     if (!anno || anno < 1900 || anno > 2200 || !mes || mes < 1 || mes > 12) {
       return res.status(400).json({ codigo: 120, mensaje: 'No se han especificado año y mes válidos.'});
@@ -60,7 +62,7 @@ exports.save = function(req, res) {
   if (!auth.turno(req.user, turno)) {
     return res.status(401).json({ codigo: 114, mensaje: 'No tienes permiso para modificar esta asistencia.'});
   } else {
-    console.log('Usuario del turno o sede validado correctamente');
+    winston.debug('Usuario del turno o sede validado correctamente');
   }
   if (!fecha.isValid()) {
     return res.status(400).json({ codigo: 110, mensaje: 'No se han especificado año, mes y día válidos.'});
@@ -105,5 +107,6 @@ exports.destroy = function(req, res) {
 };
 
 function handleError(res, err) {
+  winston.error('Error en /api/asistencias: %j', err, {});
   return res.send(500, err);
 }

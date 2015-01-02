@@ -1,8 +1,7 @@
 'use strict';
 
-var User = require('./user.model');
+var winston = require('winston');
 var passport = require('passport');
-var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 
 var validationError = function(res, err) {
@@ -21,6 +20,8 @@ exports.create = function (req, res, next) {
     res.json({ token: token });
   });
 };
+var User = require('./user.model');
+var config = require('../../config/environment');
 
 /**
  * Get a single user
@@ -29,8 +30,14 @@ exports.show = function (req, res, next) {
   var userId = req.params.id;
 
   User.findById(userId, function (err, user) {
-    if (err) return next(err);
-    if (!user) return res.send(401);
+    if (err) {
+      winston.error('Error localizando a un usuario: %s', userId);
+      return next(err);
+    }
+    if (!user) {
+      winston.warn('Usuario no encontrado: %s', userId);
+      return res.send(401);
+    }
     res.json(user.profile);
   });
 };
@@ -43,8 +50,14 @@ exports.me = function(req, res, next) {
   User.findOne({
     _id: userId
   }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
-    if (err) return next(err);
-    if (!user) return res.json(401);
+    if (err) {
+      winston.error('Error localizando al propio usuario: %s', userId);
+      return next(err);
+    }
+    if (!user) {
+      winston.error('Usuario no encontrado: %s', userId);
+      return res.json(401);
+    }
     res.json(user);
   });
 };

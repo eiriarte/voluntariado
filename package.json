@@ -27,7 +27,8 @@
     "passport-browserid": "^0.1.4",
     "passport-facebook": "latest",
     "passport-google-oauth": "latest",
-    "serve-favicon": "^2.2.0"
+    "serve-favicon": "^2.2.0",
+    "winston": "^0.8.3"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

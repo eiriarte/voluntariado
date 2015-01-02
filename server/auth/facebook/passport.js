@@ -1,3 +1,4 @@
+var winston = require('winston');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var auth = require('../auth.service');
@@ -14,7 +15,10 @@ exports.setup = function (User, config) {
         'facebook.id': profile.id
       },
       function(err, user) {
-        if (err) { return done(err); }
+        if (err) {
+          winston.error('Error localizando usuario %s vía Facebook', profile.id);
+          return done(err);
+        }
         if (!user) {
           auth.identificar(req, function(err, data) {
             if (err) { return done(err); }
@@ -27,11 +31,16 @@ exports.setup = function (User, config) {
               facebook: profile._json
             });
             user.save(function(err) {
-              if (err) done(err);
+              if (err) {
+                winston.error('Error insertando el nuevo usuario %j', user.toObject(), {});
+                done(err);
+              }
+              winston.info('Generado correctamente el nuevo usuario vía Facebook: %j', user.toObject(), {});
               return done(err, user);
             });
           });
         } else {
+          winston.verbose('Usuario autenticado correctamente vía Facebook: %j', user.toObject(), {});
           return done(err, user);
         }
       })

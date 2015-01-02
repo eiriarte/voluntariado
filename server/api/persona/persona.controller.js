@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var winston = require('winston');
 var utils = require('../../components/utils');
 var Persona = require('./persona.model');
 var auth = require('../../auth/auth.service');
@@ -65,6 +66,7 @@ exports.create = function(req, res) {
 
   Persona.create(datos, function(err, persona) {
     if(err) { return handleError(res, err); }
+    winston.info('Voluntario dado de alta correctamente: %j', persona, {});
     return res.status(201).json(persona);
   });
 };
@@ -164,5 +166,6 @@ exports.update = function(req, res) {
 };
 
 function handleError(res, err) {
+  winston.error('Error en /api/personas: %j', err, {});
   return res.send(500, err);
 }
