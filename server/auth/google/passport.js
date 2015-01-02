@@ -35,7 +35,7 @@ exports.setup = function (User, config) {
                 winston.error('Error insertando el nuevo usuario %j', user.toObject(), {});
                 done(err);
               }
-              winston.info('Generado correctamente el nuevo usuario vía Google: %j', user.toObject(), {});
+              winston.info('alta: Generado correctamente el nuevo usuario vía Google: %j', user.toObject(), {});
               return done(err, user);
             });
           });

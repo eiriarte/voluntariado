@@ -66,7 +66,7 @@ exports.create = function(req, res) {
 
   Persona.create(datos, function(err, persona) {
     if(err) { return handleError(res, err); }
-    winston.info('Voluntario dado de alta correctamente: %j', persona, {});
+    winston.info('alta: Voluntario dado de alta correctamente: %j', persona, {});
     return res.status(201).json(persona);
   });
 };

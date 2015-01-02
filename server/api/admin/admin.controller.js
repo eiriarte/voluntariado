@@ -64,7 +64,7 @@ exports.create = function(req, res) {
   datos.identificacion = utils.nuevaIdentificacion();
   Admin.create(datos, function(err, admin) {
     if(err) { return handleError(res, err); }
-    winston.info('Personal de la sede dado de alta correctamente: %j', admin, {});
+    winston.info('alta: Personal de la sede dado de alta correctamente: %j', admin, {});
     return res.status(201).json(admin);
   });
 };
