@@ -44,7 +44,7 @@ asistenciaCtrl = ($scope, $modal, $log, asistenciasSrv, personas, toast) ->
       asistenciasSrv.eliminar datos, (error) ->
         $scope.ajax = false
         if not error
-          toast.success 'Notificación eliminada.'
+          toast.success 'Notificación eliminada (vuelve a considerarse "Falta sin avisar").'
         else
           toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
 

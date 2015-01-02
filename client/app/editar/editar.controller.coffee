@@ -66,7 +66,7 @@ editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, per
         $scope.form.accion = 'Dar de alta'
         if not error
           $log.debug 'Alta realizada!!!'
-          toast.success 'Alta realizada correctamente.'
+          toast.success 'Alta realizada correctamente. ¡Ahora debes enviarle su enlace de registro!'
           slugTurno = turnos.getTurno($scope.persona.turno).slug
           $location.path "/voluntariado/#{slugTurno}/vol/#{persona._id}"
         else
@@ -78,7 +78,7 @@ editarCtrl = ($scope, $rootScope, $params, $location, $log, turnos, estados, per
         $scope.form.accion = 'Guardar cambios'
         if not error
           $log.debug 'Persona modificada!!!'
-          toast.success 'Registro modificado correctamente.'
+          toast.success 'Ficha modificada correctamente.'
           slugTurno = turnos.getTurno($scope.persona.turno).slug
           $location.path "/voluntariado/#{slugTurno}/vol/#{persona._id}"
         else

@@ -35,7 +35,7 @@ sedeEditCtrl = ($scope, $rootScope, $params, $location, sede, url, toast) ->
         $scope.form.guardando = false
         $scope.form.accion = 'Dar de alta'
         if not err
-          toast.success 'Alta realizada correctamente.'
+          toast.success 'Alta realizada correctamente. ¡Ahora debes enviarle su enlace de registro!'
           $location.path '/sede'
         else
           toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
@@ -44,7 +44,7 @@ sedeEditCtrl = ($scope, $rootScope, $params, $location, sede, url, toast) ->
         $scope.form.guardando = false
         $scope.form.accion = 'Guardar cambios'
         if not err
-          toast.success 'Registro modificado correctamente.'
+          toast.success 'Ficha modificada correctamente.'
           $location.path '/sede'
         else
           toast.error '¡Oh, no! Algo ha fallado. ¿Seguro que tienes Internet? ¡Prueba a recargar la página!'
