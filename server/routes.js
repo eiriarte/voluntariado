@@ -93,6 +93,7 @@ module.exports = function(app) {
 
     async.series([ getPersonas, getTurnos, getAdmins ], function(err) {
       if(err) { return res.send(500, err); }
+      res.header('X-UA-Compatible', 'IE=Edge');
       res.render('index');
     });
   });
