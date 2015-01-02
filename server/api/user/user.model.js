@@ -2,8 +2,6 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var crypto = require('crypto');
-var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
   persona: { type: Schema.Types.ObjectId, ref: 'Persona' },

@@ -6,7 +6,6 @@ sidebarCtrl = ($scope, $log, Auth, BrowserID) ->
   $scope.logado = Auth.isLoggedIn
   $scope.esSede = -> Auth.esSede()
   $scope.esVoluntario = -> Auth.esVoluntario()
-  $scope.esAnonimo = -> Auth.esAnonimo()
   $scope.nombre = -> Auth.nombre()
   $scope.enlacePerfil = ->
     if Auth.esSede()

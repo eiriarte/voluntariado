@@ -95,25 +95,6 @@ exports.nuevoEstado = function(req, res) {
   });
 };
 
-// Registra un alta en otro turno (OBSOLETO, usar .update())
-exports.nuevoTurno = function(req, res) {
-  var turno = req.body.turno;
-  var datos = { turno: turno };
-  if (req.body.alta) {
-    datos.alta = new Date(req.body.alta);
-  }
-  Persona.findByIdAndUpdate(req.params.id, { $push: { turnos: datos }}, function(err, data) {
-    if(err) { return handleError(res, err); }
-    if(!data) { return res.send(404); }
-    if (data && _.isArray(data.turnos) && _.last(data.turnos).turno.toString() === turno) {
-      res.status(201).json(_.last(data.turnos));
-    } else {
-      if(!data) { return res.send(404); }
-      return res.status(500).json({ codigo: 211, mensaje: 'Imposible almacenar el turno.' });
-    }
-  });
-};
-
 // Updates an existing persona in the DB.
 exports.update = function(req, res) {
   var turno, turnoAnterior, estado, estadoAnterior;

@@ -1,8 +1,6 @@
 'use strict'
 
 authSrv = (User, $log, $window, $timeout, $cookieStore, personas, turnos, sedeSrv) ->
-  # TODO: usuario sede no puede dar altas de voluntarios!!!
-  #currentUser = _id: '5451f9f4f7d1a38379752313', sede: '545a03c523e5be3b15c7a29b', persona: undefined #'5423e4d2eb6b682ad0996d90'
   if $cookieStore.get 'token'
     $log.debug 'Token presente: obteniendo usuario'
     currentUser = User.get()
@@ -94,26 +92,6 @@ authSrv = (User, $log, $window, $timeout, $cookieStore, personas, turnos, sedeSr
   ###
   esVoluntario: ->
     currentUser._id and currentUser.persona?
-
-
-  ###
-  Comprueba si es un usuario aún no identificado
-
-  @return {Boolean}
-  ###
-  # TODO: no sirve, eliminar
-  esAnonimo: ->
-    currentUser._id and not currentUser.persona? and not currentUser.sede?
-
-
-  ###
-  Comprueba si es un usuario identificado
-
-  @return {Boolean}
-  ###
-  # TODO: no sirve, eliminar
-  identificado: ->
-    not @esAnonimo
 
 
   ###
