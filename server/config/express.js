@@ -22,6 +22,7 @@ var mongoose = require('mongoose');
 var csrf = require('csurf');
 var helmet = require('helmet');
 var winston = require('winston');
+var robots = require('./robots');
 var errors = require('../components/errors');
 
 module.exports = function(app) {
@@ -39,20 +40,22 @@ module.exports = function(app) {
 
   app.enable('trust proxy');
 
-  // Persist sessions with mongoStore
-  app.use(session({
-    secret: config.secrets.session,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { httpOnly: true, secure: ('production' === env) },
-    key: 'session',
-    store: new mongoStore({ mongooseConnection: mongoose.connection })
-  }));
+  // Sesiones sólo para humanos
+  app.use(robots.humanSession(env));
 
   // Protección contra ataques XSRF
-  app.use(csrf());
+  var fnCSRF = csrf();
   app.use(function(req, res, next) {
-    res.cookie('XSRF-TOKEN', req.csrfToken());
+    if (req.isRobot) {
+      next();
+    } else {
+      fnCSRF(req, res, next);
+    }
+  });
+  app.use(function(req, res, next) {
+    if (!req.isRobot) {
+      res.cookie('XSRF-TOKEN', req.csrfToken());
+    }
     next();
   });
 
