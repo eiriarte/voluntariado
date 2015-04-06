@@ -1,10 +1,6 @@
-/**
- * Error responses
- */
-
-winston = require('winston');
-
 'use strict';
+
+var winston = require('winston');
 
 module.exports[404] = function pageNotFound(req, res) {
   var viewFilePath = '404';
