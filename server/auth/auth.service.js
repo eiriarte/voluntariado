@@ -74,7 +74,10 @@ function getUser(pers) {
           winston.error('Error obteniendo los datos del usuario %s', req.user._id);
           return next(err);
         }
-        if (!user) return res.send(401);
+        if (!user) {
+          winston.error('No se ha encontrado el id de usuario: %j', req.user, {});
+          return res.send(401);
+        }
 
         req.user = user;
         if (pers === true && user.persona) {
@@ -101,6 +104,11 @@ function getUser(pers) {
           next();
         }
       });
+    })
+    .use(function(err, req, res, next) {
+      winston.error('Se produjo un error verificando el usuario: %j', err, {});
+      req.user = null;
+      next();
     });
 }
 
