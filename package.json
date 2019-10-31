@@ -21,7 +21,7 @@
     "lodash": "~2.4.1",
     "method-override": "^2.3.0",
     "moment": "^2.8.3",
-    "mongoose": "~3.8.21",
+    "mongoose": "~5.7.7",
     "morgan": "^1.5.0",
     "passport": "~0.2.0",
     "passport-browserid": "^0.1.4",
